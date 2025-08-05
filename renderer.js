@@ -1,7 +1,7 @@
 // renderer.js
 
-// Mantener un estado simulado de cursos guardados
-const savedCourses = new Set(); // Usamos un Set para IDs únicos
+// Mantener un estado de cursos guardados, ahora sincronizado con la DB
+const savedCourses = new Set(); // Usamos un Set para IDs únicos de cursos guardados
 
 // Variables globales para los filtros
 let allCourses = []; // Para almacenar todos los cursos cargados desde la DB
@@ -73,6 +73,7 @@ function applyFilters() {
  * @returns {HTMLElement} La tarjeta de curso como un elemento DOM.
  */
 function createCourseCard(course) {
+    // Verificar si el curso está guardado usando el Set actualizado desde la DB
     const isSaved = savedCourses.has(course.id);
     const saveIconClass = isSaved ? 'saved' : '';
     const tooltipText = isSaved ? 'Quitar de Guardados' : 'Guardar en Favoritos';
@@ -104,26 +105,44 @@ function createCourseCard(course) {
     // Event listener para el icono de guardar
     const saveIconWrapper = card.querySelector(`.save-icon-wrapper[data-course-id="${course.id}"]`);
     if (saveIconWrapper) {
-        saveIconWrapper.addEventListener('click', (event) => {
+        saveIconWrapper.addEventListener('click', async (event) => { // Marcado como async
             event.stopPropagation(); // Evita que el clic en el icono active el clic de la tarjeta
 
             const icon = saveIconWrapper.querySelector('.save-course-icon');
-            const newTooltipText = savedCourses.has(course.id) ? 'Guardar en Favoritos' : 'Quitar de Guardados';
-            const newAriaLabelText = savedCourses.has(course.id) ? `Guardar curso "${course.title}" en favoritos` : `Quitar curso "${course.title}" de favoritos`;
+            let success = false;
 
             if (savedCourses.has(course.id)) {
-                savedCourses.delete(course.id);
-                icon.classList.remove('saved');
-                showNotification(`Curso "${course.title}" desguardado.`);
+                // Eliminar de la base de datos
+                success = await window.electronAPI.removeCourseFromDb(course.id);
+                if (success) {
+                    savedCourses.delete(course.id);
+                    icon.classList.remove('saved');
+                    showNotification(`Curso "${course.title}" desguardado.`);
+                } else {
+                    showNotification(`Error al desguardar "${course.title}".`);
+                }
             } else {
-                savedCourses.add(course.id);
-                icon.classList.add('saved');
-                showNotification(`Curso "${course.title}" guardado.`);
+                // Guardar en la base de datos
+                success = await window.electronAPI.saveCourseToDb(course.id);
+                if (success) {
+                    savedCourses.add(course.id);
+                    icon.classList.add('saved');
+                    showNotification(`Curso "${course.title}" guardado.`);
+                } else {
+                    showNotification(`Error al guardar "${course.title}".`);
+                }
             }
 
+            // Actualizar el tooltip y aria-label después de la operación
+            const newTooltipText = savedCourses.has(course.id) ? 'Quitar de Guardados' : 'Guardar en Favoritos';
+            const newAriaLabelText = savedCourses.has(course.id) ? `Quitar curso "${course.title}" de favoritos` : `Guardar curso "${course.title}" en favoritos`;
             saveIconWrapper.setAttribute('data-tooltip', newTooltipText);
             icon.setAttribute('aria-label', newAriaLabelText);
-            localStorage.setItem('simulatedSavedCourses', JSON.stringify(Array.from(savedCourses)));
+            
+            // Opcional: Re-renderizar los cursos para asegurar que el estado visual sea consistente
+            // applyFilters(); 
+            // Esto puede ser excesivo si solo se necesita actualizar el icono.
+            // El icono ya se actualiza directamente, así que no es estrictamente necesario aquí.
         });
     }
 
@@ -380,22 +399,18 @@ function setupDropdown(button, content, handler) {
  * Inicializa el estado de la aplicación cargando los cursos y el estado guardado.
  */
 async function initializeState() {
-    // Cargar el estado simulado al inicio
-    const storedSavedCourses = localStorage.getItem('simulatedSavedCourses');
-    if (storedSavedCourses) {
-        try {
-            JSON.parse(storedSavedCourses).forEach(id => savedCourses.add(id));
-        } catch (e) {
-            console.error('Error al parsear simulatedSavedCourses de localStorage:', e);
-            localStorage.removeItem('simulatedSavedCourses');
-        }
-    }
-
     try {
+        // Cargar cursos guardados desde la base de datos al inicio
+        // Limpiar el Set actual y rellenarlo con los IDs de la DB
+        const savedCourseIds = await window.electronAPI.getSavedCourses();
+        savedCourses.clear(); // Limpiar el Set actual
+        savedCourseIds.forEach(id => savedCourses.add(id));
+        console.log('Cursos guardados cargados de la DB:', Array.from(savedCourses));
+
         allPlatforms = await window.electronAPI.getAllPlatforms();
         loadAndRenderPlatforms();
     } catch (error) {
-        console.error('Error al cargar las plataformas:', error);
+        console.error('Error al cargar plataformas o cursos guardados:', error);
         const platformLogosContainer = document.getElementById('platform-logos-container');
         if (platformLogosContainer) {
             platformLogosContainer.innerHTML = '<p style="color: red;">Error al cargar plataformas.</p>';
@@ -405,7 +420,6 @@ async function initializeState() {
     try {
         allCourses = await window.electronAPI.getAllCourses();
         loadAndRenderCategories(allCourses);
-        // CAMBIO CLAVE: Llama a loadAndRenderLanguages ANTES de setupLanguageDropdownListeners
         loadAndRenderLanguages(allCourses); 
         applyFilters();
     } catch (error) {
@@ -520,8 +534,8 @@ function renderCourseDetail(course) {
                 icon.classList.add('saved');
                 showNotification(`Curso "${course.title}" guardado.`);
             }
-            detailSaveIconWrapper.setAttribute('data-tooltip', newTooltipText);
-            icon.setAttribute('aria-label', newAriaLabelText);
+            // NOTA: Esta línea ahora es redundante, ya que la lógica de guardado/desguardado se manejará
+            // a través de las funciones IPC. Se mantendrá para compatibilidad o si se desea una capa de caché local.
             localStorage.setItem('simulatedSavedCourses', JSON.stringify(Array.from(savedCourses)));
         });
     }

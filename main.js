@@ -7,7 +7,7 @@ const fs = require('fs');
 
 let mainWindow; // Guarda una referencia a la ventana principal
 
-// --- LÓGICA DE LA BASE DE DATOS (NUEVA) ---
+// --- LÓGICA DE LA BASE DE DATOS ---
 const userDataPath = app.getPath('userData');
 const dbPath = path.join(userDataPath, 'courses.db');
 let db;
@@ -25,7 +25,7 @@ function initializeDatabase() {
       } else {
         // Si la DB ya existe, aún queremos intentar sincronizar por si courses.json ha cambiado
         console.log('Base de datos existente. Sincronizando cursos desde courses.json...');
-        syncCoursesFromJson();
+        createTables(); // Asegurarse de que todas las tablas existan, incluida la nueva
       }
     }
   });
@@ -48,13 +48,32 @@ function createTables() {
       lastUpdated INTEGER
     );
   `;
-  db.run(createCoursesTable, (err) => {
-    if (err) {
-      console.error('Error al crear la tabla de cursos:', err.message);
-    } else {
-      console.log('Tabla de cursos creada o ya existe.');
-      syncCoursesFromJson(); // Inicia la sincronización inicial o de actualización
-    }
+  // NUEVA TABLA para cursos guardados por el usuario
+  const createUserSavedCoursesTable = `
+    CREATE TABLE IF NOT EXISTS user_saved_courses (
+      userId TEXT NOT NULL,
+      courseId TEXT NOT NULL,
+      PRIMARY KEY (userId, courseId),
+      FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
+    );
+  `;
+
+  db.serialize(() => {
+    db.run(createCoursesTable, (err) => {
+      if (err) {
+        console.error('Error al crear la tabla de cursos:', err.message);
+      } else {
+        console.log('Tabla de cursos creada o ya existe.');
+      }
+    });
+    db.run(createUserSavedCoursesTable, (err) => {
+      if (err) {
+        console.error('Error al crear la tabla de cursos guardados por usuario:', err.message);
+      } else {
+        console.log('Tabla de user_saved_courses creada o ya existe.');
+      }
+      syncCoursesFromJson(); // Inicia la sincronización inicial/actualización después de crear todas las tablas
+    });
   });
 }
 
@@ -97,9 +116,9 @@ function syncCoursesFromJson() {
         });
         db.run('COMMIT;', (err) => {
           if (err) {
-            console.error('Error al confirmar la transacción:', err.message);
+            console.error('Error al confirmar la transacción de cursos:', err.message);
           } else {
-            console.log(`Sincronización inicial completada. Se insertaron/actualizaron ${courses.length} cursos.`);
+            console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
           }
           insertStmt.finalize();
         });
@@ -110,7 +129,9 @@ function syncCoursesFromJson() {
   });
 }
 
-// --- MANEJADORES IPC PARA EL RENDERER (NUEVOS) ---
+// --- MANEJADORES IPC PARA EL RENDERER ---
+
+// Obtener todos los cursos
 ipcMain.handle('get-all-courses', async () => {
   return new Promise((resolve, reject) => {
     db.all('SELECT * FROM courses', (err, rows) => {
@@ -118,18 +139,13 @@ ipcMain.handle('get-all-courses', async () => {
         console.error('Error al obtener todos los cursos de la DB:', err.message);
         reject(err);
       } else {
-        // --- LOG DE DEPURACIÓN ---
-        console.log('Cursos obtenidos de la DB (para depuración de idiomas):');
-        rows.forEach(row => {
-            console.log(`- Curso ID: ${row.id}, Título: ${row.title}, Idioma: ${row.language}`);
-        });
-        // --- FIN LOG DE DEPURACIÓN ---
         resolve(rows);
       }
     });
   });
 });
 
+// Obtener un curso por ID
 ipcMain.handle('get-course-by-id', async (event, courseId) => {
   return new Promise((resolve, reject) => {
     db.get('SELECT * FROM courses WHERE id = ?', [courseId], (err, row) => {
@@ -143,6 +159,7 @@ ipcMain.handle('get-course-by-id', async (event, courseId) => {
   });
 });
 
+// Obtener todas las plataformas
 ipcMain.handle('get-all-platforms', async () => {
     const jsonPath = path.join(__dirname, 'platforms.json');
     try {
@@ -154,8 +171,63 @@ ipcMain.handle('get-all-platforms', async () => {
     }
 });
 
+// NUEVOS MANEJADORES IPC para cursos guardados
+// Usamos un userId fijo por ahora, ya que no hay sistema de autenticación
+const DEFAULT_USER_ID = 'anonymous_user';
 
-// --- LÓGICA DE LA VENTANA (EXISTENTE) ---
+ipcMain.handle('save-course-to-db', async (event, courseId) => {
+  return new Promise((resolve, reject) => {
+    db.run('INSERT OR IGNORE INTO user_saved_courses (userId, courseId) VALUES (?, ?)', 
+      [DEFAULT_USER_ID, courseId], 
+      function (err) {
+        if (err) {
+          console.error(`Error al guardar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
+          reject(err);
+        } else {
+          console.log(`Curso ${courseId} guardado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
+          resolve(this.changes > 0); // Devuelve true si se insertó, false si ya existía
+        }
+      }
+    );
+  });
+});
+
+ipcMain.handle('remove-course-from-db', async (event, courseId) => {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM user_saved_courses WHERE userId = ? AND courseId = ?', 
+      [DEFAULT_USER_ID, courseId], 
+      function (err) {
+        if (err) {
+          console.error(`Error al eliminar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
+          reject(err);
+        } else {
+          console.log(`Curso ${courseId} eliminado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
+          resolve(this.changes > 0); // Devuelve true si se eliminó, false si no existía
+        }
+      }
+    );
+  });
+});
+
+ipcMain.handle('get-saved-courses', async () => {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT courseId FROM user_saved_courses WHERE userId = ?', 
+      [DEFAULT_USER_ID], 
+      (err, rows) => {
+        if (err) {
+          console.error(`Error al obtener cursos guardados para el usuario ${DEFAULT_USER_ID}:`, err.message);
+          reject(err);
+        } else {
+          // Devuelve solo los IDs de los cursos guardados
+          resolve(rows.map(row => row.courseId));
+        }
+      }
+    );
+  });
+});
+
+
+// --- LÓGICA DE LA VENTANA ---
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -172,7 +244,7 @@ function createWindow() {
 }
 
 
-// --- CICLO DE VIDA DE LA APP (EXISTENTE) ---
+// --- CICLO DE VIDA DE LA APP ---
 app.whenReady().then(() => {
   createWindow();
   initializeDatabase(); // Inicializa la DB después de crear la ventana
@@ -187,8 +259,7 @@ app.on('window-all-closed', () => {
 });
 
 
-// --- IPC PARA NAVEGACIÓN (EXISTENTE) ---
+// --- IPC PARA NAVEGACIÓN ---
 ipcMain.on('open-course-detail', (event, courseId) => {
-    // CAMBIO CLAVE: Pasar el courseId como un parámetro de consulta en el objeto de opciones
     mainWindow.loadFile('course-detail.html', { query: { id: courseId } });
 });

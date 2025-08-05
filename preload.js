@@ -9,5 +9,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAllPlatforms: () => ipcRenderer.invoke('get-all-platforms'),
 
   // Canal para la navegación
-  openCourseDetail: (courseId) => ipcRenderer.send('open-course-detail', courseId)
+  openCourseDetail: (courseId) => ipcRenderer.send('open-course-detail', courseId),
+
+  // NUEVOS Canales para la gestión de cursos guardados en la base de datos
+  saveCourseToDb: (courseId) => ipcRenderer.invoke('save-course-to-db', courseId),
+  removeCourseFromDb: (courseId) => ipcRenderer.invoke('remove-course-from-db', courseId),
+  getSavedCourses: () => ipcRenderer.invoke('get-saved-courses')
 });

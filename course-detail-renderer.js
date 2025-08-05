@@ -18,14 +18,15 @@ function showNotification(message) {
 document.addEventListener('DOMContentLoaded', async () => {
     // Inicializar el estado de cursos guardados ANTES de usarlos en la UI
     const savedCourses = new Set();
-    const storedSavedCourses = localStorage.getItem('simulatedSavedCourses');
-    if (storedSavedCourses) {
-        try {
-            JSON.parse(storedSavedCourses).forEach(id => savedCourses.add(id));
-        } catch (e) {
-            console.error('Error al parsear simulatedSavedCourses de localStorage:', e);
-            localStorage.removeItem('simulatedSavedCourses'); // Limpiar datos corruptos
-        }
+    // CAMBIO CLAVE: Cargar cursos guardados desde la base de datos al inicio
+    try {
+        const savedCourseIds = await window.electronAPI.getSavedCourses();
+        savedCourses.clear(); // Limpiar el Set actual
+        savedCourseIds.forEach(id => savedCourses.add(id));
+        console.log('Cursos guardados cargados de la DB en detalle:', Array.from(savedCourses));
+    } catch (e) {
+        console.error('Error al cargar cursos guardados de la DB en la página de detalle:', e);
+        // No limpiar localStorage aquí, ya que la fuente de verdad es la DB
     }
 
     // Obtener referencias a todos los elementos HTML
@@ -36,11 +37,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const saveIconWrapper = courseTitleElem ? courseTitleElem.querySelector('.save-icon-wrapper') : null;
     const detailSaveIcon = saveIconWrapper ? saveIconWrapper.querySelector('.save-course-icon') : null;
 
-
-    // CAMBIO CLAVE: Referencia al iframe de Odysee
+    // Referencia al iframe de Odysee
     const odyseeVideoIframe = document.getElementById('course-video-iframe'); 
     const currentLessonTitleElem = document.getElementById('current-lesson-title');
-
 
     // Elementos para la información del curso
     const courseCategoryElem = document.getElementById('course-detail-category');
@@ -59,16 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Función para actualizar el video y su título con el reproductor de Odysee
     const updateVideoPlayer = (videoUrl, videoTitle) => {
         if (odyseeVideoIframe) { // Asegurarse de que el iframe exista
-            // CAMBIO CLAVE: Construir la URL de embed de Odysee
-            // Asumimos que videoUrl ya es la URL de Odysee, ej: "https://odysee.com/@Ruta/video:id"
-            // Para embed, generalmente es "https://odysee.com/$/embed/@Ruta/video:id"
-            // Puedes necesitar ajustar el formato si tus URLs de Odysee son diferentes.
-            // Si la URL es de un video de Odysee, la transformamos para el embed.
             let embedUrl = videoUrl;
             if (videoUrl.includes('odysee.com/') && !videoUrl.includes('/$/embed/')) {
-                // Esto es una suposición del formato de Odysee.
-                // Si tus URLs de video son como 'https://odysee.com/@channel/video-name:id'
-                // entonces el embed es 'https://odysee.com/$/embed/@channel/video-name:id'
                 embedUrl = videoUrl.replace('odysee.com/', 'odysee.com/$/embed/');
             }
             
@@ -85,12 +76,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Obtener el ID del curso de la URL (priorizando query param, luego hash)
     let courseId = null;
     const urlParams = new URLSearchParams(window.location.search);
-    // CAMBIO AQUI: Buscar 'id' en lugar de 'courseId'
     courseId = urlParams.get('id'); 
 
     if (!courseId && window.location.hash) {
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        // CAMBIO AQUI: Buscar 'id' en lugar de 'courseId'
         courseId = hashParams.get('id'); 
     }
 
@@ -102,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        // 2. Cargar el JSON de cursos
         // Usar la API de Electron para obtener el curso por ID
         const course = await window.electronAPI.getCourseById(courseId);
 
@@ -111,27 +99,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (courseTitleTextElem) courseTitleTextElem.textContent = course.title;
 
             if (detailSaveIcon && saveIconWrapper) {
-                if (savedCourses.has(course.id)) {
-                    detailSaveIcon.classList.add('saved');
-                    saveIconWrapper.setAttribute('data-tooltip', 'Quitar de guardados');
-                } else {
-                    detailSaveIcon.classList.remove('saved');
-                    saveIconWrapper.setAttribute('data-tooltip', 'Guardar este curso');
-                }
+                // Verificar si el curso está guardado usando el Set actualizado desde la DB
+                const isSaved = savedCourses.has(course.id);
+                detailSaveIcon.classList.toggle('saved', isSaved);
+                saveIconWrapper.setAttribute('data-tooltip', isSaved ? 'Quitar de guardados' : 'Guardar este curso');
+                detailSaveIcon.setAttribute('aria-label', isSaved ? `Quitar curso "${course.title}" de favoritos` : `Guardar curso "${course.title}" en favoritos`);
 
-                saveIconWrapper.addEventListener('click', () => {
+                saveIconWrapper.addEventListener('click', async (event) => { // Marcado como async
+                    event.stopPropagation();
+                    const icon = detailSaveIconWrapper.querySelector('.save-course-icon');
+                    let success = false;
+                    
                     if (savedCourses.has(course.id)) {
-                        savedCourses.delete(course.id);
-                        detailSaveIcon.classList.remove('saved');
-                        saveIconWrapper.setAttribute('data-tooltip', 'Guardar este curso');
-                        showNotification(`Curso "${course.title}" desguardado.`);
+                        // Eliminar de la base de datos
+                        success = await window.electronAPI.removeCourseFromDb(course.id);
+                        if (success) {
+                            savedCourses.delete(course.id);
+                            icon.classList.remove('saved');
+                            showNotification(`Curso "${course.title}" desguardado.`);
+                        } else {
+                            showNotification(`Error al desguardar "${course.title}".`);
+                        }
                     } else {
-                        savedCourses.add(course.id);
-                        detailSaveIcon.classList.add('saved');
-                        saveIconWrapper.setAttribute('data-tooltip', 'Quitar de guardados');
-                        showNotification(`Curso "${course.title}" guardado.`);
+                        // Guardar en la base de datos
+                        success = await window.electronAPI.saveCourseToDb(course.id);
+                        if (success) {
+                            savedCourses.add(course.id);
+                            icon.classList.add('saved');
+                            showNotification(`Curso "${course.title}" guardado.`);
+                        } else {
+                            showNotification(`Error al guardar "${course.title}".`);
+                        }
                     }
-                    localStorage.setItem('simulatedSavedCourses', JSON.stringify(Array.from(savedCourses)));
+                    // Actualizar el tooltip y aria-label después de la operación
+                    const newTooltipText = savedCourses.has(course.id) ? 'Quitar de Guardados' : 'Guardar en Favoritos';
+                    const newAriaLabelText = savedCourses.has(course.id) ? `Quitar curso "${course.title}" de favoritos` : `Guardar curso "${course.title}" en favoritos`;
+                    saveIconWrapper.setAttribute('data-tooltip', newTooltipText);
+                    icon.setAttribute('aria-label', newAriaLabelText);
                 });
             } else {
                 console.warn('Icono de guardar o su wrapper no encontrado en la página de detalles para interactividad.');
@@ -144,17 +148,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (courseDescriptionElem) courseDescriptionElem.textContent = course.description || 'No hay descripción disponible.';
 
             if (courseInstructorNameElem) {
-                // Asegurarse de que course.instructor sea un objeto antes de intentar acceder a sus propiedades
                 if (course.instructor && typeof course.instructor === 'object') {
                     courseInstructorNameElem.textContent = course.instructor.name || 'N/A';
-                    if (instructorWebsiteLink && course.instructor.profileUrl) { // Cambiado de 'website' a 'profileUrl'
+                    if (instructorWebsiteLink && course.instructor.profileUrl) {
                         instructorWebsiteLink.href = course.instructor.profileUrl;
                         instructorWebsiteLink.style.display = 'inline-block';
                     } else if (instructorWebsiteLink) {
                         instructorWebsiteLink.style.display = 'none';
                     }
-                } else { // Si course.instructor no es un objeto, o es null/undefined
-                    courseInstructorNameElem.textContent = course.instructor || 'N/A'; // Muestra el valor directamente si es string
+                } else {
+                    courseInstructorNameElem.textContent = course.instructor || 'N/A';
                     if (instructorWebsiteLink) instructorWebsiteLink.style.display = 'none';
                 }
             }
@@ -196,7 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else if (course.lessons && course.lessons.length > 0 && course.lessons[0].videoUrl) {
                 updateVideoPlayer(course.lessons[0].videoUrl, course.lessons[0].title);
             } else {
-                if (odyseeVideoIframe) odyseeVideoIframe.style.display = 'none'; // Ocultar el iframe si no hay video
+                if (odyseeVideoIframe) odyseeVideoIframe.style.display = 'none';
                 if (currentLessonTitleElem) currentLessonTitleElem.textContent = 'No hay contenido de video disponible.';
             }
 
