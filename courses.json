@@ -1,0 +1,81 @@
+[
+    {
+        "id": "curso-intro",
+        "title": "Curso 1: Introducción a la Programación",
+        "description": "Aprende los conceptos básicos de la programación desde cero. Este curso te guiará a través de los fundamentos, desde qué es un algoritmo hasta cómo escribir tu primer programa funcional. Ideal para quienes no tienen experiencia previa.",
+        "thumbnail": "https://i.ytimg.com/vi/Fumn-H6owYE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBKQ_2gEASROVpVrqLMUVqF9QOPtg",
+        "videoUrl": "https://odysee.com/@LaHistoriadelaP-Ucronia:d/04---Wuhan:b?r=HWjZPvfp6wGsd5mCBF4N5oNojaoZzFX6",
+        "duration": "2h 30m",
+        "category": "Programación",
+        "level": "Principiante",
+        "language": "Español",
+        "instructor": {
+            "name": "WorkAtHome",
+            "bio": "Instructor con más de 10 años de experiencia en la enseñanza de programación y desarrollo web. Apasionado por simplificar conceptos complejos.",
+            "profileUrl": "https://odysee.com/@WorkAtHome:1"
+        },
+        "prerequisites": [
+            "No se requieren conocimientos previos.",
+            "Acceso a una computadora e internet."
+        ],
+        "targetAudience": "Personas interesadas en iniciar una carrera en tecnología, estudiantes y curiosos del mundo de la programación.",
+        "tags": ["programacion", "fundamentos", "codigo", "desarrollo", "logica"],
+        "lessons": [
+            { "title": "Lección 1.1: ¿Qué es la Programación?", "videoUrl": "https://odysee.com/%24/embed/%40WorkAtHome%3A1%2FUdemy%3Ae" },
+            { "title": "Lección 1.2: Primer Programa", "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3" }
+        ]
+    },
+    {
+        "id": "curso-intermedio",
+        "title": "Curso 2: JavaScript Intermedio",
+        "description":"Aprende los conceptos básicos de la programación desde cero. Este curso te guiará a través de los fundamentos, desde qué es un algoritmo hasta cómo escribir tu primer programa funcional. Ideal para quienes no tienen experiencia previa.",
+        "thumbnail":"https://www.recursostics.com/wp-content/uploads/2023/08/cursos-de-programacion-para-ninos-sabdemarco-1.jpg",
+        "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3",
+        "duration": "4h 15m",
+        "category": "Programación",
+        "level": "Intermedio",
+        "language": "Español",
+        "instructor": {
+            "name": "Odysee Help",
+            "bio": "Equipo oficial de soporte y tutoriales de Odysee. Creando contenido claro y conciso para la comunidad.",
+            "profileUrl": "https://odysee.com/@OdyseeHelp:1"
+        },
+        "prerequisites": [
+            "Conocimientos básicos de JavaScript (variables, funciones, bucles).",
+            "Familiaridad con HTML y CSS."
+        ],
+        "targetAudience": "Desarrolladores web con experiencia básica en JavaScript que desean profundizar en el lenguaje.",
+        "tags": ["javascript", "web", "desarrollo", "frontend", "asincronia", "dom"],
+        "lessons": [
+            { "title": "Lección 2.1: Asincronía en JS", "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3" },
+            { "title": "Lección 2.2: Manipulación del DOM", "videoUrl": "https://odysee.com/$/embed/@LBRYFoundation:0/LBRY-Reboot:a" }
+        ]
+    },
+    {
+        "id": "curso-avanzado",
+        "title": "Curso 3: Desarrollo Web con React",
+        "description": "Domina el desarrollo de interfaces de usuario modernas con React. Aprende a construir componentes reutilizables, manejar el estado y utilizar Hooks para crear aplicaciones escalables.",
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpD-YqPuXO3i50iukMvwaWkoAXAlD-ZrQGCrP1eZuxI9hs-Uoj5L2_GPSIRyh3bDvcw4U&usqp=CAU",
+        "videoUrl": "https://odysee.com/$/embed/@LBRYFoundation:0/LBRY-Reboot:a",
+        "duration": "6h 0m",
+        "category": "Desarrollo Web",
+        "level": "Avanzado",
+        "language": "Español",
+        "instructor": {
+            "name": "LBRY Foundation",
+            "bio": "La Fundación LBRY es una organización sin fines de lucro que apoya el protocolo LBRY y su misión de libertad de expresión.",
+            "profileUrl": "https://odysee.com/@LBRYFoundation:0"
+        },
+        "prerequisites": [
+            "Conocimientos sólidos de JavaScript (ES6+).",
+            "Familiaridad con HTML y CSS.",
+            "Conceptos básicos de desarrollo web."
+        ],
+        "targetAudience": "Desarrolladores JavaScript que buscan especializarse en la creación de interfaces de usuario con React.",
+        "tags": ["react", "frontend", "javascript", "ui", "componentes", "hooks"],
+        "lessons": [
+            { "title": "Lección 3.1: Componentes y Props", "videoUrl": "https://odysee.com/$/embed/@LBRYFoundation:0/LBRY-Reboot:a" },
+            { "title": "Lección 3.2: Hooks de React", "videoUrl": "https://odysee.com/$/embed/@WorkAtHome%3A1/Udemy%3Ae" }
+        ]
+    }
+]

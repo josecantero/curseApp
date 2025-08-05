@@ -1,0 +1,42 @@
+[
+  {
+    "id": "Udemy",
+    "name": "Udemy",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Udemy_logo.svg"
+  },
+  {
+    "id": "Platzi",
+    "name": "Platzi",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Platzi.svg"
+  },
+  {
+    "id": "Coursera",
+    "name": "Coursera",
+    "imageUrl": "https://www.coursera.org/static/images/coursera-logo-square.svg"
+  },
+  {
+    "id": "edX",
+    "name": "edX",
+    "imageUrl": "https://cdn-icons-png.flaticon.com/512/5968/5968313.png"
+  },
+  {
+    "id": "LinkedIn Learning",
+    "name": "LinkedIn Learning",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dd/LinkedIn_Learning_Logo.png"
+  },
+  {
+    "id": "Skillshare",
+    "name": "Skillshare",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Skillshare_logo.png"
+  },
+  {
+    "id": "Domestika",
+    "name": "Domestika",
+    "imageUrl": "https://seeklogo.com/images/D/domestika-logo-5034D3D720-seeklogo.com.png"
+  },
+  {
+    "id": "Codecademy",
+    "name": "Codecademy",
+    "imageUrl": "https://seeklogo.com/images/C/codecademy-logo-2FB07559AC-seeklogo.com.png"
+  }
+]

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso App - Mi Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <h2>Curso App</h2>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Mi Panel</a></li>
+                    <li><a href="#"><i class="fas fa-book-open"></i> Mis cursos</a></li>
+                    <li><a href="#"><i class="fas fa-star"></i> Cursos favoritos</a></li>
+                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> En curso</a></li>
+                    <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Cómo apoyar</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Bienvenido a Curso App</h1>
+                <div class="user-profile">
+                    <span>Usuario Demo</span>
+                    <img src="https://via.placeholder.com/40" alt="Avatar" class="user-avatar">
+                </div>
+            </header>
+
+            <div class="search-bar">
+                <form class="search-form">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="search-input" placeholder="Buscar cursos...">
+                        <div class="category-filter-inline">
+                            <button id="category-filter-button" class="filter-button" type="button">
+                                Categoría <span class="dropdown-arrow">▼</span>
+                            </button>
+                            <div id="category-dropdown-content" class="dropdown-content">
+                                <button class="category-option" data-category="">Todas</button>
+                                <button class="category-option" data-category="Programación">Programación</button>
+                                <button class="category-option" data-category="Diseño">Diseño</button>
+                                <button class="category-option" data-category="Idiomas">Idiomas</button>
+                                <button class="category-option" data-category="Marketing">Marketing</button>
+                                </div>
+                        </div>
+                    </div>
+                    <button type="submit">Buscar</button>
+                </form>
+
+                <div class="filter-section">
+                    <div class="platform-filter-wrapper">
+                        <button class="scroll-button left" id="platform-scroll-left">‹</button>
+                        <div class="platform-logos-container" id="platform-logos-container"></div>
+                        <button class="scroll-button right" id="platform-scroll-right">›</button>
+                    </div>
+
+                    <div class="language-filter">
+                        <button id="language-filter-button" class="filter-button">
+                            Idioma <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div id="language-dropdown-content" class="dropdown-content">
+                            <button class="language-option" data-lang="es">🇪🇸 Español</button>
+                            <button class="language-option" data-lang="en">🇬🇧 English</button>
+                            <button class="language-option" data-lang="pt">🇧🇷 Português</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <section class="course-grid" id="course-grid-container">
+                </section>
+        </main>
+    </div>
+
+    <div id="notification-message" class="notification"></div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
