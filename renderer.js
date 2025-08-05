@@ -56,7 +56,6 @@ function applyFilters() {
 
     // 3. Filtrar por idioma
     if (currentLanguageFilter) {
-        console.log(currentLanguageFilter);
         filtered = filtered.filter(course => course.language === currentLanguageFilter);
     }
 
@@ -267,6 +266,43 @@ function loadAndRenderCategories(courses) {
 }
 
 /**
+ * Carga los idiomas desde los cursos y los renderiza en el dropdown.
+ * @param {Array<Object>} courses - La lista de cursos para extraer los idiomas.
+ */
+function loadAndRenderLanguages(courses) {
+    const languageDropdownContent = document.getElementById('language-dropdown-content');
+    if (!languageDropdownContent) {
+        console.warn('Elemento de dropdown de idiomas no encontrado.');
+        return;
+    }
+    
+    // Extraer idiomas únicos de los cursos
+    const languagesSet = new Set(courses.map(c => c.language).filter(Boolean));
+    allLanguages = Array.from(languagesSet).sort();
+
+    // Limpiar y renderizar las opciones del dropdown
+    languageDropdownContent.innerHTML = '';
+
+    // Opción para borrar el filtro
+    const clearOption = document.createElement('div');
+    clearOption.classList.add('dropdown-option');
+    clearOption.textContent = 'Todos';
+    clearOption.dataset.lang = ''; // El valor del dataset debe coincidir con el valor real del idioma
+    languageDropdownContent.appendChild(clearOption);
+
+    allLanguages.forEach(language => {
+        const option = document.createElement('div');
+        option.classList.add('dropdown-option');
+        option.textContent = language;
+        option.dataset.lang = language; // El valor del dataset debe coincidir con el valor real del idioma
+        languageDropdownContent.appendChild(option);
+    });
+
+    // Llamada para configurar los listeners de las nuevas opciones
+    setupLanguageDropdownListeners();
+}
+
+/**
  * Configura los listeners de eventos para el dropdown de categorías.
  */
 function setupCategoryDropdownListeners() {
@@ -368,8 +404,9 @@ async function initializeState() {
 
     try {
         allCourses = await window.electronAPI.getAllCourses();
-        loadAndRenderCategories(allCourses); // Se carga y renderiza primero
-        setupLanguageDropdownListeners(); // Se configura el de idiomas
+        loadAndRenderCategories(allCourses);
+        // CAMBIO CLAVE: Llama a loadAndRenderLanguages ANTES de setupLanguageDropdownListeners
+        loadAndRenderLanguages(allCourses); 
         applyFilters();
     } catch (error) {
         console.error('Error al cargar los cursos desde la base de datos:', error);
@@ -546,6 +583,13 @@ function renderCourseDetail(course) {
                 const a = document.createElement('a');
                 a.href = `#lesson-${index}`;
                 a.textContent = `${index + 1}. ${lesson.title}`;
+                a.dataset.videoUrl = lesson.videoUrl;
+                a.dataset.videoTitle = lesson.title;
+
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    updateVideoPlayer(lesson.videoUrl, lesson.title);
+                });
                 li.appendChild(a);
                 lessonsList.appendChild(li);
             });

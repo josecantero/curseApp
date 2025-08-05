@@ -22,6 +22,10 @@ function initializeDatabase() {
       if (!dbExists) {
         console.log('Base de datos no encontrada. Creando tablas e inicializando...');
         createTables();
+      } else {
+        // Si la DB ya existe, aún queremos intentar sincronizar por si courses.json ha cambiado
+        console.log('Base de datos existente. Sincronizando cursos desde courses.json...');
+        syncCoursesFromJson();
       }
     }
   });
@@ -49,7 +53,7 @@ function createTables() {
       console.error('Error al crear la tabla de cursos:', err.message);
     } else {
       console.log('Tabla de cursos creada o ya existe.');
-      syncCoursesFromJson(); // Inicia la sincronización inicial
+      syncCoursesFromJson(); // Inicia la sincronización inicial o de actualización
     }
   });
 }
@@ -72,17 +76,21 @@ function syncCoursesFromJson() {
         db.run('BEGIN TRANSACTION;');
         courses.forEach(course => {
           const now = Date.now();
+          // Asegúrate de que instructor sea un string o null/undefined antes de guardarlo
+          const instructorName = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.name : course.instructor;
+          const instructorUrl = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.profileUrl : null;
+
           insertStmt.run(
             course.id, 
             course.title, 
             course.description, 
-            course.imageUrl, 
+            course.thumbnail, // Usar 'thumbnail' como 'imageUrl'
             course.platform, 
             course.language, 
             course.category, 
             course.duration, 
-            course.instructor, 
-            course.instructorUrl, 
+            instructorName, 
+            instructorUrl, 
             course.videoUrl, 
             now
           );
@@ -91,7 +99,7 @@ function syncCoursesFromJson() {
           if (err) {
             console.error('Error al confirmar la transacción:', err.message);
           } else {
-            console.log(`Sincronización inicial completada. Se insertaron ${courses.length} cursos.`);
+            console.log(`Sincronización inicial completada. Se insertaron/actualizaron ${courses.length} cursos.`);
           }
           insertStmt.finalize();
         });
@@ -107,8 +115,15 @@ ipcMain.handle('get-all-courses', async () => {
   return new Promise((resolve, reject) => {
     db.all('SELECT * FROM courses', (err, rows) => {
       if (err) {
+        console.error('Error al obtener todos los cursos de la DB:', err.message);
         reject(err);
       } else {
+        // --- LOG DE DEPURACIÓN ---
+        console.log('Cursos obtenidos de la DB (para depuración de idiomas):');
+        rows.forEach(row => {
+            console.log(`- Curso ID: ${row.id}, Título: ${row.title}, Idioma: ${row.language}`);
+        });
+        // --- FIN LOG DE DEPURACIÓN ---
         resolve(rows);
       }
     });
@@ -119,6 +134,7 @@ ipcMain.handle('get-course-by-id', async (event, courseId) => {
   return new Promise((resolve, reject) => {
     db.get('SELECT * FROM courses WHERE id = ?', [courseId], (err, row) => {
       if (err) {
+        console.error(`Error al obtener curso por ID ${courseId} de la DB:`, err.message);
         reject(err);
       } else {
         resolve(row);
@@ -152,7 +168,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
-  // mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
 }
 
 
@@ -173,5 +189,6 @@ app.on('window-all-closed', () => {
 
 // --- IPC PARA NAVEGACIÓN (EXISTENTE) ---
 ipcMain.on('open-course-detail', (event, courseId) => {
-    mainWindow.loadFile('course-detail.html', { hash: `courseId=${courseId}` });
+    // CAMBIO CLAVE: Pasar el courseId como un parámetro de consulta en el objeto de opciones
+    mainWindow.loadFile('course-detail.html', { query: { id: courseId } });
 });

@@ -85,11 +85,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Obtener el ID del curso de la URL (priorizando query param, luego hash)
     let courseId = null;
     const urlParams = new URLSearchParams(window.location.search);
-    courseId = urlParams.get('courseId');
+    // CAMBIO AQUI: Buscar 'id' en lugar de 'courseId'
+    courseId = urlParams.get('id'); 
 
     if (!courseId && window.location.hash) {
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        courseId = hashParams.get('courseId');
+        // CAMBIO AQUI: Buscar 'id' en lugar de 'courseId'
+        courseId = hashParams.get('id'); 
     }
 
     if (!courseId) {
@@ -101,14 +103,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Cargar el JSON de cursos
-        const response = await fetch('./courses.json');
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status} - No se pudo cargar courses.json. Verifica la ruta.`);
-        }
-        const courses = await response.json();
-
-        // 3. Encontrar el curso por su ID
-        const course = courses.find(c => c.id === courseId);
+        // Usar la API de Electron para obtener el curso por ID
+        const course = await window.electronAPI.getCourseById(courseId);
 
         if (course) {
             document.title = `Curso: ${course.title}`;
@@ -148,16 +144,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (courseDescriptionElem) courseDescriptionElem.textContent = course.description || 'No hay descripción disponible.';
 
             if (courseInstructorNameElem) {
-                if (course.instructor) {
+                // Asegurarse de que course.instructor sea un objeto antes de intentar acceder a sus propiedades
+                if (course.instructor && typeof course.instructor === 'object') {
                     courseInstructorNameElem.textContent = course.instructor.name || 'N/A';
-                    if (instructorWebsiteLink && course.instructor.website) {
-                        instructorWebsiteLink.href = course.instructor.website;
+                    if (instructorWebsiteLink && course.instructor.profileUrl) { // Cambiado de 'website' a 'profileUrl'
+                        instructorWebsiteLink.href = course.instructor.profileUrl;
                         instructorWebsiteLink.style.display = 'inline-block';
                     } else if (instructorWebsiteLink) {
                         instructorWebsiteLink.style.display = 'none';
                     }
-                } else {
-                    courseInstructorNameElem.textContent = 'N/A';
+                } else { // Si course.instructor no es un objeto, o es null/undefined
+                    courseInstructorNameElem.textContent = course.instructor || 'N/A'; // Muestra el valor directamente si es string
                     if (instructorWebsiteLink) instructorWebsiteLink.style.display = 'none';
                 }
             }
