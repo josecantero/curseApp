@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso App - Mi Panel</title>
+    <title>Curso App - Mis Cursos Guardados</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -14,8 +14,8 @@
             <nav>
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> Mi Panel</a></li>
-                    <li><a href="my-courses.html"><i class="fas fa-book-open"></i> Mis cursos</a></li>
-                    <li><a href="#"><i class="fas fa-star"></i> Cursos favoritos</a></li>
+                    <li><a href="#"><i class="fas fa-book-open"></i> Mis cursos</a></li>
+                    <li class="active"><a href="my-courses.html"><i class="fas fa-star"></i> Cursos favoritos</a></li>
                     <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> En curso</a></li>
                     <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Cómo apoyar</a></li>
                 </ul>
@@ -24,24 +24,23 @@
 
         <main class="main-content">
             <header class="top-bar">
-                <h1>Bienvenido a Curso App</h1>
+                <h1>Mis Cursos Guardados</h1>
                 <div class="user-profile">
                     <span>Usuario Demo</span>
-                    <img src="https://via.placeholder.com/40" alt="Avatar" class="user-avatar">
+                    <img src="https://via.placeholder.co/40" alt="Avatar" class="user-avatar">
                 </div>
             </header>
 
             <div class="search-bar">
                 <form class="search-form">
                     <div class="search-input-wrapper">
-                        <input type="text" id="search-input" placeholder="Buscar cursos...">
+                        <input type="text" id="search-input" placeholder="Buscar cursos guardados...">
                         <div class="category-filter-inline">
                             <button id="category-filter-button" class="filter-button" type="button">
                                 Categoría <span class="dropdown-arrow">▼</span>
                             </button>
                             <div id="category-dropdown-content" class="dropdown-content">
-                                <!-- Las opciones de categoría se cargarán dinámicamente desde renderer.js -->
-                                <!-- Se han eliminado las opciones hardcodeadas para que renderer.js las genere -->
+                                <!-- Las opciones de categoría se cargarán dinámicamente desde my-courses-renderer.js -->
                             </div>
                         </div>
                     </div>
@@ -60,19 +59,20 @@
                             Idioma <span class="dropdown-arrow">▼</span>
                         </button>
                         <div id="language-dropdown-content" class="dropdown-content">
-                            <!-- Las opciones de idioma se cargarán dinámicamente desde renderer.js -->
-                            <!-- Se han eliminado las opciones hardcodeadas para que renderer.js las genere -->
+                            <!-- Las opciones de idioma se cargarán dinámicamente desde my-courses-renderer.js -->
                         </div>
                     </div>
                 </div>
             </div>
-            <section class="course-grid" id="course-grid-container">
+
+            <section class="course-grid" id="saved-course-grid-container">
+                <!-- Los cursos guardados se cargarán aquí -->
             </section>
         </main>
     </div>
 
     <div id="notification-message" class="notification"></div>
 
-    <script src="renderer.js"></script>
+    <script src="my-courses-renderer.js"></script>
 </body>
 </html>
