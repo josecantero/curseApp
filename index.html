@@ -9,25 +9,14 @@
 </head>
 <body>
     <div class="app-container">
-        <aside class="sidebar">
-            <h2>Curso App</h2>
-            <nav>
-                <ul>
-                    <li><a href="index.html"><i class="fas fa-home"></i> Mi Panel</a></li>
-                    <li><a href="my-courses.html"><i class="fas fa-book-open"></i> Mis cursos</a></li>
-                    <li><a href="#"><i class="fas fa-star"></i> Cursos favoritos</a></li>
-                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> En curso</a></li>
-                    <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Cómo apoyar</a></li>
-                </ul>
-            </nav>
-        </aside>
-
+        <!-- El menú lateral se inyectará aquí por load-sidebar.js -->
+        
         <main class="main-content">
             <header class="top-bar">
                 <h1>Bienvenido a Curso App</h1>
                 <div class="user-profile">
                     <span>Usuario Demo</span>
-                    <img src="https://via.placeholder.com/40" alt="Avatar" class="user-avatar">
+                    <img src="https://via.placeholder.co/40" alt="Avatar" class="user-avatar">
                 </div>
             </header>
 
@@ -41,7 +30,6 @@
                             </button>
                             <div id="category-dropdown-content" class="dropdown-content">
                                 <!-- Las opciones de categoría se cargarán dinámicamente desde renderer.js -->
-                                <!-- Se han eliminado las opciones hardcodeadas para que renderer.js las genere -->
                             </div>
                         </div>
                     </div>
@@ -61,7 +49,6 @@
                         </button>
                         <div id="language-dropdown-content" class="dropdown-content">
                             <!-- Las opciones de idioma se cargarán dinámicamente desde renderer.js -->
-                            <!-- Se han eliminado las opciones hardcodeadas para que renderer.js las genere -->
                         </div>
                     </div>
                 </div>
@@ -73,6 +60,8 @@
 
     <div id="notification-message" class="notification"></div>
 
+    <!-- Cargar el script que inyecta el sidebar PRIMERO -->
+    <script src="load-sidebar.js"></script>
     <script src="renderer.js"></script>
 </body>
 </html>

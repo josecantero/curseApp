@@ -9,18 +9,7 @@
 </head>
 <body>
     <div class="app-container">
-        <aside class="sidebar">
-            <h2>Curso App</h2>
-            <nav>
-                <ul>
-                    <li><a href="index.html"><i class="fas fa-home"></i> Mi Panel</a></li>
-                    <li><a href="#"><i class="fas fa-book-open"></i> Mis cursos</a></li>
-                    <li class="active"><a href="my-courses.html"><i class="fas fa-star"></i> Cursos favoritos</a></li>
-                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> En curso</a></li>
-                    <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Cómo apoyar</a></li>
-                </ul>
-            </nav>
-        </aside>
+        <!-- El menú lateral se inyectará aquí por load-sidebar.js -->
 
         <main class="main-content">
             <header class="top-bar">
@@ -73,6 +62,8 @@
 
     <div id="notification-message" class="notification"></div>
 
+    <!-- Cargar el script que inyecta el sidebar PRIMERO -->
+    <script src="load-sidebar.js"></script>
     <script src="my-courses-renderer.js"></script>
 </body>
 </html>
