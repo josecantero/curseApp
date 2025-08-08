@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 saveIconWrapper.addEventListener('click', async (event) => { // Marcado como async
                     event.stopPropagation();
-                    const icon = detailSaveIconWrapper.querySelector('.save-course-icon');
+                    const icon = saveIconWrapper.querySelector('.save-course-icon');
                     let success = false;
                     
                     if (savedCourses.has(course.id)) {
