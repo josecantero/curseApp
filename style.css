@@ -86,6 +86,7 @@ body {
     display: flex;
     flex-direction: column;
     background-color: var(--background-light);
+    overflow-y: auto;
 }
 
 /* Top Bar */
@@ -1050,4 +1051,21 @@ body {
         font-size: 1.3em;
         margin-bottom: 10px;
     }
+}
+
+.main-content {
+  overflow-y: auto !important;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.search-bar {
+  flex-shrink: 0;
+}
+
+.course-grid,
+#saved-course-grid-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
