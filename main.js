@@ -4,6 +4,10 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
+const isDev = true//process.env.NODE_ENV === 'development';
+const REMOTE_PLATFORMS_URL =
+  'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/platforms.json';
+const axios = require('axios');
 
 let mainWindow; // Guarda una referencia a la ventana principal
 
@@ -58,6 +62,14 @@ function createTables() {
     );
   `;
 
+  const createPlatformsTable = `
+  CREATE TABLE IF NOT EXISTS platforms (
+    id        TEXT PRIMARY KEY,
+    name      TEXT NOT NULL,
+    imageUrl  TEXT NOT NULL,
+    updatedAt INTEGER NOT NULL
+  );`;
+
   db.serialize(() => {
     db.run(createCoursesTable, (err) => {
       if (err) {
@@ -73,6 +85,14 @@ function createTables() {
         console.log('Tabla de user_saved_courses creada o ya existe.');
       }
       syncCoursesFromJson(); // Inicia la sincronización inicial/actualización después de crear todas las tablas
+    });
+    db.run(createPlatformsTable, (err) =>{
+      if (err) {
+        console.error('Error al crear la tabla de plataformas:', err.message);
+      } else {
+        console.log('Tabla de plataformas creada o ya existe.');
+      }
+      syncPlatforms(); // Sincroniza plataformas después de crear la tabla
     });
   });
 }
@@ -129,6 +149,79 @@ function syncCoursesFromJson() {
   });
 }
 
+async function getSourceTimestamp() {
+  const src = isDev
+    ? path.join(__dirname, 'json_timestamp.json')
+    : 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/json_timestamp.json';
+
+  try {
+    const raw = isDev
+      ? await fs.promises.readFile(src, 'utf8')
+      : (await axios.get(src)).data;
+    const json = JSON.parse(raw);
+    return json.platformsSourceUpdatedAt || 0;
+  } catch (err) {
+    console.error('No se pudo obtener timestamp', err);
+    return 0; // si falla, retorna 0 para forzar actualización
+  }
+}
+
+async function getLastSyncTimestamp() {
+  return new Promise((resolve) =>
+    db.get(
+      'SELECT MAX(updatedAt) as last FROM platforms',
+      (err, row) => resolve(err || !row ? 0 : row.last)
+    )
+  );
+}
+
+async function syncPlatforms() {
+  const sourceTime = await getSourceTimestamp();
+  const dbTime = await getLastSyncTimestamp();
+
+  if (sourceTime <= dbTime) {
+    console.log('Plataformas ya están actualizadas.');
+    return;
+  }
+
+  // Obtener lista de plataformas
+  const src = isDev
+    ? path.join(__dirname, 'platforms.json')
+    : 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/platforms.json';
+
+  let raw;
+  try {
+    raw = isDev
+      ? await fs.promises.readFile(src, 'utf8')
+      : (await axios.get(src)).data;
+  } catch (err) {
+    console.error('No se pudo obtener platforms.json', err);
+    return;
+  }
+
+  let lista;
+  try {
+    lista = JSON.parse(raw);
+  } catch (err) {
+    console.error('JSON inválido en platforms', err);
+    return;
+  }
+
+  // Actualizar tabla
+  await new Promise(resolve => db.run('DELETE FROM platforms', resolve));
+
+  const stmt = db.prepare(
+    'INSERT INTO platforms (id, name, imageUrl, updatedAt) VALUES (?, ?, ?, ?)'
+  );
+  db.serialize(() => {
+    db.run('BEGIN');
+    lista.forEach(p => stmt.run(p.id, p.name, p.imageUrl, sourceTime));
+    db.run('COMMIT');
+    stmt.finalize();
+    console.log(`✔ Tabla platforms actualizada (${lista.length} filas)`);
+  });
+}
+
 // --- MANEJADORES IPC PARA EL RENDERER ---
 
 // Obtener todos los cursos
@@ -160,16 +253,13 @@ ipcMain.handle('get-course-by-id', async (event, courseId) => {
 });
 
 // Obtener todas las plataformas
-ipcMain.handle('get-all-platforms', async () => {
-    const jsonPath = path.join(__dirname, 'platforms.json');
-    try {
-        const data = await fs.promises.readFile(jsonPath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        console.error('Error al leer platforms.json:', error);
-        return [];
-    }
-});
+ipcMain.handle('get-all-platforms', () =>
+  new Promise((resolve, reject) =>
+    db.all('SELECT * FROM platforms ORDER BY name', (err, rows) =>
+      err ? reject(err) : resolve(rows)
+    )
+  )
+);
 
 // NUEVOS MANEJADORES IPC para cursos guardados
 // Usamos un userId fijo por ahora, ya que no hay sistema de autenticación
@@ -245,9 +335,12 @@ function createWindow() {
 
 
 // --- CICLO DE VIDA DE LA APP ---
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow();
   initializeDatabase(); // Inicializa la DB después de crear la ventana
+
+  await new Promise(resolve => db.on('open', resolve));
+  await syncPlatforms();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

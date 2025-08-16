@@ -408,7 +408,11 @@ async function initializeState() {
         console.log('Cursos guardados cargados de la DB:', Array.from(savedCourses));
 
         allPlatforms = await window.electronAPI.getAllPlatforms();
-        loadAndRenderPlatforms();
+        //esperar a que allPlatforms se haya cargado antes de renderizar
+        setTimeout(() => {
+            loadAndRenderPlatforms();
+        }, 10); // Esperar 10 milisegundos para asegurar que las plataformas se hayan cargado.
+        
     } catch (error) {
         console.error('Error al cargar plataformas o cursos guardados:', error);
         const platformLogosContainer = document.getElementById('platform-logos-container');
