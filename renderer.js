@@ -14,6 +14,11 @@ let currentPlatformFilter = '';
 let currentLanguageFilter = '';
 let currentCategoryFilter = ''; // Variable para la categoría seleccionada
 
+import { applyFilters } from './courses-area/filters.js';
+
+window.electronAPI.send("mensaje", { foo: "bar" });
+
+
 /**
  * Muestra una notificación temporal en la interfaz de usuario.
  * @param {string} message - El mensaje a mostrar en la notificación.
@@ -32,154 +37,7 @@ function showNotification(message) {
     }
 }
 
-/**
- * Aplica todos los filtros actuales y renderiza los cursos en la UI.
- */
-function applyFilters() {
-    let filtered = allCourses;
-
-    // 1. Filtrar por término de búsqueda
-    if (currentSearchTerm) {
-        const lowerCaseSearchTerm = currentSearchTerm.toLowerCase();
-        filtered = filtered.filter(course =>
-            course.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-            (course.description && course.description.toLowerCase().includes(lowerCaseSearchTerm)) ||
-            (course.tags && course.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm))) ||
-            (typeof course.instructor === 'string' && course.instructor.toLowerCase().includes(lowerCaseSearchTerm))
-        );
-    }
-
-    // 2. Filtrar por plataforma
-    if (currentPlatformFilter) {
-        filtered = filtered.filter(course => course.platform === currentPlatformFilter);
-    }
-
-    // 3. Filtrar por idioma
-    if (currentLanguageFilter) {
-        filtered = filtered.filter(course => course.language === currentLanguageFilter);
-    }
-
-    // 4. Filtrar por categoría
-    if (currentCategoryFilter) {
-        filtered = filtered.filter(course => course.category === currentCategoryFilter);
-    }
-
-    renderCourses(filtered); // Renderizar los cursos filtrados
-}
-
-/**
- * Crea y devuelve un elemento de tarjeta de curso para un curso dado.
- * @param {Object} course - El objeto del curso.
- * @returns {HTMLElement} La tarjeta de curso como un elemento DOM.
- */
-function createCourseCard(course) {
-    // Verificar si el curso está guardado usando el Set actualizado desde la DB
-    const isSaved = savedCourses.has(course.id);
-    const saveIconClass = isSaved ? 'saved' : '';
-    const tooltipText = isSaved ? 'Quitar de Guardados' : 'Guardar en Favoritos';
-    const ariaLabelText = isSaved ? `Quitar curso "${course.title}" de favoritos` : `Guardar curso "${course.title}" en favoritos`;
-
-    const card = document.createElement('div');
-    card.classList.add('course-card');
-    card.dataset.courseId = course.id;
-
-    // Se añade una imagen de marcador de posición si la URL es nula o indefinida,
-    // para evitar el error de archivo no encontrado.
-    const imageUrl = course.imageUrl || 'https://placehold.co/400x200/e0e0e0/ffffff?text=Imagen+no+disponible';
-
-    card.innerHTML = `
-        <img src="${imageUrl}" alt="${course.title}">
-        <div class="course-card-text">
-            <h3>${course.title}</h3>
-            <p>${course.description}</p>
-            <p class="course-category">Categoría: ${course.category || 'N/A'}</p>
-            <p class="course-duration">Plataforma: ${course.platform || 'N/A'}</p>
-        </div>
-        <div class="save-icon-wrapper tooltip-container" data-course-id="${course.id}" data-tooltip="${tooltipText}">
-            <svg class="save-course-icon ${saveIconClass}" viewBox="0 0 24 24" role="img" aria-label="${ariaLabelText}">
-                <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-            </svg>
-        </div>
-    `;
-
-    // Event listener para el icono de guardar
-    const saveIconWrapper = card.querySelector(`.save-icon-wrapper[data-course-id="${course.id}"]`);
-    if (saveIconWrapper) {
-        saveIconWrapper.addEventListener('click', async (event) => { // Marcado como async
-            event.stopPropagation(); // Evita que el clic en el icono active el clic de la tarjeta
-
-            const icon = saveIconWrapper.querySelector('.save-course-icon');
-            let success = false;
-
-            if (savedCourses.has(course.id)) {
-                // Eliminar de la base de datos
-                success = await window.electronAPI.removeCourseFromDb(course.id);
-                if (success) {
-                    savedCourses.delete(course.id);
-                    icon.classList.remove('saved');
-                    showNotification(`Curso "${course.title}" desguardado.`);
-                } else {
-                    showNotification(`Error al desguardar "${course.title}".`);
-                }
-            } else {
-                // Guardar en la base de datos
-                success = await window.electronAPI.saveCourseToDb(course.id);
-                if (success) {
-                    savedCourses.add(course.id);
-                    icon.classList.add('saved');
-                    showNotification(`Curso "${course.title}" guardado.`);
-                } else {
-                    showNotification(`Error al guardar "${course.title}".`);
-                }
-            }
-
-            // Actualizar el tooltip y aria-label después de la operación
-            const newTooltipText = savedCourses.has(course.id) ? 'Quitar de Guardados' : 'Guardar en Favoritos';
-            const newAriaLabelText = savedCourses.has(course.id) ? `Quitar curso "${course.title}" de favoritos` : `Guardar curso "${course.title}" en favoritos`;
-            saveIconWrapper.setAttribute('data-tooltip', newTooltipText);
-            icon.setAttribute('aria-label', newAriaLabelText);
-            
-            // Opcional: Re-renderizar los cursos para asegurar que el estado visual sea consistente
-            // applyFilters(); 
-            // Esto puede ser excesivo si solo se necesita actualizar el icono.
-            // El icono ya se actualiza directamente, así que no es estrictamente necesario aquí.
-        });
-    }
-
-    // Event listener para ir a la página de detalle del curso
-    card.addEventListener('click', () => {
-        console.log(`Clic en la tarjeta del curso: ${course.title}`);
-        // Usa la API de Electron para notificar al proceso principal
-        if (window.electronAPI && typeof window.electronAPI.openCourseDetail === 'function') {
-            window.electronAPI.openCourseDetail(course.id);
-        } else {
-            console.warn('window.electronAPI.openCourseDetail no está definido. Redirigiendo con fallback.');
-            window.location.href = `course-detail.html?id=${course.id}`;
-        }
-    });
-
-    return card;
-}
-
-/**
- * Renderiza una lista de cursos en el contenedor de la cuadrícula.
- * @param {Array<Object>} coursesToRender - La lista de cursos a renderizar.
- */
-function renderCourses(coursesToRender) {
-    const courseGrid = document.getElementById('course-grid-container');
-    if (!courseGrid) {
-        console.error('El elemento #course-grid-container no fue encontrado.');
-        return;
-    }
-    courseGrid.innerHTML = ''; // Limpiar la cuadrícula
-    if (coursesToRender.length === 0) {
-        courseGrid.innerHTML = '<p style="text-align: center; width: 100%; color: var(--light-text-color); margin-top: 50px;">No se encontraron cursos que coincidan con tu búsqueda.</p>';
-        return;
-    }
-    coursesToRender.forEach(course => {
-        courseGrid.appendChild(createCourseCard(course));
-    });
-}
+applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter)
 
 /**
  * Carga las plataformas desde la API de Electron y las renderiza en la UI.
@@ -243,7 +101,7 @@ function handlePlatformClick(event) {
             currentPlatformFilter = platform;
             target.classList.add('active');
         }
-        applyFilters();
+        applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
     }
 }
 
@@ -332,7 +190,7 @@ function setupCategoryDropdownListeners() {
     setupDropdown(categoryFilterButton, categoryDropdownContent, (option) => {
         currentCategoryFilter = option.dataset.category;
         categoryFilterButton.innerHTML = `${option.textContent} <span class="dropdown-arrow">▼</span>`;
-        applyFilters();
+        applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
     });
 }
 
@@ -347,7 +205,7 @@ function setupLanguageDropdownListeners() {
     setupDropdown(languageFilterButton, languageDropdownContent, (option) => {
         currentLanguageFilter = option.dataset.lang;
         languageFilterButton.innerHTML = `${option.textContent} <span class="dropdown-arrow">▼</span>`;
-        applyFilters();
+        applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
     });
 }
 
@@ -425,7 +283,7 @@ async function initializeState() {
         allCourses = await window.electronAPI.getAllCourses();
         loadAndRenderCategories(allCourses);
         loadAndRenderLanguages(allCourses); 
-        applyFilters();
+        applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
     } catch (error) {
         console.error('Error al cargar los cursos desde la base de datos:', error);
         const courseGrid = document.getElementById('course-grid-container');
@@ -446,11 +304,11 @@ function setupMainListeners() {
         searchForm.addEventListener('submit', (event) => {
             event.preventDefault();
             currentSearchTerm = searchInput.value.trim();
-            applyFilters();
+            applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
         });
         searchInput.addEventListener('input', () => {
             currentSearchTerm = searchInput.value.trim();
-            applyFilters();
+            applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
         });
     }
 
@@ -675,3 +533,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupMainListeners();
     }
 });
+
+
+window.electronAPI.sendEvent("app_started", { version: "1.0.0" });

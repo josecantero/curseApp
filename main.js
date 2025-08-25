@@ -9,6 +9,8 @@ const REMOTE_PLATFORMS_URL =
   'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/platforms.json';
 const axios = require('axios');
 
+const { sendAnalyticsEvent } = require('./analytics.js');
+
 let mainWindow; // Guarda una referencia a la ventana principal
 
 // --- LÓGICA DE LA BASE DE DATOS ---
@@ -355,4 +357,8 @@ app.on('window-all-closed', () => {
 // --- IPC PARA NAVEGACIÓN ---
 ipcMain.on('open-course-detail', (event, courseId) => {
     mainWindow.loadFile('course-detail.html', { query: { id: courseId } });
+});
+
+ipcMain.on("analytics-event", (event, { eventName, params }) => {
+  sendAnalyticsEvent(eventName, params);
 });

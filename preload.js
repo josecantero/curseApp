@@ -14,5 +14,18 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // NUEVOS Canales para la gestión de cursos guardados en la base de datos
   saveCourseToDb: (courseId) => ipcRenderer.invoke('save-course-to-db', courseId),
   removeCourseFromDb: (courseId) => ipcRenderer.invoke('remove-course-from-db', courseId),
-  getSavedCourses: () => ipcRenderer.invoke('get-saved-courses')
+  getSavedCourses: () => ipcRenderer.invoke('get-saved-courses'),
+
+  send: (channel, data) => {
+    ipcRenderer.send(channel, data);
+  },
+  on: (channel, func) => {
+    ipcRenderer.on(channel, (event, ...args) => func(...args));
+  },
+   sendEvent: (eventName, params) =>
+    ipcRenderer.send("analytics-event", { eventName, params }),
+
 });
+
+
+
