@@ -132,7 +132,6 @@ function syncCoursesFromJson() {
       `);
       db.serialize(() => {
         db.run('BEGIN TRANSACTION;');
-        db.run('DELETE FROM lessons;');
         courses.forEach(course => {
           const now = Date.now();
           // Asegúrate de que instructor sea un string o null/undefined antes de guardarlo
@@ -158,10 +157,10 @@ function syncCoursesFromJson() {
           // 4) Insertar lecciones actuales
           //console.log("curso: "+course.title+" lección: "+course.lessons)
 
+          db.run('DELETE FROM lessons WHERE courseId = ?', [course.id]);
+
           if (Array.isArray(course.lessons)) {
-            //console.log(course.lessons)
             course.lessons.forEach(lesson => {
-              console.log("lección: "+lesson.title)
               db.run(
                 'INSERT INTO lessons (courseId, title, videoUrl) VALUES (?, ?, ?)',
                 [course.id, lesson.title, lesson.videoUrl]
