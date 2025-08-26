@@ -48,6 +48,7 @@ function createTables() {
       language TEXT,
       category TEXT,
       duration TEXT,
+      level TEXT,
       instructor TEXT,
       instructorUrl TEXT,
       videoUrl TEXT,
@@ -127,8 +128,8 @@ function syncCoursesFromJson() {
     try {
       const courses = JSON.parse(data);
       const insertCourseStmt = db.prepare(`
-        INSERT OR REPLACE INTO courses (id, title, description, imageUrl, platform, language, category, duration, instructor, instructorUrl, videoUrl, lastUpdated)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT OR REPLACE INTO courses (id, title, description, imageUrl, platform, language, category, duration, level, instructor, instructorUrl, videoUrl, lastUpdated)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
       db.serialize(() => {
         db.run('BEGIN TRANSACTION;');
@@ -145,8 +146,9 @@ function syncCoursesFromJson() {
             course.thumbnail, // Usar 'thumbnail' como 'imageUrl'
             course.platform, 
             course.language, 
-            course.category, 
-            course.duration, 
+            course.category,
+            course.duration,
+            course.level, 
             instructorName, 
             instructorUrl, 
             course.videoUrl, 
