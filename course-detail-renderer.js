@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const course = await window.electronAPI.getCourseById(courseId);
 
         if (course) {
+            const lessons = await window.electronAPI.getLessonsByCourse(courseId);
             document.title = `Curso: ${course.title}`;
             if (courseTitleTextElem) courseTitleTextElem.textContent = course.title;
 
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (courseCategoryElem) courseCategoryElem.textContent = course.category || 'N/A';
             if (courseDurationElem) courseDurationElem.textContent = course.duration || 'N/A';
             if (courseLevelElem) courseLevelElem.textContent = course.level || 'N/A';
-            if (courseLessonsCountElem) courseLessonsCountElem.textContent = course.lessons ? course.lessons.length : '0';
+            if (lessons) courseLessonsCountElem.textContent = lessons.length ? lessons.length : '0';
             if (courseDescriptionElem) courseDescriptionElem.textContent = course.description || 'No hay descripción disponible.';
 
             if (courseInstructorNameElem) {
@@ -203,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (currentLessonTitleElem) currentLessonTitleElem.textContent = 'No hay contenido de video disponible.';
             }
 
-            const lessons = await window.electronAPI.getLessonsByCourse(courseId);
+            
 
             // Rellenar Lecciones del curso
             if (lessonsList) {
