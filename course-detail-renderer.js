@@ -203,11 +203,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (currentLessonTitleElem) currentLessonTitleElem.textContent = 'No hay contenido de video disponible.';
             }
 
+            const lessons = await window.electronAPI.getLessonsByCourse(courseId);
+
             // Rellenar Lecciones del curso
             if (lessonsList) {
                 lessonsList.innerHTML = '';
-                if (course.lessons && Array.isArray(course.lessons) && course.lessons.length > 0) {
-                    course.lessons.forEach((lesson, index) => {
+                if (Array.isArray(lessons) && lessons.length > 0) {
+                    lessons.forEach((lesson, index) => {
                         const li = document.createElement('li');
                         const a = document.createElement('a');
                         a.href = '#';

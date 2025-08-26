@@ -54,6 +54,16 @@ function createTables() {
       lastUpdated INTEGER
     );
   `;
+
+  const createLessonsTable = `
+  CREATE TABLE IF NOT EXISTS lessons (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    courseId  TEXT NOT NULL,
+    title     TEXT NOT NULL,
+    videoUrl  TEXT NOT NULL,
+    FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
+  );`;
+  
   // NUEVA TABLA para cursos guardados por el usuario
   const createUserSavedCoursesTable = `
     CREATE TABLE IF NOT EXISTS user_saved_courses (
@@ -96,6 +106,13 @@ function createTables() {
       }
       syncPlatforms(); // Sincroniza plataformas después de crear la tabla
     });
+    db.run(createLessonsTable), (err) => {
+      if (err) {
+        console.error('Error al crear la tabla de lecciones:', err.message);
+      } else {
+        console.log('Tabla de lecciones creada o ya existe.');
+      }
+    }
   });
 }
 
@@ -109,19 +126,20 @@ function syncCoursesFromJson() {
     }
     try {
       const courses = JSON.parse(data);
-      const insertStmt = db.prepare(`
+      const insertCourseStmt = db.prepare(`
         INSERT OR REPLACE INTO courses (id, title, description, imageUrl, platform, language, category, duration, instructor, instructorUrl, videoUrl, lastUpdated)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
       db.serialize(() => {
         db.run('BEGIN TRANSACTION;');
+        db.run('DELETE FROM lessons;');
         courses.forEach(course => {
           const now = Date.now();
           // Asegúrate de que instructor sea un string o null/undefined antes de guardarlo
           const instructorName = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.name : course.instructor;
           const instructorUrl = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.profileUrl : null;
 
-          insertStmt.run(
+          insertCourseStmt.run(
             course.id, 
             course.title, 
             course.description, 
@@ -135,6 +153,21 @@ function syncCoursesFromJson() {
             course.videoUrl, 
             now
           );
+          
+
+          // 4) Insertar lecciones actuales
+          //console.log("curso: "+course.title+" lección: "+course.lessons)
+
+          if (Array.isArray(course.lessons)) {
+            //console.log(course.lessons)
+            course.lessons.forEach(lesson => {
+              console.log("lección: "+lesson.title)
+              db.run(
+                'INSERT INTO lessons (courseId, title, videoUrl) VALUES (?, ?, ?)',
+                [course.id, lesson.title, lesson.videoUrl]
+              );
+            });
+          }
         });
         db.run('COMMIT;', (err) => {
           if (err) {
@@ -142,7 +175,7 @@ function syncCoursesFromJson() {
           } else {
             console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
           }
-          insertStmt.finalize();
+          insertCourseStmt.finalize();
         });
       });
     } catch (e) {
@@ -153,8 +186,8 @@ function syncCoursesFromJson() {
 
 async function getSourceTimestamp() {
   const src = isDev
-    ? path.join(__dirname, 'json_timestamp.json')
-    : 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/json_timestamp.json';
+    ? path.join(__dirname, 'json-timestamp.json')
+    : 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/json-timestamp.json';
 
   try {
     const raw = isDev
@@ -253,6 +286,16 @@ ipcMain.handle('get-course-by-id', async (event, courseId) => {
     });
   });
 });
+
+ipcMain.handle('get-lessons-by-course', (event, courseId) =>
+  new Promise((res, rej) =>
+    db.all(
+      'SELECT * FROM lessons WHERE courseId = ? ORDER BY id',
+      [courseId],
+      (err, rows) => (err ? rej(err) : res(rows))
+    )
+  )
+);
 
 // Obtener todas las plataformas
 ipcMain.handle('get-all-platforms', () =>

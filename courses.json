@@ -1,5 +1,32 @@
 [
     {
+        "id": "EscuelaDeContenido",
+        "title": "Escuela de Creadores: Curso de Creación de Contenido",
+        "description": "Aprendé a Vender por redes sociales creando contenido con el curso de MatiBox",
+        "thumbnail": "https://thumbs.odycdn.com/b4ae00a4c7325f183f10f359b0586c6c.webp",
+        "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3",
+        "duration": "2h 30m",
+        "category": "Ventas",
+        "level": "Pro",
+        "language": "Español",
+        "platform": "Escuela de Creadores",
+        "instructor": {
+            "name": "MatiBox",
+            "bio": "Creador de Contenido y creación de videos virales",
+            "profileUrl": "https://odysee.com/@WorkAtHome:1"
+        },
+        "prerequisites": [
+            "No se requieren conocimientos previos.",
+            "Acceso a una computadora e internet."
+        ],
+        "targetAudience": "Personas interesadas en vivir de las redes sociales, emprendedores y pequeños y grandes negocios.",
+        "tags": ["Redes Sociales", "Tiktok", "Facebook", "Youtube", "Instagram", "ventas"],
+        "lessons": [
+            { "title": "Lección 1.1: Introducción al curso", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3" },
+            { "title": "Lección 1.2: Primer Programa", "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3" }
+        ]
+    },
+    {
         "id": "curso-intro",
         "title": "Curso 1: Introducción a la Programación",
         "description": "Aprende los conceptos básicos de la programación desde cero. Este curso te guiará a través de los fundamentos, desde qué es un algoritmo hasta cómo escribir tu primer programa funcional. Ideal para quienes no tienen experiencia previa.",

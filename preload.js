@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAllCourses: () => ipcRenderer.invoke('get-all-courses'),
   getCourseById: (courseId) => ipcRenderer.invoke('get-course-by-id', courseId),
   getAllPlatforms: () => ipcRenderer.invoke('get-all-platforms'),
+  getLessonsByCourse: (courseId) => ipcRenderer.invoke('get-lessons-by-course', courseId),
 
   // Canal para la navegación
   openCourseDetail: (courseId) => ipcRenderer.send('open-course-detail', courseId),
