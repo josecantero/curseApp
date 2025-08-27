@@ -1,5 +1,6 @@
-const savedCourses = new Set(); // Usamos un Set para IDs únicos de cursos guardados
 
+import { showNotification } from '../notification.js'; // Importa la función de notificación
+let savedCourses = new Set(); // Usamos un Set para IDs únicos de cursos guardados
 /**
  * Crea y devuelve un elemento de tarjeta de curso para un curso dado.
  * @param {Object} course - El objeto del curso.
@@ -94,5 +95,18 @@ function createCourseCard(course) {
     return card;
 }
 
-export {createCourseCard};
+async function initializeSavedCourses() {
+    try {
+        // Cargar cursos guardados desde la base de datos al inicio
+        // Limpiar el Set actual y rellenarlo con los IDs de la DB
+        const savedCourseIds = await window.electronAPI.getSavedCourses();
+        savedCourses.clear(); // Limpiar el Set actual
+        savedCourseIds.forEach(id => savedCourses.add(id));
+        console.log('Cursos guardados cargados de la DB:', Array.from(savedCourses));
+    } catch (error) {
+        console.error('Error al cargar cursos guardados desde la DB:', error);
+    }
+}
+
+export {initializeSavedCourses, createCourseCard};
 

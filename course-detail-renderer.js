@@ -1,19 +1,6 @@
 // course-detail-renderer.js
 
-// Función para mostrar la notificación (definida fuera del DOMContentLoaded para ser global y reutilizable)
-function showNotification(message) {
-    const notificationElem = document.getElementById('notification-message');
-    if (notificationElem) {
-        notificationElem.textContent = message;
-        notificationElem.classList.add('show');
-
-        setTimeout(() => {
-            notificationElem.classList.remove('show');
-        }, 2000);
-    } else {
-        console.warn('Elemento de notificación (#notification-message) no encontrado en el DOM.');
-    }
-}
+import { showNotification } from './notification.js'; // Importa la función de notificación
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Inicializar el estado de cursos guardados ANTES de usarlos en la UI

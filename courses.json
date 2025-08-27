@@ -22,8 +22,11 @@
         "targetAudience": "Personas interesadas en vivir de las redes sociales, emprendedores y pequeños y grandes negocios.",
         "tags": ["Redes Sociales", "Tiktok", "Facebook", "Youtube", "Instagram", "ventas"],
         "lessons": [
-            { "title": "Lección 1.1: Introducción al curso", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3" },
-            { "title": "Lección 1.2: Primer Programa", "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3" }
+            { "title": "Módulo 1 Mindset - 1: Introducción al curso", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3" },
+            { "title": "Módulo 1 Mindset - 2: Tomarse la creación de contenido como un trabajo", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/2.Tomarse-la-creaci%C3%B3n-de-contenido-como-un-trabajo:5" },
+            { "title": "Módulo 1 Mindset - 3: Motivación", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Motivaci%C3%B3n:b" },
+            { "title": "Módulo 1 Mindset - 4: Crear contenido ¿es suerte o no?", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores4-Es-suerte-o-no-:f" },
+            { "title": "Módulo 1 Mindset - 5: Rewsumen", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/EscueladecreadoresMindset5.Resumen:5" }
         ]
     },
     {

@@ -1,8 +1,5 @@
 // renderer.js
 
-// Mantener un estado de cursos guardados, ahora sincronizado con la DB
-const savedCourses = new Set(); // Usamos un Set para IDs únicos de cursos guardados
-
 // Variables globales para los filtros
 let allCourses = []; // Para almacenar todos los cursos cargados desde la DB
 let allPlatforms = []; // Almacena todas las plataformas cargadas
@@ -15,27 +12,9 @@ let currentLanguageFilter = '';
 let currentCategoryFilter = ''; // Variable para la categoría seleccionada
 
 import { applyFilters } from './courses-area/filters.js';
+import { showNotification } from './notification.js';
 
-window.electronAPI.send("mensaje", { foo: "bar" });
-
-
-/**
- * Muestra una notificación temporal en la interfaz de usuario.
- * @param {string} message - El mensaje a mostrar en la notificación.
- */
-function showNotification(message) {
-    const notificationElem = document.getElementById('notification-message');
-    if (notificationElem) {
-        notificationElem.textContent = message;
-        notificationElem.classList.add('show');
-
-        setTimeout(() => {
-            notificationElem.classList.remove('show');
-        }, 2000); // La notificación desaparece después de 2 segundos
-    } else {
-        console.warn('Elemento de notificación (#notification-message) no encontrado en el DOM.');
-    }
-}
+window.electronAPI.send("mensaje", { foo: "bar" });// Prueba de comunicación con el proceso principal
 
 applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter)
 
@@ -258,13 +237,6 @@ function setupDropdown(button, content, handler) {
  */
 async function initializeState() {
     try {
-        // Cargar cursos guardados desde la base de datos al inicio
-        // Limpiar el Set actual y rellenarlo con los IDs de la DB
-        const savedCourseIds = await window.electronAPI.getSavedCourses();
-        savedCourses.clear(); // Limpiar el Set actual
-        savedCourseIds.forEach(id => savedCourses.add(id));
-        console.log('Cursos guardados cargados de la DB:', Array.from(savedCourses));
-
         allPlatforms = await window.electronAPI.getAllPlatforms();
         //esperar a que allPlatforms se haya cargado antes de renderizar
         setTimeout(() => {

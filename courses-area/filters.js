@@ -1,4 +1,3 @@
-const savedCourses = new Set(); // Usamos un Set para IDs únicos de cursos guardados
 import { renderCourses } from './courses-renderer.js';
 /**
  * Aplica todos los filtros actuales y renderiza los cursos en la UI.
@@ -34,12 +33,5 @@ function applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, curr
 
     renderCourses(filtered); // Renderizar los cursos filtrados
 }
-
-
-
-
-
-
-
 
 export { applyFilters };

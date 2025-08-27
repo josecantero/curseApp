@@ -1,5 +1,6 @@
-import { createCourseCard } from './courses-cards.js';
+import { initializeSavedCourses, createCourseCard } from './courses-cards.js';
 
+initializeSavedCourses(); // Inicializar cursos guardados al cargar la aplicación
 /**
  * Renderiza una lista de cursos en el contenedor de la cuadrícula.
  * @param {Array<Object>} coursesToRender - La lista de cursos a renderizar.
