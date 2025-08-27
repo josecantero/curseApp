@@ -253,8 +253,10 @@ async function initializeState() {
 
     try {
         allCourses = await window.electronAPI.getAllCourses();
-        loadAndRenderCategories(allCourses);
-        loadAndRenderLanguages(allCourses); 
+        setTimeout(() => {
+            loadAndRenderCategories(allCourses);
+            loadAndRenderLanguages(allCourses);
+        }, 10); // Esperar 10 milisegundos para asegurar que las categorías e idiomas se hayan cargado.
         applyFilters(allCourses, currentSearchTerm, currentPlatformFilter, currentLanguageFilter, currentCategoryFilter);
     } catch (error) {
         console.error('Error al cargar los cursos desde la base de datos:', error);
