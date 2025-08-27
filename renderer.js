@@ -287,18 +287,21 @@ function setupMainListeners() {
     }
 
     // Lógica del carrusel de logos
-    const platformLogosContainer = document.getElementById('platform-logos-container');
-    const platformScrollLeftBtn = document.getElementById('platform-scroll-left');
-    const platformScrollRightBtn = document.getElementById('platform-scroll-right');
-    if (platformLogosContainer && platformScrollLeftBtn && platformScrollRightBtn) {
-        const scrollAmount = 100;
-        platformScrollRightBtn.addEventListener('click', () => {
-            platformLogosContainer.scrollLeft += scrollAmount;
-        });
-        platformScrollLeftBtn.addEventListener('click', () => {
-            platformLogosContainer.scrollLeft -= scrollAmount;
-        });
-    }
+    setTimeout(() => {
+        const platformLogosContainer = document.getElementById('platform-logos-container');
+        const platformScrollLeftBtn = document.getElementById('platform-scroll-left');
+        const platformScrollRightBtn = document.getElementById('platform-scroll-right');
+        if (platformLogosContainer && platformScrollLeftBtn && platformScrollRightBtn) {
+            const scrollAmount = 100;
+            platformScrollRightBtn.addEventListener('click', () => {
+                platformLogosContainer.scrollLeft += scrollAmount;
+            });
+            platformScrollLeftBtn.addEventListener('click', () => {
+                platformLogosContainer.scrollLeft -= scrollAmount;
+            });
+        }
+    
+    }, 10);
     
     // Cerrar dropdowns al hacer clic fuera
     document.addEventListener('click', (event) => {
