@@ -22,11 +22,16 @@
         "targetAudience": "Personas interesadas en vivir de las redes sociales, emprendedores y pequeños y grandes negocios.",
         "tags": ["Redes Sociales", "Tiktok", "Facebook", "Youtube", "Instagram", "ventas"],
         "lessons": [
-            { "title": "Módulo 1 Mindset - 1: Introducción al curso", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3" },
-            { "title": "Módulo 1 Mindset - 2: Tomarse la creación de contenido como un trabajo", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/2.Tomarse-la-creaci%C3%B3n-de-contenido-como-un-trabajo:5" },
-            { "title": "Módulo 1 Mindset - 3: Motivación", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Motivaci%C3%B3n:b" },
-            { "title": "Módulo 1 Mindset - 4: Crear contenido ¿es suerte o no?", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores4-Es-suerte-o-no-:f" },
-            { "title": "Módulo 1 Mindset - 5: Rewsumen", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/EscueladecreadoresMindset5.Resumen:5" }
+            { "title": "Módulo 1 Mindset - 1. Introducción al curso", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3" },
+            { "title": "Módulo 1 Mindset - 2. Tomarse la creación de contenido como un trabajo", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/2.Tomarse-la-creaci%C3%B3n-de-contenido-como-un-trabajo:5" },
+            { "title": "Módulo 1 Mindset - 3. Motivación", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Motivaci%C3%B3n:b" },
+            { "title": "Módulo 1 Mindset - 4. Crear contenido ¿es suerte o no?", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores4-Es-suerte-o-no-:f" },
+            { "title": "Módulo 1 Mindset - 5. Rewsumen", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/EscueladecreadoresMindset5.Resumen:5" },
+            { "title": "Módulo 2 Método - 1. ¿Cuál es la mejor red social?", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Cu%C3%A1l-es-la-mejor-red-social-:2" },
+            { "title": "Módulo 2 Método - 2. ¿Qué contenido funciona actualmente?", "videoUrl": "https://odysee.com/escueladecreadores-elmetido-2.Qu%C3%A9-contenido-funciona-actualmente:cb71ab0f44a432003e8baa0683522ab48b1ac17f" },
+            { "title": "Módulo 2 Método - 3. ", "videoUrl": "" },
+            { "title": "Módulo 2 Método - 4. ", "videoUrl": "" },
+            { "title": "Módulo 2 Método - 5. ", "videoUrl": "" }
         ]
     },
     {

@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
 
             // Rellenar Lecciones del curso
-            if (lessonsList) {
+            /*if (lessonsList) {
                 lessonsList.innerHTML = '';
                 if (Array.isArray(lessons) && lessons.length > 0) {
                     lessons.forEach((lesson, index) => {
@@ -226,6 +226,74 @@ document.addEventListener('DOMContentLoaded', async () => {
                         lessonItem.textContent = 'No hay lecciones disponibles para este curso.';
                         lessonsList.appendChild(lessonItem);
                     }
+                }
+            }*/
+
+            const modulesMap = {};
+
+            lessons.forEach((lesson, idx) => {
+                const parts = lesson.title.split(' - ', 2);
+                let moduleTitle = parts[0]?.trim() || 'Módulo sin nombre';               
+                if (!modulesMap[moduleTitle]) modulesMap[moduleTitle] = [];
+                modulesMap[moduleTitle].push({
+                    title: parts[1]?.trim() || lesson.title,
+                    videoUrl: lesson.videoUrl,
+                    index: idx
+                });
+            });
+
+
+            if (lessonsList) {
+                lessonsList.innerHTML = '';
+                Object.entries(modulesMap)
+                    .forEach(([modTitle, modLessons]) => {
+                    const modLi = document.createElement('li');
+                    modLi.classList.add('module-item');
+
+                    const modHeader = document.createElement('div');
+                    modHeader.classList.add('module-header');
+                    modHeader.textContent = modTitle;
+                    modHeader.addEventListener('click', () => {
+                        lessonContainer.classList.toggle('open');
+                        modHeader.classList.toggle('open');
+                    });
+
+                    const lessonContainer = document.createElement('ul');
+                    lessonContainer.classList.add('lesson-container');
+                    lessonContainer.style.display = 'none';
+
+                    modLessons.forEach(l => {
+                        const lecLi = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = '#';
+                        a.textContent = l.title;
+                        a.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            updateVideoPlayer(l.videoUrl, l.title);
+                        });
+                        lecLi.appendChild(a);
+                        lessonContainer.appendChild(lecLi);
+                    });
+
+                    modHeader.addEventListener('click', () => {
+                        const isOpen = lessonContainer.style.display === 'block';
+                        if(isOpen){
+                            modLi.classList.remove('show');
+                        }else{
+                            modLi.classList.add('show');
+                        }
+                        lessonContainer.style.display = isOpen ? 'none' : 'block';
+                        modHeader.classList.toggle('open', !isOpen);
+                    });
+
+                    //modLi.appendChild(modHeader);
+                    modLi.appendChild(lessonContainer);
+                    lessonsList.appendChild(modHeader);
+                    lessonsList.appendChild(modLi);
+                    });
+
+                if (Object.keys(modulesMap).length === 0) {
+                    lessonsList.innerHTML = '<li>No hay lecciones disponibles para este curso.</li>';
                 }
             }
 

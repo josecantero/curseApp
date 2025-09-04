@@ -701,16 +701,16 @@ body {
     border: 1px solid #eee;
     border-radius: 5px;
     margin-bottom: 10px;
-    padding: 12px 15px;
+    /*padding: 12px 15px;*/
     display: flex;
     align-items: center;
     transition: background-color 0.2s ease;
 }
 
-.course-lessons-list #lessons-list li:hover {
+.course-lessons-list li:hover {
     background-color: #e0f2f1;
     cursor: pointer;
-}
+} 
 
 .course-lessons-list #lessons-list li a {
     text-decoration: none;
@@ -1087,4 +1087,56 @@ body {
     );
     pointer-events: all; /* permite cliks dentro del iframe */
     z-index: 1;
+}
+
+.module-item {
+  margin-bottom: 0.75rem;
+}
+
+.show{
+    padding: 12px 15px;
+}
+
+.module-header {
+  background-color: #e0e0e0;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.module-header:hover {
+  background-color: #d0d0d0;
+}
+
+.module-header.open {
+  background-color: #00796b;
+  color: #fff;
+}
+
+.lesson-container {
+  margin-left: 0rem;
+  margin-top: 0.25rem;
+  padding-left: 0rem;
+}
+
+.lesson-container li :hover{
+    background-color: #e0f2f1;
+    cursor: pointer;
+}
+
+.lesson-container li {
+    padding: 0.5rem;
+}
+
+.lesson-container li a {
+  color: #333;
+  text-decoration: none;
+  padding: 0.25rem 0;
+  display: block;
+}
+
+.lesson-container li a:hover {
+  color: #f4f4f4;
 }
