@@ -22,16 +22,136 @@
         "targetAudience": "Personas interesadas en vivir de las redes sociales, emprendedores y pequeños y grandes negocios.",
         "tags": ["Redes Sociales", "Tiktok", "Facebook", "Youtube", "Instagram", "ventas"],
         "lessons": [
-            { "title": "Módulo 1 Mindset - 1. Introducción al curso", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3" },
-            { "title": "Módulo 1 Mindset - 2. Tomarse la creación de contenido como un trabajo", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/2.Tomarse-la-creaci%C3%B3n-de-contenido-como-un-trabajo:5" },
-            { "title": "Módulo 1 Mindset - 3. Motivación", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Motivaci%C3%B3n:b" },
-            { "title": "Módulo 1 Mindset - 4. Crear contenido ¿es suerte o no?", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores4-Es-suerte-o-no-:f" },
-            { "title": "Módulo 1 Mindset - 5. Rewsumen", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/EscueladecreadoresMindset5.Resumen:5" },
-            { "title": "Módulo 2 Método - 1. ¿Cuál es la mejor red social?", "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Cu%C3%A1l-es-la-mejor-red-social-:2" },
-            { "title": "Módulo 2 Método - 2. ¿Qué contenido funciona actualmente?", "videoUrl": "https://odysee.com/escueladecreadores-elmetido-2.Qu%C3%A9-contenido-funciona-actualmente:cb71ab0f44a432003e8baa0683522ab48b1ac17f" },
-            { "title": "Módulo 2 Método - 3. ", "videoUrl": "" },
-            { "title": "Módulo 2 Método - 4. ", "videoUrl": "" },
-            { "title": "Módulo 2 Método - 5. ", "videoUrl": "" }
+            { 
+                "title": "Módulo 1 Mindset - 1. Introducción al curso", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3",
+                "lessonDescription": "" 
+            },
+            { 
+                "title": "Módulo 1 Mindset - 2. Tomarse la creación de contenido como un trabajo", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/2.Tomarse-la-creaci%C3%B3n-de-contenido-como-un-trabajo:5",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 1 Mindset - 3. Motivación", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Motivaci%C3%B3n:b",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 1 Mindset - 4. Crear contenido ¿es suerte o no?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores4-Es-suerte-o-no-:f",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 1 Mindset - 5. Resumen", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/EscueladecreadoresMindset5.Resumen:5",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 2 Método - 1. ¿Cuál es la mejor red social?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-Cu%C3%A1l-es-la-mejor-red-social-:2",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 2 Método - 2. ¿Qué contenido funciona actualmente?", 
+                "videoUrl": "https://odysee.com/escueladecreadores-elmetido-2.Qu%C3%A9-contenido-funciona-actualmente:cb71ab0f44a432003e8baa0683522ab48b1ac17f",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 2 Método - 3. ¿Para qué sirve cada formato?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-elmetodo-3.Para-qu%C3%A9-sirve-cada-formato-de-publicaci%C3%B3n:0",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 2 Método - 4. ¿Cuánto contenido publicar?", 
+                "videoUrl": "https://odysee.com/escueladecontenido-elmetodo-4.Cu%C3%A1nto-contenido-publicar:b979272ec5409ddc22f3a279c306654deeb7e4fa",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 2 Método - 5. ¿Cómo definir tu público o audiencia?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecontenido-elmetodo-5.comodefnirpublicoaudiencia:d",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 2 Método - 6. ¿Cómo trabajar con otras marcas?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-elmetodo-6.C%C3%B3mo-trabajar-con-otras-marcas:c",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 1. Perder miedo a la cámara", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenio-1.Perder-el-miedo-a-c%C3%A1mara:9",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 2. ¿Cómo hacer buenos videos virales?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenido-2.C%C3%B3mo-hacer-buenos-videos-virales:9",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 3. ¿Cómo crear contenido fácilmente?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenido-3.C%C3%B3mo-crear-contenido-f%C3%A1cilmente:f",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 4. ¿Cómo no quedarme sin ideas de contenido?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenido-4.C%C3%B3mo-no-quedarme-sin-ideas-de-contenido:d",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 5. ¿Cómo destacar de la competencia?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenido-5.C%C3%B3mo-destacar-de-la-competencia:9",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 6. Edición de video", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenido-6.Edici%C3%B3n-del-video:3",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 3 Creación de Contenido - 7. Haters", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-creaciondecontenido-7.Haters:3",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 4 Cómo monetizar - 1. ¿Cómo monetizar tus redes sociales?", 
+                "videoUrl": "https://odysee.com/escueladecreadores-comomonetizar-1.Como-monetizar-tus-redes-sociales:fb768ffc5424902351d1b37dcf4cd158c14d2b29",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 5 Herramientas - 1. Herramientas", 
+                "videoUrl": "https://odysee.com/escueladecreadores-herramientas-1.Herramientas:9bfb5db9303616671b7bb44e84bbfdc64ca9a88e",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 5 Herramientas - 2. Clase de edición de video", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-herramientas-2.Clase-edici%C3%B3n-de-video:b",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 6 Instagram para emprendedores - 1. Así debería verse tu instagram para vender", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-instagramparaemprendedores-1.Asi-deberia-verse-tu-instagram-para-vender:c",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 6 Instagram para emprendedores - 2. Instagram para productos físicos", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladecreadores-instagramparaemprendedores-2.instagram-para-productos-fisicos:7",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 6 Instagram para emprendedores - 3. Instagram para servicios", 
+                "videoUrl": "https://odysee.com/escueladecreadores-instagramparaemprendedores-3.instagram-para-servicios:38b7f73e9f583c5602ef5551e72281a49ab973a9",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 6 Instagram para emprendedores - 4. Instagram y contenido para infoproductos", 
+                "videoUrl": "https://odysee.com/escueladecreadores-instagramparaemprendedores-4.Insta-Y-Contenido-Para-Info-Productos:a6494f4ebd9a6ac7f717355c8007382520962107",
+                "lessonDescription": ""  
+            },
+            { 
+                "title": "Módulo 7 Contenido para emprendeores - 1. Contenido para emprendedores", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/escueladeemprendedores-7.1.contenido-para-emprendedores:2",
+                "lessonDescription": ""  
+            }
         ]
     },
     {

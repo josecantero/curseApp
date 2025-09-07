@@ -24,12 +24,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         appContainer.prepend(sidebarElement);
 
         // --- Lógica para el toggle del sidebar ---
-        const sidebarToggle = document.getElementById('sidebar-toggle');
+        /* const sidebarToggle = document.getElementById('sidebar-toggle');
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', () => {
+                console.log('Toggle sidebar - clicked');
                 appContainer.classList.toggle('sidebar-minimized');
             });
-        }
+        } */
+
+        /* =====  COLLAPSE / EXPAND SIDEBAR  ===== */
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+        const icon = sidebarToggleBtn.querySelector('i');   // <i class="fas fa-bars"></i>
+        const sidebar = document.querySelector('aside.sidebar');
+
+        /* read last choice (true = collapsed) */
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) sidebar.classList.add('sidebar-minimized');
+
+        console.log(isCollapsed);
+
+        /* click handler */
+        sidebarToggleBtn.addEventListener('click', () => {
+            const nowCollapsed = sidebar.classList.toggle('sidebar-minimized');
+            localStorage.setItem('sidebarCollapsed', nowCollapsed);
+
+            /* swap Font-Awesome icon */
+            icon.classList.toggle('fa-bars',  !nowCollapsed);
+            icon.classList.toggle('fa-arrow-right', nowCollapsed);
+        });
 
         // --- Lógica para resaltar el elemento del menú activo ---
         const currentPagePath = window.location.pathname.split('/').pop(); // Obtener el nombre del archivo HTML actual
@@ -48,6 +70,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 item.parentElement.classList.add('active');
             }
         });
+
+        
 
     } catch (error) {
         console.error('Error al cargar o inicializar el menú lateral:', error);

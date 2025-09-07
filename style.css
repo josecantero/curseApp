@@ -65,10 +65,21 @@ body {
     font-size: 1.1em;
     display: flex; /* Para alinear el icono con el texto */
     align-items: center;
-    gap: 10px; /* Espacio entre el icono y el texto */
+    /*gap: 10px;*/ /* Espacio entre el icono y el texto */
     padding: 10px 15px;
     border-radius: 5px;
     transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.menu-icon-container {
+    width: 25px; /* Ancho fijo para el contenedor del icono */
+    display: flex;
+    justify-content: center; /* Centra el icono horizontalmente */
+}
+
+.menu-label {
+    padding-left: 26px;
+    flex-grow: 1; /* El texto ocupa todo el espacio disponible */
 }
 
 .sidebar nav ul li a:hover {
@@ -1139,4 +1150,42 @@ body {
 
 .lesson-container li a:hover {
   color: #f4f4f4;
+}
+
+/* ----------  SIDEBAR  ---------- */
+.sidebar {
+  /*width: 250px;*/
+  transition: width .30s ease;
+  overflow: hidden;          /* hide text when collapsed */
+}
+
+/* collapsed state */
+/*.app-container .sidebar-minimized .sidebar {
+  width: 70px;
+  padding: 20px 5px;
+}*/
+.sidebar-minimized {
+  /*display: none;*/
+  width:49px;
+  padding: 0;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition-duration: 0.5s;
+}
+.app-container .sidebar-minimized .sidebar .menu-item a {
+  justify-content: center;   /* centre icons */
+}
+
+/* ----------  TOGGLE BUTTON  ---------- */
+#sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 6px 17px;
+  border-radius: 4px;
+  transition: background .2s;
+}
+#sidebar-toggle:hover {
+  background: rgba(255,255,255,.15);
 }
