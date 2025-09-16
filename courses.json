@@ -25,7 +25,14 @@
             { 
                 "title": "Módulo 1 Mindset - 1. Introducción al curso", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1InicioCreadordeContenido:3",
-                "lessonDescription": "" 
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
             },
             { 
                 "title": "Módulo 1 Mindset - 2. Tomarse la creación de contenido como un trabajo", 
@@ -155,82 +162,233 @@
         ]
     },
     {
-        "id": "curso-intro",
-        "title": "Curso 1: Introducción a la Programación",
-        "description": "Aprende los conceptos básicos de la programación desde cero. Este curso te guiará a través de los fundamentos, desde qué es un algoritmo hasta cómo escribir tu primer programa funcional. Ideal para quienes no tienen experiencia previa.",
-        "thumbnail": "https://i.ytimg.com/vi/Fumn-H6owYE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBKQ_2gEASROVpVrqLMUVqF9QOPtg",
-        "videoUrl": "https://odysee.com/@LaHistoriadelaP-Ucronia:d/04---Wuhan:b?r=HWjZPvfp6wGsd5mCBF4N5oNojaoZzFX6",
-        "duration": "2h 30m",
-        "category": "Programación",
-        "level": "Principiante",
+        "id": "JetpackComposeAris2025",
+        "title": "Jetpack Compose desde cero hasta Profesional - 2025",
+        "description": "Aprende Jetpack Compose con MVVM, inyección de dependencias, testing, ejemplos reales y MUCHO MAS",
+        "thumbnail": "https://thumbs.odycdn.com/2be74eaf78bddff14d74949932db5f97.webp",
+        "videoUrl": "https://odysee.com/jetpackcompose-aristidev-introdccionacompose-001-Actualizacio%CC%81n-2025:588d60bd32b38716431e55c772963efb0bda77e3",
+        "duration": "26,5h",
+        "category": "Desarrollo de Apps",
+        "level": "Profesional",
         "language": "Español",
+        "platform": "Udemy",
         "instructor": {
-            "name": "WorkAtHome",
-            "bio": "Instructor con más de 10 años de experiencia en la enseñanza de programación y desarrollo web. Apasionado por simplificar conceptos complejos.",
-            "profileUrl": "https://odysee.com/@WorkAtHome:1"
+            "name": "Aristides Guimerá Orozco",
+            "bio": "Desarrollador de apps a nivel profesional desde hace mas de 7 años ( Y Associate Android Developer certificado por Google). Enseña Android a través de Cursokotlin y con un libro de Kotlin.",
+            "profileUrl": ""
         },
         "prerequisites": [
-            "No se requieren conocimientos previos.",
-            "Acceso a una computadora e internet."
+            "Conocimientos básicos en Android",
+            "No es necesario saber NADA de JETPACK COMPOSE, lo veremos TODO desde cero."
         ],
-        "targetAudience": "Personas interesadas en iniciar una carrera en tecnología, estudiantes y curiosos del mundo de la programación.",
-        "tags": ["programacion", "fundamentos", "codigo", "desarrollo", "logica"],
+        "targetAudience": "Desarrolladores Android Juniors Desarrolladores Android Mid - Desarrolladores Android (independientemente del nivel) que no utilicen JETPACK COMPOSE - Desarrolladores multiplataforma (iOS, Flutter, React, Web) que quieran empezar en Jetpack compose - Estudiantes interesados en el desarrollo mobile - Desarrolladores Android que quieran aprender las últimas tecnologías y estar al día - Diseñadores Android.",
+        "tags": ["android", "jetpack", "jetpack compose", "compose", "desarrollo", "programacion"],
         "lessons": [
-            { "title": "Lección 1.1: ¿Qué es la Programación?", "videoUrl": "https://odysee.com/%24/embed/%40WorkAtHome%3A1%2FUdemy%3Ae" },
-            { "title": "Lección 1.2: Primer Programa", "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3" }
-        ]
-    },
-    {
-        "id": "curso-intermedio",
-        "title": "Curso 2: JavaScript Intermedio",
-        "description":"Aprende los conceptos básicos de la programación desde cero. Este curso te guiará a través de los fundamentos, desde qué es un algoritmo hasta cómo escribir tu primer programa funcional. Ideal para quienes no tienen experiencia previa.",
-        "thumbnail":"https://www.recursostics.com/wp-content/uploads/2023/08/cursos-de-programacion-para-ninos-sabdemarco-1.jpg",
-        "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3",
-        "duration": "4h 15m",
-        "category": "Programación",
-        "level": "Intermedio",
-        "language": "Español",
-        "instructor": {
-            "name": "Odysee Help",
-            "bio": "Equipo oficial de soporte y tutoriales de Odysee. Creando contenido claro y conciso para la comunidad.",
-            "profileUrl": "https://odysee.com/@OdyseeHelp:1"
-        },
-        "prerequisites": [
-            "Conocimientos básicos de JavaScript (variables, funciones, bucles).",
-            "Familiaridad con HTML y CSS."
-        ],
-        "targetAudience": "Desarrolladores web con experiencia básica en JavaScript que desean profundizar en el lenguaje.",
-        "tags": ["javascript", "web", "desarrollo", "frontend", "asincronia", "dom"],
-        "lessons": [
-            { "title": "Lección 2.1: Asincronía en JS", "videoUrl": "https://odysee.com/$/embed/@OdyseeHelp:1/Welcome-to-Odysee!:3" },
-            { "title": "Lección 2.2: Manipulación del DOM", "videoUrl": "https://odysee.com/$/embed/@LBRYFoundation:0/LBRY-Reboot:a" }
-        ]
-    },
-    {
-        "id": "curso-avanzado",
-        "title": "Curso 3: Desarrollo Web con React",
-        "description": "Domina el desarrollo de interfaces de usuario modernas con React. Aprende a construir componentes reutilizables, manejar el estado y utilizar Hooks para crear aplicaciones escalables.",
-        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpD-YqPuXO3i50iukMvwaWkoAXAlD-ZrQGCrP1eZuxI9hs-Uoj5L2_GPSIRyh3bDvcw4U&usqp=CAU",
-        "videoUrl": "https://odysee.com/$/embed/@LBRYFoundation:0/LBRY-Reboot:a",
-        "duration": "6h 0m",
-        "category": "Desarrollo Web",
-        "level": "Avanzado",
-        "language": "Inglés",
-        "instructor": {
-            "name": "LBRY Foundation",
-            "bio": "La Fundación LBRY es una organización sin fines de lucro que apoya el protocolo LBRY y su misión de libertad de expresión.",
-            "profileUrl": "https://odysee.com/@LBRYFoundation:0"
-        },
-        "prerequisites": [
-            "Conocimientos sólidos de JavaScript (ES6+).",
-            "Familiaridad con HTML y CSS.",
-            "Conceptos básicos de desarrollo web."
-        ],
-        "targetAudience": "Desarrolladores JavaScript que buscan especializarse en la creación de interfaces de usuario con React.",
-        "tags": ["react", "frontend", "javascript", "ui", "componentes", "hooks"],
-        "lessons": [
-            { "title": "Lección 3.1: Componentes y Props", "videoUrl": "https://odysee.com/$/embed/@LBRYFoundation:0/LBRY-Reboot:a" },
-            { "title": "Lección 3.2: Hooks de React", "videoUrl": "https://odysee.com/$/embed/@WorkAtHome%3A1/Udemy%3Ae" }
+            { 
+                "title": "Módulo 1 Introducción a Compose - 1. Actualización 2025", 
+                "videoUrl": "https://odysee.com/jetpackcompose-aristidev-introdccionacompose-001-Actualizacio%CC%81n-2025:588d60bd32b38716431e55c772963efb0bda77e3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 1 Introducción a Compose - 2. ¿Qué es Jetpack Compose?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Qu%C3%A9-es-Jetpack-Compose:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 1 Introducción a Compose - 3. Creando nuestro primer proyecto", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Creando-nuestro-primer-proyecto:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 1 Introducción a Compose - 4. Arquitectura básica", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Arquitectura-b%C3%A1sica:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 1 Introducción a Compose - 5. Previews", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Previews:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 1 Introducción a Compose - 6. Modificadores", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-Modificadores:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 1. Box", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Box:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 2. Column", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Column:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 3. Row", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Row:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 4. Combinando Layouts", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Combinando-layouts:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 5. Filas y Columnas en Cajas (Ejercicio 1)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005--Ejercicio-1--Filas%2C-columnas-y-cajas:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 6. (Solución Ejercicio 1) Filas y Columnas en Cajas", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-%28SOLUCI%C3%93N%29--Ejercicio-1--Filas%2C-columnas-y-cajas:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 7. Spacer", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/007-Spacer:4",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 8. ConstraintLayout básico", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/008-ConstraintLayout-b%C3%A1sico:f",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 9. ConstraintLayout básico (Ejercicio 2)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/009--Ejercicio-2--ConstraintLayout-b%C3%A1sico:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 10. ConstraintLayout básico (Solución Ejercicio 2)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/010-%28SOLUCI%C3%93N%29--Ejercicio-2--ConstraintLayout-b%C3%A1sico:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 2 Layout en Compose - 11. ConstraintLayout avanzado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/011-ConstraintLayout-avanzado:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            }
         ]
     }
+    
 ]

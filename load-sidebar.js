@@ -23,15 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Insertar el sidebar al inicio del app-container
         appContainer.prepend(sidebarElement);
 
-        // --- Lógica para el toggle del sidebar ---
-        /* const sidebarToggle = document.getElementById('sidebar-toggle');
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                console.log('Toggle sidebar - clicked');
-                appContainer.classList.toggle('sidebar-minimized');
-            });
-        } */
-
         /* =====  COLLAPSE / EXPAND SIDEBAR  ===== */
         const sidebarToggleBtn = document.getElementById('sidebar-toggle');
         const icon = sidebarToggleBtn.querySelector('i');   // <i class="fas fa-bars"></i>

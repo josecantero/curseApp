@@ -191,44 +191,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (currentLessonTitleElem) currentLessonTitleElem.textContent = 'No hay contenido de video disponible.';
             }
 
-            
-
-            // Rellenar Lecciones del curso
-            /*if (lessonsList) {
-                lessonsList.innerHTML = '';
-                if (Array.isArray(lessons) && lessons.length > 0) {
-                    lessons.forEach((lesson, index) => {
-                        const li = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.href = '#';
-                        a.textContent = `${index + 1}. ${lesson.title}`;
-                        a.dataset.videoUrl = lesson.videoUrl;
-                        a.dataset.videoTitle = lesson.title;
-
-                        a.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            updateVideoPlayer(lesson.videoUrl, lesson.title);
-                        });
-                        li.appendChild(a);
-                        lessonsList.appendChild(li);
-                    });
-                } else {
-                    if (course.videoUrl) {
-                        const lessonItem = document.createElement('li');
-                        lessonItem.innerHTML = `<a href="#" data-video-url="${course.videoUrl}" data-video-title="${course.title}">${course.title} (Video Principal)</a>`;
-                        lessonItem.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            updateVideoPlayer(course.videoUrl, course.title);
-                        });
-                        lessonsList.appendChild(lessonItem);
-                    } else {
-                        const lessonItem = document.createElement('li');
-                        lessonItem.textContent = 'No hay lecciones disponibles para este curso.';
-                        lessonsList.appendChild(lessonItem);
-                    }
-                }
-            }*/
-
             const modulesMap = {};
 
             lessons.forEach((lesson, idx) => {
