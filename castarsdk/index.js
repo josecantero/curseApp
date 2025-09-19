@@ -2,16 +2,12 @@ const os = require('os');
 const path = require('path');
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
-
-let ffi;
-try { ffi = require('ffi-napi'); } catch (err) { console.log(err) }
-
-
+const { load } = require('ffi-rs');
 
 let CLIENT_ID_L = ''; 
 let CLIENT_ID_W = '';
 
-castarsdk_CI_path = path.join(__dirname, 'castarCI.json');
+const castarsdk_CI_path = path.join(__dirname, 'castarCI.json');
 fs.readFile(castarsdk_CI_path, 'utf8', (err, data) => {
     if (err) {
         console.error('Error al leer castarCI.json:', err);
@@ -59,21 +55,36 @@ function startCastarSDK() {
         if (arch === 'x64') dllPath = path.join(__dirname, 'win-sdk', 'client_64.dll');
         else dllPath = path.join(__dirname, 'win-sdk', 'client_386.dll');
 
-        // Cargar DLL con ffi
-        if (!ffi) throw new Error('ffi-napi no instalado. Ejecuta: npm install ffi-napi ref-napi');
-
-        const sdk = ffi.Library(dllPath, {
-            'SetDevKey': ['void', ['string']],
-            'SetDevSn': ['void', ['string']],
-            'Start': ['void', []],
-            'Stop': ['void', []],
-            'DebugStart': ['void', []]
+        // Cargar DLL con ffi-rs
+        const sdk = load({
+            library: dllPath,
+            funcs: {
+                SetDevKey: { 
+                    returns: "void", 
+                    params: ["string"] 
+                },
+                SetDevSn: { 
+                    returns: "void", 
+                    params: ["string"] 
+                },
+                Start: { 
+                    returns: "void", 
+                    params: [] 
+                },
+                Stop: { 
+                    returns: "void", 
+                    params: [] 
+                },
+                DebugStart: { 
+                    returns: "void", 
+                    params: [] 
+                }
+            }
         });
 
         sdk.SetDevKey(CLIENT_ID_W);
-        sdk.Start(); // iniciar SDK
-        console.log('CastarSDK iniciado en Windows usando DLL');
-
+        sdk.Start();
+        console.log('CastarSDK iniciado en Windows usando ffi-rs');
     } else {
         throw new Error('Plataforma no soportada para CastarSDK');
     }
