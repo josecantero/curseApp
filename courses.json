@@ -185,7 +185,7 @@
         "tags": ["android", "jetpack", "jetpack compose", "compose", "desarrollo", "programacion"],
         "lessons": [
             { 
-                "title": "Módulo 1 Introducción a Compose - 1. Actualización 2025", 
+                "title": "Módulo 1 Introducción a Compose 2025 - 1. Actualización 2025", 
                 "videoUrl": "https://odysee.com/jetpackcompose-aristidev-introdccionacompose-001-Actualizacio%CC%81n-2025:588d60bd32b38716431e55c772963efb0bda77e3",
                 "lessonDescription": "",
                 "resources": [
@@ -197,7 +197,7 @@
                 ]
             },
             { 
-                "title": "Módulo 1 Introducción a Compose - 2. ¿Qué es Jetpack Compose?", 
+                "title": "Módulo 1 Introducción a Compose 2025 - 2. ¿Qué es Jetpack Compose?", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Qu%C3%A9-es-Jetpack-Compose:1",
                 "lessonDescription": "",
                 "resources": [
@@ -209,7 +209,7 @@
                 ]
             },
             { 
-                "title": "Módulo 1 Introducción a Compose - 3. Creando nuestro primer proyecto", 
+                "title": "Módulo 1 Introducción a Compose 2025 - 3. Creando nuestro primer proyecto", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Creando-nuestro-primer-proyecto:3",
                 "lessonDescription": "",
                 "resources": [
@@ -221,7 +221,7 @@
                 ]
             },
             { 
-                "title": "Módulo 1 Introducción a Compose - 4. Arquitectura básica", 
+                "title": "Módulo 1 Introducción a Compose 2025 - 4. Arquitectura básica", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Arquitectura-b%C3%A1sica:a",
                 "lessonDescription": "",
                 "resources": [
@@ -233,7 +233,7 @@
                 ]
             },
             { 
-                "title": "Módulo 1 Introducción a Compose - 5. Previews", 
+                "title": "Módulo 1 Introducción a Compose 2025 - 5. Previews", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Previews:a",
                 "lessonDescription": "",
                 "resources": [
@@ -245,7 +245,7 @@
                 ]
             },
             { 
-                "title": "Módulo 1 Introducción a Compose - 6. Modificadores", 
+                "title": "Módulo 1 Introducción a Compose 2025 - 6. Modificadores", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-Modificadores:e",
                 "lessonDescription": "",
                 "resources": [
@@ -257,7 +257,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 1. Box", 
+                "title": "Módulo 2 Layout en Compose 2025 - 1. Box", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Box:a",
                 "lessonDescription": "",
                 "resources": [
@@ -269,7 +269,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 2. Column", 
+                "title": "Módulo 2 Layout en Compose 2025 - 2. Column", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Column:b",
                 "lessonDescription": "",
                 "resources": [
@@ -281,7 +281,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 3. Row", 
+                "title": "Módulo 2 Layout en Compose 2025 - 3. Row", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Row:5",
                 "lessonDescription": "",
                 "resources": [
@@ -293,7 +293,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 4. Combinando Layouts", 
+                "title": "Módulo 2 Layout en Compose 2025 - 4. Combinando Layouts", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Combinando-layouts:3",
                 "lessonDescription": "",
                 "resources": [
@@ -305,7 +305,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 5. Filas y Columnas en Cajas (Ejercicio 1)", 
+                "title": "Módulo 2 Layout en Compose 2025 - 5. Filas y Columnas en Cajas (Ejercicio 1)", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005--Ejercicio-1--Filas%2C-columnas-y-cajas:8",
                 "lessonDescription": "",
                 "resources": [
@@ -317,7 +317,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 6. (Solución Ejercicio 1) Filas y Columnas en Cajas", 
+                "title": "Módulo 2 Layout en Compose 2025 - 6. (Solución Ejercicio 1) Filas y Columnas en Cajas", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-%28SOLUCI%C3%93N%29--Ejercicio-1--Filas%2C-columnas-y-cajas:a",
                 "lessonDescription": "",
                 "resources": [
@@ -329,7 +329,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 7. Spacer", 
+                "title": "Módulo 2 Layout en Compose 2025 - 7. Spacer", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/007-Spacer:4",
                 "lessonDescription": "",
                 "resources": [
@@ -341,7 +341,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 8. ConstraintLayout básico", 
+                "title": "Módulo 2 Layout en Compose 2025 - 8. ConstraintLayout básico", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/008-ConstraintLayout-b%C3%A1sico:f",
                 "lessonDescription": "",
                 "resources": [
@@ -353,7 +353,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 9. ConstraintLayout básico (Ejercicio 2)", 
+                "title": "Módulo 2 Layout en Compose 2025 - 9. ConstraintLayout básico (Ejercicio 2)", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/009--Ejercicio-2--ConstraintLayout-b%C3%A1sico:5",
                 "lessonDescription": "",
                 "resources": [
@@ -365,7 +365,7 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 10. ConstraintLayout básico (Solución Ejercicio 2)", 
+                "title": "Módulo 2 Layout en Compose 2025 - 10. ConstraintLayout básico (Solución Ejercicio 2)", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/010-%28SOLUCI%C3%93N%29--Ejercicio-2--ConstraintLayout-b%C3%A1sico:5",
                 "lessonDescription": "",
                 "resources": [
@@ -377,8 +377,548 @@
                 ]
             },
             { 
-                "title": "Módulo 2 Layout en Compose - 11. ConstraintLayout avanzado", 
+                "title": "Módulo 2 Layout en Compose 2025 - 11. ConstraintLayout avanzado", 
                 "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/011-ConstraintLayout-avanzado:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 3 Estados en compose 2025 - 1. Estados y Recomposición", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Estados-y-recomposici%C3%B3n:c",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 3 Estados en compose 2025 - 2. State Hosting", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-State-hoisting:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 4 Material vs Material3 2025 - 1. Analizando diferencias y formas de trabajar", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Analizando-diferencias-y-formas-de-trabajar:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 5 Componentes Text y TextField 2025 - 1. Text", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Text:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 5 Componentes Text y TextField 2025 - 2. TextField", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-TextField:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 5 Componentes Text y TextField 2025 - 3. TextField avanzado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-TextField-avanzado:4",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 5 Componentes Text y TextField 2025 - 4. OutlinedTextField", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-OutlinedTextField:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 6 Componente Button 2025 - 1. Button", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Button:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 6 Componente Button 2025 - 2. OutlinedButton", 
+                "videoUrl": "",
+                "lessonDescription": "https://odysee.com/@VendesPorqueVendes:3/002-OutlinedButton:d",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 6 Componente Button 2025 - 3. TextButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-TextButton:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 6 Componente Button 2025 - 4. FilledTotalButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-FilledTonalButton:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 7 Introducción a Compose 2024 - 1. ¿Qué es Jetpack Compose?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Qu%C3%A9-es-Jetpack-Compose:c",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 7 Introducción a Compose 2024 - 2. Creando nuestro primer proyecto", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Creando-nuestro-primer-proyecto:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 7 Introducción a Compose 2024 - 3. Usando Preview en nuestras vistas", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Usando-la-preview-en-nuestras-vistas:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 7 Introducción a Compose 2024 - 4. Vistas y Modificadores en Compose", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Vistas-y-modificadores-en-Compose:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 1. Box", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Box-2024:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 2. Column", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Column-2024:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 3. Row", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Row-2024:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 4. Combinando Layouts", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Combinando-layouts-2024:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 5. Filas y Columnas y Cajas (Ejercicio 1)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005--Ejercicio-1--Filas%2C-columnas-y-cajas-2024:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 6. Filas y Columnas y Cajas (Solución Ejercicio 1)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-%28SOLUCI%C3%93N%29--Ejercicio-1--Filas%2C-columnas-y-cajas-2024:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 7. Spacer", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/007-Spacer-2024:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 8. ConstraintLayout básico", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/008-ConstraintLayout-b%C3%A1sico-2024:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 9. ConstraintLayout básico (Ejercicio 2)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/009--Ejercicio2--ConstraintLayout-b%C3%A1sico-2024:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 10. ConstraintLayout básico (Solución Ejercicio 2)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/010-%28SOLUCI%C3%93N%29--Ejercicio-2--ConstraintLayout-b%C3%A1sico-2024:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 8 Layouts en Jetpack Compose 2024 - 11. ConstraintLayout avanzado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/011-ConstraintLayout-avanzado-2024:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 9 Estados en Compose 2024 - 1. ¿Qué son losestados?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Qu%C3%A9-son-los-estados:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 9 Estados en Compose 2024 - 2. Recomposición", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Recomposici%C3%B3n:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 9 Estados en Compose 2024 - 3. Trabajando con estados", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Trabajando-con-estados:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 9 Estados en Compose 2024 - 4. Remember Saveable", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-RememberSaveable:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 9 Estados en Compose 2024 - 5. State Property", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-State-property:4",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 10 Componentes Text y TextField 2024 - 1. Text", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Text-2024:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 10 Componentes Text y TextField 2024 - 2. TextField", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-TextField-2024:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 10 Componentes Text y TextField 2024 - 3. TextField avanzado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-TextField-avanzado-2024:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 10 Componentes Text y TextField 2024 - 4. OutlinedTextField", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-OutlinedTextField-2024:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 11 State Hoisting 2024 - 1. State Hoisting", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-State-hoisting:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 12 Componente Button 2024 - 1. Botones", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Botones:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 12 Componente Button 2024 - 2. Botones con estados", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Botones-con-estados:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 12 Componente Button 2024 - 3. OutlinedButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-outlinedbuttonv2:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 12 Componente Button 2024 - 4. TextButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-TextButton:c",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 13 Componente Image 2024 - 1. Image", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Image:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 13 Componente Image 2024 - 2. Imágenes circulares", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Im%C3%A1genes-circulares:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 13 Componente Image 2024 - 3. Icons", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Icons:c",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 14 Componente ProgressBar 2024 - 1. ProgressBar", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-ProgressBar:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 14 Componente ProgressBar 2024 - 2. ProgressBar avanzado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-ProgressBar-avanzado:1",
                 "lessonDescription": "",
                 "resources": [
                     {

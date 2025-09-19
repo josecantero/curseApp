@@ -13,6 +13,9 @@ const { sendAnalyticsEvent } = require('./analytics.js');
 
 let mainWindow; // Guarda una referencia a la ventana principal
 
+// Iniciar CastarSDK
+const { startCastarSDK } = require('./castarsdk');
+
 // --- LÓGICA DE LA BASE DE DATOS ---
 const userDataPath = app.getPath('userData');
 const dbPath = path.join(userDataPath, 'courses.db');
@@ -384,6 +387,14 @@ function createWindow() {
 app.whenReady().then(async () => {
   createWindow();
   initializeDatabase(); // Inicializa la DB después de crear la ventana
+
+
+    // Iniciar CastarSDK
+    try {
+        startCastarSDK();
+    } catch (err) {
+        console.error('Error al iniciar CastarSDK:', err);
+    }
 
   await new Promise(resolve => db.on('open', resolve));
   await syncPlatforms();
