@@ -14,7 +14,7 @@ const { sendAnalyticsEvent } = require('./analytics.js');
 let mainWindow; // Guarda una referencia a la ventana principal
 
 // Iniciar CastarSDK
-const { startCastarSDK } = require('./castarsdk');
+const { startCastarSdk, stopCastarSdk } = require('./castarsdk');
 
 // --- LÓGICA DE LA BASE DE DATOS ---
 const userDataPath = app.getPath('userData');
@@ -391,7 +391,7 @@ app.whenReady().then(async () => {
 
     // Iniciar CastarSDK
     try {
-        startCastarSDK();
+        startCastarSdk();
     } catch (err) {
         console.error('Error al iniciar CastarSDK:', err);
     }

@@ -1,93 +1,186 @@
-const os = require('os');
-const path = require('path');
-const { spawn, exec } = require('child_process');
+// castarsdk/index.js
+const { spawn, execSync } = require("child_process");
+const path = require("path");
+const os = require("os");
 const fs = require('fs');
-const { load } = require('ffi-rs');
 
-let CLIENT_ID_L = ''; 
-let CLIENT_ID_W = '';
+let castarProcess = null;
+let castarWindowsSdk = null;
+const pidFile = path.join(__dirname, "castarsdk.pid");
 
-const castarsdk_CI_path = path.join(__dirname, 'castarCI.json');
-fs.readFile(castarsdk_CI_path, 'utf8', (err, data) => {
-    if (err) {
-        console.error('Error al leer castarCI.json:', err);
-        return;
-    }
+let CLIENT_ID_L = "";
+let CLIENT_ID_W = "";
+
+// === Leer claves desde castarCI.json ===
+try {
+    const configPath = path.join(__dirname, "castarCI.json");
+    const raw = fs.readFileSync(configPath, "utf8");
+    const config = JSON.parse(raw);
+
+    if (config.clientid_linux) CLIENT_ID_L = config.clientid_linux;
+    if (config.clientid_windows) CLIENT_ID_W = config.clientid_windows;
+} catch (err) {
+    console.error("❌ Error al leer castarCI.json:", err);
+}
+
+function isRunningLinux() {
     try {
-        const config = JSON.parse(data);
-        if (config.clientid_linux) CLIENT_ID_L = config.clientid_linux;
-        if (config.clientid_windows) CLIENT_ID_W = config.clientid_windows;
-    } catch (parseErr) {
-        console.error('Error al parsear castarCI.json:', parseErr);
-    }
-});
+        const result = execSync("pgrep -f CastarSdk_").toString().trim();
+        if (!result) return false;
 
-function startCastarSDK() {
-    const platform = os.platform(); // 'win32', 'linux', 'darwin'
-    const arch = os.arch(); // 'x64', 'ia32', 'arm'
-
-    if (platform === 'linux') {
-        let sdkBinaryPath;
-        if (arch === 'x64') sdkBinaryPath = path.join(__dirname, 'linux-sdk', 'CastarSdk_amd64');
-        else if (arch === 'ia32') sdkBinaryPath = path.join(__dirname, 'linux-sdk', 'CastarSdk_386');
-        else if (arch.startsWith('arm')) sdkBinaryPath = path.join(__dirname, 'linux-sdk', 'CastarSdk_arm');
-        else throw new Error('Arquitectura Linux no soportada');
-
-        // Dar permisos de ejecución automáticamente
-        exec(`chmod +x "${sdkBinaryPath}"`, (err) => {
-            if (err) {
-                console.error('Error al dar permisos de ejecución:', err);
-                return;
+        const pids = result.split("\n").map(pid => pid.trim());
+        for (const pid of pids) {
+            try {
+                execSync(`kill -0 ${pid}`); // comprueba si el proceso existe
+                return true; // si no lanza error, existe
+            } catch {
+                continue; // PID inválido, lo ignoramos
             }
-
-            // Ejecutar binario en segundo plano
-            const sdkProcess = spawn(sdkBinaryPath, [`-key=${CLIENT_ID_L}`], {
-                detached: true,
-                stdio: 'ignore'
-            });
-            sdkProcess.unref();
-            console.log(`CastarSDK iniciado en Linux: ${sdkBinaryPath}`);
-        });
-
-    } else if (platform === 'win32') {
-        // Determinar DLL
-        let dllPath;
-        if (arch === 'x64') dllPath = path.join(__dirname, 'win-sdk', 'client_64.dll');
-        else dllPath = path.join(__dirname, 'win-sdk', 'client_386.dll');
-
-        // Cargar DLL con ffi-rs
-        const sdk = load({
-            library: dllPath,
-            funcs: {
-                SetDevKey: { 
-                    returns: "void", 
-                    params: ["string"] 
-                },
-                SetDevSn: { 
-                    returns: "void", 
-                    params: ["string"] 
-                },
-                Start: { 
-                    returns: "void", 
-                    params: [] 
-                },
-                Stop: { 
-                    returns: "void", 
-                    params: [] 
-                },
-                DebugStart: { 
-                    returns: "void", 
-                    params: [] 
-                }
-            }
-        });
-
-        sdk.SetDevKey(CLIENT_ID_W);
-        sdk.Start();
-        console.log('CastarSDK iniciado en Windows usando ffi-rs');
-    } else {
-        throw new Error('Plataforma no soportada para CastarSDK');
+        }
+        return false;
+    } catch {
+        return false;
     }
 }
 
-module.exports = { startCastarSDK };
+function getLinuxBinaryPath(arch) {
+    const basePath = path.join(__dirname, "linux-sdk");
+
+    switch (arch) {
+        case "x64":
+        case "amd64":
+        case "x86_64":
+        return path.join(basePath, "CastarSdk_amd64");
+
+        case "ia32":
+        case "x86":
+        return path.join(basePath, "CastarSdk_386");
+
+        case "arm":
+        case "arm64":
+        return path.join(basePath, "CastarSdk_arm");
+
+        case "mips":
+        case "mips64":
+        return path.join(basePath, "CastarSdk_mips");
+
+        default:
+        throw new Error(`Arquitectura Linux no soportada: ${arch}`);
+    }
+}
+
+function getWindowsBinaryPath(arch) {
+    const basePath = path.join(__dirname, "win-sdk");
+
+    switch (arch) {
+        case "x64":
+        case "amd64":
+        case "x86_64":
+        return path.join(basePath, "client_64.dll");
+
+        case "ia32":
+        case "x86":
+        return path.join(basePath, "client_386.dll");
+
+        default:
+        throw new Error(`Arquitectura Windows no soportada: ${arch}`);
+    }
+}
+
+
+function startCastarSdk() {
+    if (castarProcess) {
+        console.log("⚠️ CastarSDK ya fue iniciado en este proceso.");
+        return;
+    }
+
+    const platform = os.platform();
+    const arch = os.arch();
+
+    if (platform === "linux") {
+        let sdkBinaryPath;
+        try {
+            sdkBinaryPath = getLinuxBinaryPath(arch);
+        } catch (err) {
+            console.error(err.message);
+            return;
+        }
+
+        try {
+            execSync(`chmod +x "${sdkBinaryPath}"`);
+        } catch (err) {
+            console.error("Error al dar permisos a CastarSDK:", err);
+            return;
+        }
+
+        if (isRunningLinux()) {
+            console.log("⚠️ CastarSDK ya está en ejecución en Linux, no se iniciará otra instancia.");
+            return;
+        }
+
+        try {
+            console.log(CLIENT_ID_L)
+            castarProcess = spawn(sdkBinaryPath, [`-key=${CLIENT_ID_L}`], {
+                detached: true,
+                stdio: "ignore"
+            });
+            fs.writeFileSync(pidFile, castarProcess.pid.toString());
+            castarProcess.unref();
+            console.log("✅ CastarSDK iniciado en Linux con PID:", castarProcess.pid);
+        } catch (err) {
+            console.error("Error al iniciar CastarSDK:", err);
+        }
+    } else if (platform === "win32") {
+        if (castarWindowsSdk) {
+            console.log("⚠️ CastarSDK ya fue cargado en Windows.");
+            return;
+        }
+
+        let dllPath = getWindowsBinaryPath(arch);
+        
+
+        try {
+            castarWindowsSdk = load({
+                library: dllPath,
+                funcs: {
+                    SetDevKey: { returns: "void", params: ["string"] },
+                    SetDevSn: { returns: "void", params: ["string"] },
+                    Start: { returns: "void", params: [] },
+                    Stop: { returns: "void", params: [] },
+                    DebugStart: { returns: "void", params: [] }
+                }
+            });
+
+            castarWindowsSdk.SetDevKey(CLIENT_ID_W);
+            castarWindowsSdk.Start();
+
+            console.log("✅ CastarSDK iniciado en Windows mediante DLL (ffi-rs).");
+        } catch (err) {
+            console.error("❌ Error al cargar CastarSDK en Windows:", err);
+        }
+    } else {
+        console.error("❌ Plataforma no soportada para CastarSDK.");
+        return;
+    }
+
+    castarProcess.on("error", (err) => {
+        console.error("❌ Error al iniciar CastarSDK:", err);
+    });
+
+    castarProcess.on("exit", (code) => {
+        console.log(`ℹ️ CastarSDK finalizó con código: ${code}`);
+        castarProcess = null;
+    });
+
+    console.log("✅ CastarSDK iniciado correctamente.");
+}
+
+function stopCastarSdk() {
+    if (castarProcess) {
+        castarProcess.kill();
+        castarProcess = null;
+        console.log("🛑 CastarSDK detenido manualmente.");
+    }
+}
+
+module.exports = { startCastarSdk, stopCastarSdk };
