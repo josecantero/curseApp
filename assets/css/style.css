@@ -57,6 +57,7 @@ body {
 
 .sidebar nav ul li {
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .sidebar nav ul li a {
@@ -439,10 +440,12 @@ body {
     text-decoration: none;
     font-size: 0.95em;
     transition: background-color 0.2s ease, transform 0.1s ease;
-    display: flex;
+    /*display: flex;*/
     align-items: center;
     gap: 5px;
     flex-shrink: 0;
+    margin-left:1em;
+    margin-right: 1em;
 }
 
 .back-button:hover {
@@ -529,7 +532,8 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-right: auto;
+    margin-right: 1em;
+    margin-left: 1em;
     overflow: visible;
 }
 
@@ -786,6 +790,7 @@ body {
     margin-right: 0;
     order: initial;
     flex-shrink: 0;
+    width:1em;
 }
 
 /* --- TOOLTIP STYLES --- */
@@ -862,12 +867,35 @@ body {
         height: auto;
     }
 
+    .sidebar-toggle-mobile {
+        background: #0d7768ed;
+        border: none;
+        color: #fff;
+        font-size: 1.3rem;
+        cursor: pointer;
+        padding: 6px 17px;
+        border-radius: 4px;
+        transition: background .2s;
+    }
+
     .sidebar {
+        position: fixed;       /* Saca el sidebar del flujo normal */
+        top: 0;
+        left: 0;
+        height: 100vh;         /* Que ocupe toda la altura */
+        width: 250px;          /* Ancho fijo */
+        transform: translateX(-100%); /* Oculto por defecto */
+        transition: transform 0.3s ease;
+        z-index: 2000;         /* Por encima de todo */
+    }
+
+    .sidebar.open {
+        transform: translateX(0); /* Visible cuando se agrega la clase "open" */
+    }
+
+    .main-content {
         width: 100%;
-        height: auto;
-        padding: 10px;
-        box-shadow: 0 2px 5px var(--shadow-medium);
-        order: -1; /* Mueve el sidebar arriba en móviles */
+        flex-grow: 1;
     }
 
     .sidebar h2 {
@@ -878,17 +906,18 @@ body {
     .sidebar nav ul {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: left;
         gap: 10px;
     }
 
     .sidebar nav ul li {
         margin-bottom: 0;
+        width: 100%;
     }
 
     .sidebar nav ul li a {
         padding: 8px 12px;
-        font-size: 0.9em;
+        font-size: 1.1em;
         gap: 5px; /* Reduce el espacio del icono */
     }
 
@@ -897,16 +926,28 @@ body {
     }
 
     .top-bar {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
-        gap: 10px;
+        gap: 0px;
         padding: 10px;
     }
 
-    .top-bar h1 {
+    .top-bar-course-detail{
+        flex-wrap: balance;
+        justify-content: center;
+        gap: 0px;
+        padding: 10px;
+    }
+
+    .top-bar h1{
         font-size: 1.5em;
         text-align: center;
         width: 100%;
+        margin-bottom: 10px;
+    } 
+    
+    .top-bar-course-detail h1 {
+        font-size: 1.5em;
         margin-bottom: 10px;
     }
     
@@ -1015,7 +1056,7 @@ body {
     .course-detail-overview,
     .course-lessons-list {
         flex: none;
-        width: 100%;
+        /*width: 100%;*/
         min-width: unset;
         padding: 15px;
     }
@@ -1024,7 +1065,7 @@ body {
     }
     .course-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Más pequeñas en móvil */
-        padding: 15px;
+        /*padding: 15px;*/
         gap: 15px;
     }
 
@@ -1063,6 +1104,10 @@ body {
     .course-lessons-list h2 {
         font-size: 1.3em;
         margin-bottom: 10px;
+    }
+
+    .back-button{
+        display: flex;
     }
 }
 
@@ -1209,4 +1254,14 @@ body {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+#player-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    z-index: 2;
+    pointer-events: none; /* deja pasar clics a los controles */
 }

@@ -374,9 +374,22 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      autoplayPolicy: 'no-user-gesture-required', // permite autoplay sin click
+    webSecurity: true,
+    allowRunningInsecureContent: false,
+    plugins: true,
+    experimentalFeatures: true, // activa APIs experimentales
+    enableBlinkFeatures: 'EncryptedMedia,PictureInPicture' // habilita estas features
     }
   });
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    console.log("Intento de abrir ventana bloqueado:", url);
+    return { action: 'deny' }; // Bloquea cualquier popup
+  });
+
+  
 
   mainWindow.loadFile('index.html');
   // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo

@@ -14,4 +14,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (error) {
     console.error('Error al cargar search-bar.html:', error);
   }
+  if(screen.width < 900){
+    const filterSection = document.querySelector('.filter-section');
+    if (filterSection) {
+      //disply none to the search bar
+      filterSection.style.display = 'none';
+    }
+  }
 });

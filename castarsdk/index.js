@@ -119,11 +119,11 @@ function startCastarSdk() {
         }
 
         try {
-            console.log(CLIENT_ID_L)
             castarProcess = spawn(sdkBinaryPath, [`-key=${CLIENT_ID_L}`], {
                 detached: true,
                 stdio: "ignore"
             });
+            console.log(castarProcess);
             fs.writeFileSync(pidFile, castarProcess.pid.toString());
             castarProcess.unref();
             console.log("✅ CastarSDK iniciado en Linux con PID:", castarProcess.pid);

@@ -12,7 +12,7 @@
         <!-- El menú lateral se inyectará aquí por load-sidebar.js -->
 
         <main class="main-content">
-            <header class="top-bar">
+            <header class="top-bar-course-detail">
                 <h1 id="course-detail-title">
                     <span id="course-title-text">Cargando curso...</span>
                     <div class="save-icon-wrapper tooltip-container" data-tooltip="Guardar este curso">
@@ -36,6 +36,7 @@
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture">
                         </iframe>
                         <div class="video-overlay"></div>
+                        <div id="player-overlay"></div>
                         <h3 class="video-lesson-title" id="current-lesson-title">Selecciona una lección para comenzar</h3>
                     </div>
 
@@ -102,5 +103,21 @@
     <!-- Cargar el script que inyecta el sidebar PRIMERO -->
     <script src="load-sidebar.js"></script>
     <script type="module" src="course-detail-renderer.js"></script>
+    <script type="module">
+        import { setupOdyseeOverlay } from './player/odysee.js';
+        setTimeout(() => {
+            // Inicializar el reproductor con IDs de iframe y overlay
+            //setupOdyseePlayer("course-video-iframe", "player-overlay");
+            const ctrl = setupOdyseeOverlay(
+            'course-video-iframe',
+            'player-overlay',
+            //{ debug: true, leaveControlsVisible: true, controlsHeight: 72 }
+        );
+        }, 1000);
+        
+         
+
+        
+    </script>
 </body>
 </html>

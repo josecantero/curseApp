@@ -102,7 +102,6 @@ async function initializeSavedCourses() {
         const savedCourseIds = await window.electronAPI.getSavedCourses();
         savedCourses.clear(); // Limpiar el Set actual
         savedCourseIds.forEach(id => savedCourses.add(id));
-        console.log('Cursos guardados cargados de la DB:', Array.from(savedCourses));
     } catch (error) {
         console.error('Error al cargar cursos guardados desde la DB:', error);
     }

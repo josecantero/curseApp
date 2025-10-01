@@ -25,18 +25,36 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         /* =====  COLLAPSE / EXPAND SIDEBAR  ===== */
         const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+        const sidebarToggleMobileBtn = document.querySelector('.sidebar-toggle-mobile');
         const icon = sidebarToggleBtn.querySelector('i');   // <i class="fas fa-bars"></i>
         const sidebar = document.querySelector('aside.sidebar');
 
         /* read last choice (true = collapsed) */
         const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        if (isCollapsed) sidebar.classList.add('sidebar-minimized');
+        const screenWidth = window.innerWidth;
+        if (isCollapsed && screenWidth > 900) sidebar.classList.add('sidebar-minimized');
 
-        console.log(isCollapsed);
-
+        /* mobile sidebar toggle btn clic handler */
+        if(screenWidth <= 900){
+            sidebar.classList.remove('sidebar-minimized');
+            sidebarToggleMobileBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+        }else{
+            sidebar.classList.remove('open');
+            sidebarToggleMobileBtn.style.display = 'none';
+        }
+        
+        
         /* click handler */
         sidebarToggleBtn.addEventListener('click', () => {
-            const nowCollapsed = sidebar.classList.toggle('sidebar-minimized');
+            let nowCollapsed = "";//sidebar.classList.toggle('sidebar-minimized');
+            if(screenWidth <= 900) {
+                sidebar.classList.toggle('open');
+                nowCollapsed = sidebar.classList.contains('open') ? false : true;
+            } else {
+                nowCollapsed = sidebar.classList.toggle('sidebar-minimized');
+            }
             localStorage.setItem('sidebarCollapsed', nowCollapsed);
 
             /* swap Font-Awesome icon */
@@ -62,7 +80,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        
+        /* =====  OVERLAY (MÓVIL) ===== */
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        document.body.appendChild(overlay);
+
+        // Botón hamburguesa para móvil (puede ser el mismo sidebar-toggle o uno nuevo en tu header)
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            });
+        }
+
+        // Cerrar al hacer clic en el overlay
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
 
     } catch (error) {
         console.error('Error al cargar o inicializar el menú lateral:', error);

@@ -500,7 +500,6 @@ function renderErrorPage() {
 
 // --- INICIO: LÓGICA PRINCIPAL DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOM completamente cargado.');
 
     await initializeState();
 

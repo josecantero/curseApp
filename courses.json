@@ -927,6 +927,426 @@
                         "url": ""
                     }
                 ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 1. Switch", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Switch:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 2. Checkbox", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-CheckBox:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 3. Checkbox con texto", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-CheckBox-con-Texto:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 4. State hoisting con múltiples CheckBox", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-State-hoisting-con-m%C3%BAltiples-CheckBox:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 5. CheckBox Tristate", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-CheckBox-TriState:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 6. RadioButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-RadioButton:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 15 Componentes de control de selección 2024 - 7. State hoisting con múltiples RadioButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/007-State-hoisting-con-m%C3%BAltiples-RadioButton:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 16 Otros componentes 2024 - 1. Card", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Card:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 16 Otros componentes 2024 - 2. Surface", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Surface:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 16 Otros componentes 2024 - 3. BadgeBox", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-BadgeBox:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 16 Otros componentes 2024 - 4. Divider", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Divider:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 16 Otros componentes 2024 - 5. DropdownMenu", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-DropdownMenu:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 17 Componente Slider 2024 - 1. Slider", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Slider:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 17 Componente Slider 2024 - 2. Section Slider", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-SectionSlider:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 17 Componente Slider 2024 - 3. Range Slider", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-RangeSlider:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 18 Diálogos en Jetpack Compose 2024 - 1. AlertDialog", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-AlertDialog:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 18 Diálogos en Jetpack Compose 2024 - 2. Diálogo personalizado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Di%C3%A1logo-personalizado:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 18 Diálogos en Jetpack Compose 2024 - 3. Diálogo personalizado avanzado", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Di%C3%A1logo-personalizado-avanzado:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 18 Diálogos en Jetpack Compose 2024 - 4. Diálogo de confirmación", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Di%C3%A1logo-de-confirmaci%C3%B3n:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 1. Crando un Login desde cero - Introducción", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Creando-un-Login-desde-cero---Introducci%C3%B3n:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 2. Creando el header", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Creando-el-header:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 3. Diseño del Login Parte 1", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Dise%C3%B1o-del-login---Parte-1:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 4. Diseño del Login Parte 2", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Dise%C3%B1o-del-login---Parte-2:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 5. Diseño del footer", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Dise%C3%B1ando-el-footer:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 6. Personalizando TextFields (Con mostrar ocultar password)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-Personalizando-TextFields-%28Con-mostrarocultar-password%29:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 7. Personalizando botón de login", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/007-Personalizando-bot%C3%B3n-del-login:f",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 19 Login Básico Instagram 2024 - 8. Añadiendo lógica a nuestro login", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/008-A%C3%B1adiendo-l%C3%B3gica-a-nuestro-login:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 20 Reto 1 De Tweets va la cosa - 1. Explicación del reto", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Explicaci%C3%B3n-del-reto:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 20 Reto 1 De Tweets va la cosa - 2. Solución del Reto", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Soluci%C3%B3n-al-reto:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 21 RecyclerView en Jetpack Compose - 1. Introducción a los RecyclerView", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Introducci%C3%B3n-a-los-RecyclerView:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 21 RecyclerView en Jetpack Compose - 2. Recyclerview horizontal y vertical", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Recyclerview-horizontal-y-vertical:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 21 RecyclerView en Jetpack Compose - 3. Recomendaciones para los RV", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Recomendaciones-para-los-RV:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 21 RecyclerView en Jetpack Compose - 4. Recyclerview GRID (Cuadrícula)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Recyclerview-GRID-%28Cuadr%C3%ADcula%29:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 21 RecyclerView en Jetpack Compose - 5. Controlar el desplazamiento", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Controlar-el-desplazamiento:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 21 RecyclerView en Jetpack Compose - 6. Cabeceras (Sticky Header)", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-Cabeceras-%28Sticky-Header%29:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
             }
         ]
     }
