@@ -1347,6 +1347,714 @@
                         "url": ""
                     }
                 ]
+            },
+            { 
+                "title": "Módulo 22 Componentes en Jetpack Compose - 1. Scaffold", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Scaffold:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 22 Componentes en Jetpack Compose - 2. TopAppBar", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-TopAppBar:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 22 Componentes en Jetpack Compose - 3. Snackbar", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Snackbar:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 22 Componentes en Jetpack Compose - 4. BottomAppBar", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-BottomBar:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 22 Componentes en Jetpack Compose - 5. FloatingActionButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-FloatingActionButton:f",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 22 Componentes en Jetpack Compose - 6. NavigationDrawer", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-ModalDrawer:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 1. Navegación Básica", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Navegaci%C3%B3n-b%C3%A1sica:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 2. Navegación like a Pro", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Navegaci%C3%B3n-like-a-pro:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 3. Navegar con argumentos obligatorios", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Navegar-con-argumentos-obligatorios:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 4. Navegación like a Pro con argumentos", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Navegaci%C3%B3n-like-a-pro-con-argumentos:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 5. Navegar con argumentos opcionales", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Navegar-con-argumentos-opcionales:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 6. ¿Qués es Material3", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-%C2%BFQu%C3%A9-es-Material-3:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 7. Presentación OpenCompose", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/007-Presentaci%C3%B3n-OpenCompose:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 8. Creando M3Catalog", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/008-Creando-M3Catalog:f",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 9. Botónes Básicos en Material3", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/009-Botones-b%C3%A1sicos-en-Material-3:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 10. FilledTonalButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/010-FilledTonalButton:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 11. ElevatedButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/011-ElevatedButton:c",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 23 Navegación en Jetpack Compose - 12. FloatingActionButton", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/012-FloatingActionButtons:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 24 Arquitectura MVVM con Jetpack Compose - 1. ¿Qué es MVVM?", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-%C2%BFQu%C3%A9-es-MVVM-:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 24 Arquitectura MVVM con Jetpack Compose - 2. Implementando MVVM y Live data. Parte 1", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Implementando-MVVM-y-live-data---Parte-1:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 24 Arquitectura MVVM con Jetpack Compose - 3. Implementando MVVM y Live data. Parte 2", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Implementando-MVVM-y-live-data---Parte-2:1",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 24 Arquitectura MVVM con Jetpack Compose - 4. Introducción a Clean Architecture", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Introducci%C3%B3n-Clean-Architecture:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 25 Arquitectura CLEAN DATA y DOMAIN con consumo de API - 1. Introducción", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/001-Introducci%C3%B3n---Clean-Data-y-Domain:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 25 Arquitectura CLEAN DATA y DOMAIN con consumo de API - 2. Montando RETROFIT", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/002-Montando-RETROFIT:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 25 Arquitectura CLEAN DATA y DOMAIN con consumo de API - 3. Data. Parte 1", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/003-Data---Parte-1:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 25 Arquitectura CLEAN DATA y DOMAIN con consumo de API - 4. Data. Parte 2", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/004-Data---Parte-2:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 25 Arquitectura CLEAN DATA y DOMAIN con consumo de API - 5. Dominio", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/005-Dominio:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 25 Arquitectura CLEAN DATA y DOMAIN con consumo de API - 6. Preparando el ViewModel", 
+                "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/006-Preparando-el-ViewModel:0",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 26 Inyección de dependencias con Dagger Hilt - 1. Preparando Dagger Hilt", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/001-Preparando-Dagger-Hilt:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 26 Inyección de dependencias con Dagger Hilt - 2. Inyectando Activity y ViewModel", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/002-Inyectando-Activity-y-ViewModel:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 26 Inyección de dependencias con Dagger Hilt - 3. Inyectando data y domain", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/003-Inyectando-data-y-domain:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 1. Animación de color básica", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/001-Animaci%C3%B3n-de-color-b%C3%A1sica:6",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 2. Animación de color avanzada", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/002-Animaci%C3%B3n-de-color-avanzada:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 3. Animación de tamaño básica", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/003-Animaci%C3%B3n-de-tama%C3%B1o-b%C3%A1sica:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 4. Animación de tamaño avanzada", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/004-Animaci%C3%B3n-de-tama%C3%B1o-avanzada:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 5. Animación de visibilidad básica", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/005-Animaci%C3%B3n-de-visibilidad-b%C3%A1sica:c",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 6. Animación de visibilidad avanzada", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/006-Animaci%C3%B3n-de-visibilidad-avanzada:e",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 27 Animaciones con Jetpack Compose - 7. Crossfade", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/007-Crossfade:a",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 1. Introducción y creación del proyecto", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/001-Introducci%C3%B3n-y-creaci%C3%B3n-del-proyecto:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 2. Implementando Dagger Hilt", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/002-Implementando-Dagger-Hilt:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 3. Dialogo creador de tareas", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/003-Di%C3%A1logo-creador-de-tareas:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 4. Añadiendo y configurando el diálogo", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/004-A%C3%B1adiendo-y-configurando-el-di%C3%A1logo:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 5. Creando las tareas", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/005-Creando-las-tareas:9",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 6. Editando las tareas", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/006-Editando-las-tareas:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 7. Borrando las tareas", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/007-Borrando-las-tareas:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 8. Implementando Room", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/008-Implementando-Room:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 9. Preparando el repositorio", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/009-Preparando-el-repositorio:7",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 10. Capa de dominio de casos de uso", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/010-Capa-de-dominio-Casos-de-uso:8",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 11. Flows. Preparando el StateFlow", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/011-Flows---Preparando-el-StateFlow:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 12. Conectando StateFlow con Screen", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/012-Conectando-StateFlow-con-Screen:d",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 13. Aprendiendo a solucionar errores", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/013-Aprendiendo-a-solucionar-errores:5",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 14. Actualizando los items. Room y UI", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/014-Actualizando-los-items-%28Room-y-UI%29:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 28 Tareas - 15. Borrando Items. Room y UI", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/015-Borrando-items-%28Room-y-UI%29:f",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 29 UI Testing - 1. Introducción y preparación UI Testing", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/001-Introducci%C3%B3n-y-preparaci%C3%B3n-al-testing-de-UI:b",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 29 UI Testing - 2. Finders", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/002-Finders:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 29 UI Testing - 3. Actions", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/003-Actions:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 29 UI Testing - 4. Assertions", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/004-Assertions:2",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 29 UI Testing - 5. Creando nuestros primeros test completos", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/005-Creando-nuestros-primeros-tests-completos:4",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
+            },
+            { 
+                "title": "Módulo 29 UI Testing - 6. Testeando diálogos", 
+                "videoUrl": "https://odysee.com/%40VendesPorqueVendes:3/006-Testeando-di%C3%A1logos:3",
+                "lessonDescription": "",
+                "resources": [
+                    {
+                        "type": "",
+                        "title": "",
+                        "url": ""
+                    }
+                ]
             }
         ]
     }

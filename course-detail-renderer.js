@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const savedCourseIds = await window.electronAPI.getSavedCourses();
         savedCourses.clear(); // Limpiar el Set actual
         savedCourseIds.forEach(id => savedCourses.add(id));
-        console.log('Cursos guardados cargados de la DB en detalle:', Array.from(savedCourses));
     } catch (e) {
         console.error('Error al cargar cursos guardados de la DB en la página de detalle:', e);
         // No limpiar localStorage aquí, ya que la fuente de verdad es la DB

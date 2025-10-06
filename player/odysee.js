@@ -36,7 +36,6 @@ export function setupOdyseeOverlay(iframeId, overlayId) {
   // --- 2) Detectar clics para quitar overlay ---
   window.addEventListener("click", (e) => {
     // Solo si clic ocurre sobre el iframe o su overlay
-    console.log("fuuu");
     const clickedInsideIframe =
       iframe.contains(e.target) || overlay.contains(e.target);
 

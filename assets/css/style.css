@@ -1180,6 +1180,7 @@ body {
   margin-left: 0rem;
   margin-top: 0.25rem;
   padding-left: 0rem;
+  width: 100%;
 }
 
 .lesson-container li :hover{
