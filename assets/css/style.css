@@ -891,6 +891,12 @@ body {
 
     .sidebar.open {
         transform: translateX(0); /* Visible cuando se agrega la clase "open" */
+        transition: transform 0.3s ease-out;
+    }
+
+    .sidebar.closed {
+        transform: translateX(-100%); /* Asegura que esté oculto */
+        transition: transform 0.3s ease-in;
     }
 
     .main-content {
@@ -1174,6 +1180,7 @@ body {
 .module-header.open {
   background-color: #00796b;
   color: #fff;
+  transition: background-color 0.2s;
 }
 
 .lesson-container {

@@ -74,7 +74,7 @@ function createCourseCard(course) {
             icon.setAttribute('aria-label', newAriaLabelText);
             
             // Opcional: Re-renderizar los cursos para asegurar que el estado visual sea consistente
-            // applyFilters(); 
+            applyFilters(); 
             // Esto puede ser excesivo si solo se necesita actualizar el icono.
             // El icono ya se actualiza directamente, así que no es estrictamente necesario aquí.
         });
