@@ -4,9 +4,11 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
-const isDev = true//process.env.NODE_ENV === 'development';
+const isDev = false;//process.env.NODE_ENV === 'development';
 const REMOTE_PLATFORMS_URL =
-  'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/platforms.json';
+  'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/platforms.json';
+const REMOTE_COURSES_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/courses.json';
+const REMOTE_TIMESTAMP_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/json-timestamp.json';
 const axios = require('axios');
 
 const { sendAnalyticsEvent } = require('./analytics.js');
@@ -120,9 +122,7 @@ function createTables() {
   });
 }
 
-function syncCoursesFromJson() {
-  console.log('Sincronizando cursos desde courses.json...');
-  const jsonPath = path.join(__dirname, 'courses.json');
+function readAndSyncCourses(jsonPath) {
   fs.readFile(jsonPath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error al leer courses.json:', err.message);
@@ -188,13 +188,32 @@ function syncCoursesFromJson() {
   });
 }
 
+function syncCoursesFromJson() {
+  console.log('Sincronizando cursos desde courses.json...');
+  const jsonPath = path.join(__dirname, 'courses.json');
+  if(!isDev){
+    //consultar el remote courses.json y guardarlo localmente
+    axios.get(REMOTE_COURSES_URL)
+      .then(response => {
+        fs.writeFileSync(jsonPath, JSON.stringify(response.data, null, 2), 'utf8');
+        console.log('courses.json descargado y guardado localmente para desarrollo.');
+        // Ahora proceder a leer el archivo local
+      })
+      .catch(error => {
+        console.error('Error al descargar courses.json:', error.message);
+      });
+
+  }
+  readAndSyncCourses(jsonPath);
+}
+
 async function getSourceTimestamp() {
-  const src = isDev
+  const src = !isDev
     ? path.join(__dirname, 'json-timestamp.json')
-    : 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/json-timestamp.json';
+    : REMOTE_TIMESTAMP_URL;
 
   try {
-    const raw = isDev
+    const raw = !isDev
       ? await fs.promises.readFile(src, 'utf8')
       : (await axios.get(src)).data;
     const json = JSON.parse(raw);
@@ -224,13 +243,13 @@ async function syncPlatforms() {
   }
 
   // Obtener lista de plataformas
-  const src = isDev
+  const src = !isDev
     ? path.join(__dirname, 'platforms.json')
-    : 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/platforms.json';
+    : REMOTE_PLATFORMS_URL;
 
   let raw;
   try {
-    raw = isDev
+    raw = !isDev
       ? await fs.promises.readFile(src, 'utf8')
       : (await axios.get(src)).data;
   } catch (err) {
