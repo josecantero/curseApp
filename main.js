@@ -23,6 +23,9 @@ const userDataPath = app.getPath('userData');
 const dbPath = path.join(userDataPath, 'courses.db');
 let db;
 
+let timeToUpdate = false;
+let syncingPlatformsPromise = null;
+
 function initializeDatabase() {
   const dbExists = fs.existsSync(dbPath);
   db = new sqlite3.Database(dbPath, (err) => {
@@ -188,21 +191,20 @@ function readAndSyncCourses(jsonPath) {
   });
 }
 
-function syncCoursesFromJson() {
+async function syncCoursesFromJson() {
   console.log('Sincronizando cursos desde courses.json...');
   const jsonPath = path.join(__dirname, 'courses.json');
-  if(!isDev){
+  const sourceTime = await getSourceTimestamp();
+  if(!isDev && timeToUpdate){
     //consultar el remote courses.json y guardarlo localmente
-    axios.get(REMOTE_COURSES_URL)
-      .then(response => {
-        fs.writeFileSync(jsonPath, JSON.stringify(response.data, null, 2), 'utf8');
-        console.log('courses.json descargado y guardado localmente para desarrollo.');
-        // Ahora proceder a leer el archivo local
-      })
-      .catch(error => {
-        console.error('Error al descargar courses.json:', error.message);
-      });
-
+    try {
+      const response = await axios.get(REMOTE_COURSES_URL);
+      fs.writeFileSync(jsonPath, JSON.stringify(response.data, null, 2), 'utf8');
+      console.log('courses.json descargado y guardado localmente para desarrollo.');
+      // Ahora proceder a leer el archivo local
+    } catch (error) {
+      console.error('Error al descargar courses.json:', error.message);
+    }
   }
   readAndSyncCourses(jsonPath);
 }
@@ -234,50 +236,110 @@ async function getLastSyncTimestamp() {
 }
 
 async function syncPlatforms() {
-  const sourceTime = await getSourceTimestamp();
-  const dbTime = await getLastSyncTimestamp();
-
-  if (sourceTime <= dbTime) {
-    console.log('Plataformas ya están actualizadas.');
-    return;
+  // Evitar ejecuciones simultáneas
+  if (syncingPlatformsPromise) {
+    return syncingPlatformsPromise;
   }
 
-  // Obtener lista de plataformas
-  const src = !isDev
-    ? path.join(__dirname, 'platforms.json')
-    : REMOTE_PLATFORMS_URL;
+  syncingPlatformsPromise = (async () => {
+    const sourceTime = await getSourceTimestamp();
+    const dbTime = await getLastSyncTimestamp();
 
-  let raw;
-  try {
-    raw = !isDev
-      ? await fs.promises.readFile(src, 'utf8')
-      : (await axios.get(src)).data;
-  } catch (err) {
-    console.error('No se pudo obtener platforms.json', err);
-    return;
-  }
+    if (sourceTime <= dbTime) {
+      console.log('Plataformas ya están actualizadas.');
+      return;
+    } else {
+      console.log('Actualizando plataformas desde platforms.json...');
+      timeToUpdate = true;
+    }
 
-  let lista;
-  try {
-    lista = JSON.parse(raw);
-  } catch (err) {
-    console.error('JSON inválido en platforms', err);
-    return;
-  }
+    // Obtener lista de plataformas (local en producción, remoto en dev)
+    const src = !isDev
+      ? path.join(__dirname, 'platforms.json')
+      : REMOTE_PLATFORMS_URL;
 
-  // Actualizar tabla
-  await new Promise(resolve => db.run('DELETE FROM platforms', resolve));
+    let raw;
+    try {
+      raw = !isDev
+        ? await fs.promises.readFile(src, 'utf8')
+        : (await axios.get(src)).data;
+    } catch (err) {
+      console.error('No se pudo obtener platforms.json', err);
+      return;
+    }
 
-  const stmt = db.prepare(
-    'INSERT INTO platforms (id, name, imageUrl, updatedAt) VALUES (?, ?, ?, ?)'
-  );
-  db.serialize(() => {
-    db.run('BEGIN');
-    lista.forEach(p => stmt.run(p.id, p.name, p.imageUrl, sourceTime));
-    db.run('COMMIT');
-    stmt.finalize();
-    console.log(`✔ Tabla platforms actualizada (${lista.length} filas)`);
-  });
+    let lista;
+    try {
+      // Si viene string, parseamos; si axios ya trajo objeto, lo usamos tal cual
+      lista = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    } catch (err) {
+      console.error('JSON inválido en platforms', err);
+      return;
+    }
+
+    // Quitar posibles duplicados por id
+    const uniqueById = new Map();
+    lista.forEach(p => {
+      if (p && p.id) {
+        uniqueById.set(p.id, p);
+      }
+    });
+    const plataformas = Array.from(uniqueById.values());
+
+    // Limpiar tabla antes de insertar
+    await new Promise((resolve, reject) =>
+      db.run('DELETE FROM platforms', err => (err ? reject(err) : resolve()))
+    );
+
+    const stmt = db.prepare(`
+      INSERT OR REPLACE INTO platforms (id, name, imageUrl, updatedAt)
+      VALUES (?, ?, ?, ?)
+    `);
+
+    await new Promise((resolve, reject) => {
+      db.serialize(() => {
+        db.run('BEGIN');
+
+        plataformas.forEach(p => {
+          stmt.run(p.id, p.name, p.imageUrl, sourceTime, err => {
+            if (err) {
+              console.error(
+                'Error insertando plataforma',
+                p.id,
+                err.message
+              );
+              // No hacemos reject aquí para no abortar todo por una fila mala
+            }
+          });
+        });
+
+        db.run('COMMIT', err => {
+          stmt.finalize();
+
+          if (err) {
+            console.error(
+              'Error al confirmar la transacción de plataformas:',
+              err.message
+            );
+            reject(err);
+          } else {
+            console.log(
+              `✔ Tabla platforms actualizada (${plataformas.length} filas)`
+            );
+            resolve();
+          }
+        });
+      });
+    });
+  })()
+    .catch(err => {
+      console.error('Error en syncPlatforms:', err);
+    })
+    .finally(() => {
+      syncingPlatformsPromise = null;
+    });
+
+  return syncingPlatformsPromise;
 }
 
 // --- MANEJADORES IPC PARA EL RENDERER ---
