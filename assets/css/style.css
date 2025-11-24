@@ -1273,3 +1273,12 @@ body {
     z-index: 2;
     pointer-events: none; /* deja pasar clics a los controles */
 }
+
+.texto-multilinea {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
