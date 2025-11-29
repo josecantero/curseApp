@@ -1,6 +1,6 @@
 // main.js
 
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
@@ -466,6 +466,18 @@ function createWindow() {
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    const allowedUrls = [
+      'https://www.patreon.com/cw/CourseApp/shop',
+      'https://www.patreon.com/cw/CourseApp'
+    ];
+    // Comprueba si la URL solicitada está en tu lista blanca
+    if (allowedUrls.includes(url)) {
+      // Abre la URL en el navegador por defecto del sistema
+      shell.openExternal(url);
+      // Deniega la apertura de una nueva ventana dentro de Electron
+      return { action: 'deny' };
+    }
+
     console.log("Intento de abrir ventana bloqueado:", url);
     return { action: 'deny' }; // Bloquea cualquier popup
   });
