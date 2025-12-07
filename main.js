@@ -11,6 +11,10 @@ const REMOTE_COURSES_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@
 const REMOTE_TIMESTAMP_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/json-timestamp.json';
 const axios = require('axios');
 
+if (require('electron-squirrel-startup')) {
+  app.quit();
+}
+
 const { sendAnalyticsEvent } = require('./analytics.js');
 
 let mainWindow; // Guarda una referencia a la ventana principal
@@ -453,6 +457,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     autoHideMenuBar: true,
+    icon: path.join(__dirname, 'assets/img/logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,

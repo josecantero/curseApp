@@ -1,11 +1,18 @@
-// castarsdk/index.js
 const { spawn, execSync } = require("child_process");
 const path = require("path");
 const os = require("os");
-const fs = require('fs');
+const fs = require("fs");
 
-let castarProcess = null;
-let castarWindowsSdk = null;
+// Cargar koffi para Windows
+let koffi;
+try {
+    koffi = require("koffi");
+} catch (e) {
+    console.warn("⚠️ No se pudo cargar koffi (solo necesario en Windows):", e.message);
+}
+
+let castarProcess = null;        // Proceso SDK (Linux)
+let sdkWorker = null;            // Worker thread (Windows)
 const pidFile = path.join(__dirname, "castarsdk.pid");
 
 let CLIENT_ID_L = "";
@@ -20,24 +27,58 @@ try {
     if (config.clientid_linux) CLIENT_ID_L = config.clientid_linux;
     if (config.clientid_windows) CLIENT_ID_W = config.clientid_windows;
 } catch (err) {
-    console.error("❌ Error al leer castarCI.json:", err);
+    console.error("❌ Error al leer castarCI.json:", err.message || err);
 }
 
+// ======== Obtener MAC Address ========
+function getMacAddress() {
+    try {
+        const networkInterfaces = os.networkInterfaces();
+
+        // Buscar la primera interfaz con MAC válida (no virtual)
+        for (const [name, interfaces] of Object.entries(networkInterfaces)) {
+            // Ignorar interfaces virtuales comunes
+            if (name.includes('vEthernet') ||
+                name.includes('VMware') ||
+                name.includes('VirtualBox') ||
+                name.includes('Loopback')) {
+                continue;
+            }
+
+            for (const iface of interfaces) {
+                // Buscar IPv4 no interno
+                if (iface.family === 'IPv4' && !iface.internal && iface.mac) {
+                    const mac = iface.mac.replace(/-/g, ':').toUpperCase();
+                    // Verificar que no sea MAC vacía o virtual
+                    if (mac !== '00:00:00:00:00:00') {
+                        return mac;
+                    }
+                }
+            }
+        }
+
+        // Fallback: primera MAC no vacía
+        for (const [name, interfaces] of Object.entries(networkInterfaces)) {
+            for (const iface of interfaces) {
+                if (iface.mac && iface.mac !== '00:00:00:00:00:00') {
+                    return iface.mac.replace(/-/g, ':').toUpperCase();
+                }
+            }
+        }
+
+        throw new Error("No se encontró ninguna MAC address válida");
+    } catch (err) {
+        console.error("❌ Error obteniendo MAC address:", err.message);
+        return null;
+    }
+}
+
+// ======== Linux helpers ========
 function isRunningLinux() {
     try {
         const result = execSync("pgrep -f CastarSdk_").toString().trim();
         if (!result) return false;
-
-        const pids = result.split("\n").map(pid => pid.trim());
-        for (const pid of pids) {
-            try {
-                execSync(`kill -0 ${pid}`); // comprueba si el proceso existe
-                return true; // si no lanza error, existe
-            } catch {
-                continue; // PID inválido, lo ignoramos
-            }
-        }
-        return false;
+        return true;
     } catch {
         return false;
     }
@@ -49,55 +90,42 @@ function getLinuxBinaryPath(arch) {
     switch (arch) {
         case "x64":
         case "amd64":
-        case "x86_64":
-        return path.join(basePath, "CastarSdk_amd64");
-
+        case "x86_64": return path.join(basePath, "CastarSdk_amd64");
         case "ia32":
-        case "x86":
-        return path.join(basePath, "CastarSdk_386");
-
-        case "arm":
-        case "arm64":
-        return path.join(basePath, "CastarSdk_arm");
-
-        case "mips":
-        case "mips64":
-        return path.join(basePath, "CastarSdk_mips");
-
-        default:
-        throw new Error(`Arquitectura Linux no soportada: ${arch}`);
+        case "x86": return path.join(basePath, "CastarSdk_386");
+        case "arm": return path.join(basePath, "CastarSdk_arm");
+        case "arm64": return path.join(basePath, "CastarSdk_arm64");
+        default: throw new Error(`Arquitectura Linux no soportada: ${arch}`);
     }
 }
 
-function getWindowsBinaryPath(arch) {
+// ======== Windows helpers ========
+function getWindowsDllPath(arch) {
     const basePath = path.join(__dirname, "win-sdk");
 
     switch (arch) {
         case "x64":
         case "amd64":
-        case "x86_64":
-        return path.join(basePath, "client_64.dll");
-
+        case "x86_64": return path.join(basePath, "client_64.dll");
         case "ia32":
-        case "x86":
-        return path.join(basePath, "client_386.dll");
-
-        default:
-        throw new Error(`Arquitectura Windows no soportada: ${arch}`);
+        case "x86": return path.join(basePath, "client_386.dll");
+        default: throw new Error(`Arquitectura Windows no soportada: ${arch}`);
     }
 }
 
-
-function startCastarSdk() {
-    if (castarProcess) {
-        console.log("⚠️ CastarSDK ya fue iniciado en este proceso.");
-        return;
-    }
-
+// ======== Start SDK ========
+function startCastarSdk(useDebug = false) {
     const platform = os.platform();
+    console.log(platform);
     const arch = os.arch();
 
+    // ---- Linux ----
     if (platform === "linux") {
+        if (castarProcess) {
+            console.log("⚠️ CastarSDK ya iniciado en Linux.");
+            return;
+        }
+
         let sdkBinaryPath;
         try {
             sdkBinaryPath = getLinuxBinaryPath(arch);
@@ -109,12 +137,12 @@ function startCastarSdk() {
         try {
             execSync(`chmod +x "${sdkBinaryPath}"`);
         } catch (err) {
-            console.error("Error al dar permisos a CastarSDK:", err);
+            console.error(err.message);
             return;
         }
 
         if (isRunningLinux()) {
-            console.log("⚠️ CastarSDK ya está en ejecución en Linux, no se iniciará otra instancia.");
+            console.log("⚠️ CastarSDK ya está corriendo en Linux.");
             return;
         }
 
@@ -123,64 +151,220 @@ function startCastarSdk() {
                 detached: true,
                 stdio: "ignore"
             });
-            console.log(castarProcess);
             fs.writeFileSync(pidFile, castarProcess.pid.toString());
             castarProcess.unref();
-            console.log("✅ CastarSDK iniciado en Linux con PID:", castarProcess.pid);
+            console.log("✅ CastarSDK Linux iniciado con PID:", castarProcess.pid);
         } catch (err) {
-            console.error("Error al iniciar CastarSDK:", err);
+            console.error("❌ Error al iniciar CastarSDK en Linux:", err);
         }
-    } else if (platform === "win32") {
-        if (castarWindowsSdk) {
-            console.log("⚠️ CastarSDK ya fue cargado en Windows.");
-            return;
-        }
-
-        let dllPath = getWindowsBinaryPath(arch);
-        
-
-        try {
-            castarWindowsSdk = load({
-                library: dllPath,
-                funcs: {
-                    SetDevKey: { returns: "void", params: ["string"] },
-                    SetDevSn: { returns: "void", params: ["string"] },
-                    Start: { returns: "void", params: [] },
-                    Stop: { returns: "void", params: [] },
-                    DebugStart: { returns: "void", params: [] }
-                }
-            });
-
-            castarWindowsSdk.SetDevKey(CLIENT_ID_W);
-            castarWindowsSdk.Start();
-
-            console.log("✅ CastarSDK iniciado en Windows mediante DLL (ffi-rs).");
-        } catch (err) {
-            console.error("❌ Error al cargar CastarSDK en Windows:", err);
-        }
-    } else {
-        console.error("❌ Plataforma no soportada para CastarSDK.");
         return;
     }
 
-    castarProcess.on("error", (err) => {
-        console.error("❌ Error al iniciar CastarSDK:", err);
-    });
+    // ---- Windows ----
+    if (platform === "win32") {
+        if (sdkWorker) {
+            console.log("⚠️ CastarSDK ya está cargado en Windows.");
+            return;
+        }
 
-    castarProcess.on("exit", (code) => {
-        console.log(`ℹ️ CastarSDK finalizó con código: ${code}`);
-        castarProcess = null;
-    });
+        if (!koffi) {
+            console.error("❌ koffi no está instalado. Ejecuta: npm install koffi");
+            return;
+        }
 
-    console.log("✅ CastarSDK iniciado correctamente.");
-}
+        let dllPath;
+        try {
+            dllPath = getWindowsDllPath(arch);
+        } catch (err) {
+            console.error(err.message);
+            return;
+        }
 
-function stopCastarSdk() {
-    if (castarProcess) {
-        castarProcess.kill();
-        castarProcess = null;
-        console.log("🛑 CastarSDK detenido manualmente.");
+        if (!fs.existsSync(dllPath)) {
+            console.error("❌ No se encontró la DLL de CastarSDK:", dllPath);
+            return;
+        }
+
+        if (!CLIENT_ID_W) {
+            console.error("❌ No se encontró CLIENT_ID_W en castarCI.json");
+            return;
+        }
+
+        // Obtener MAC Address
+        const macAddress = getMacAddress();
+        if (!macAddress) {
+            console.error("❌ No se pudo obtener la MAC Address");
+            return;
+        }
+
+        /*console.log("_____________________________________________");
+        console.log("📦 CastarSDK Windows Configuration");
+        console.log("   DLL:", dllPath);
+        console.log("   Client ID:", CLIENT_ID_W);
+        console.log("   MAC Address:", macAddress);
+        console.log("   Mode:", useDebug ? "DEBUG" : "NORMAL");
+        console.log("_____________________________________________");*/
+
+        try {
+            const { Worker } = require("worker_threads");
+            const is64bit = arch === "x64" || arch === "amd64" || arch === "x86_64";
+
+            // Crear código del worker inline (ejecuta DLL en thread separado)
+            const workerCode = `
+                const { parentPort } = require('worker_threads');
+                const koffi = require('koffi');
+
+                const dllPath = ${JSON.stringify(dllPath)};
+                const clientId = ${JSON.stringify(CLIENT_ID_W)};
+                const macAddress = ${JSON.stringify(macAddress)};
+                const is64bit = ${is64bit};
+                const useDebug = ${useDebug};
+                `;
+
+            console.log("🔄 Iniciando SDK en worker thread...");
+            sdkWorker = new Worker(workerCode, { eval: true });
+
+            sdkWorker.on('message', (msg) => {
+                if (msg.type === 'success') {
+                    console.log("______________________________________________________");
+                    console.log("✅ CastarSDK Windows ACTIVO");
+                    console.log("   👉 SDK corriendo en worker thread");
+                    console.log("   👉 Verifica el panel de control de CastarSDK");
+                    console.log("______________________________________________________");
+                } else if (msg.type === 'error') {
+                    console.error("❌ Error en worker:", msg.message);
+                    if (msg.stack) console.error("   Stack:", msg.stack);
+                    sdkWorker = null;
+                }
+            });
+
+            sdkWorker.on('error', (err) => {
+                console.error("❌ Error en worker thread:", err.message);
+                sdkWorker = null;
+            });
+
+            sdkWorker.on('exit', (code) => {
+                if (code !== 0) {
+                    console.warn(`⚠️ Worker terminó con código: ${code}`);
+                }
+                sdkWorker = null;
+            });
+
+        } catch (err) {
+            console.error("❌ Error al crear worker:", err.message);
+            console.error("   Stack:", err.stack);
+            sdkWorker = null;
+        }
+        return;
     }
+
+    console.error("❌ Plataforma no soportada:", platform);
 }
 
-module.exports = { startCastarSdk, stopCastarSdk };
+// ======== Stop SDK ========
+function stopCastarSdk() {
+    const platform = os.platform();
+
+    if (platform === "linux") {
+        if (castarProcess) {
+            try {
+                castarProcess.kill();
+            } catch (err) {
+                console.warn("⚠️ Error al detener proceso:", err.message);
+            }
+            castarProcess = null;
+            try {
+                fs.unlinkSync(pidFile);
+            } catch { }
+            console.log("🛑 CastarSDK Linux detenido");
+        } else {
+            console.log("ℹ️ No hay proceso Linux para detener");
+        }
+        return;
+    }
+
+    if (platform === "win32") {
+        if (sdkWorker) {
+            try {
+                console.log("🛑 Terminando worker thread...");
+                sdkWorker.terminate();
+                console.log("✅ Worker terminado");
+            } catch (err) {
+                console.warn("⚠️ Error al terminar worker:", err.message);
+            }
+            sdkWorker = null;
+        } else {
+            console.log("ℹ️ CastarSDK Windows no está cargado");
+        }
+        return;
+    }
+
+    console.log("ℹ️ Plataforma no soportada para detener:", platform);
+}
+
+// ======== Funciones adicionales ========
+
+/**
+ * Inicia el SDK en modo debug
+ */
+function startDebug() {
+    console.log("🐛 Iniciando en modo DEBUG");
+    startCastarSdk(true);
+}
+
+/**
+ * Verifica si el SDK está cargado
+ */
+function isLoaded() {
+    const platform = os.platform();
+
+    if (platform === "linux") {
+        return castarProcess !== null;
+    }
+
+    if (platform === "win32") {
+        return sdkWorker !== null;
+    }
+
+    return false;
+}
+
+/**
+ * Obtiene información del estado del SDK
+ */
+function getStatus() {
+    const platform = os.platform();
+
+    if (platform === "linux") {
+        return {
+            platform: "linux",
+            running: castarProcess !== null,
+            pid: castarProcess?.pid || null
+        };
+    }
+
+    if (platform === "win32") {
+        return {
+            platform: "windows",
+            running: sdkWorker !== null,
+            workerActive: sdkWorker !== null,
+            macAddress: getMacAddress()
+        };
+    }
+
+    return {
+        platform: platform,
+        running: false,
+        supported: false
+    };
+}
+
+// Exportar funciones
+module.exports = {
+    startCastarSdk,
+    stopCastarSdk,
+    startDebug,
+    isLoaded,
+    getStatus,
+    getMacAddress  // Exportar para debugging
+};
