@@ -10,6 +10,7 @@ const REMOTE_PLATFORMS_URL =
 const REMOTE_COURSES_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/courses.json';
 const REMOTE_TIMESTAMP_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/json-timestamp.json';
 const axios = require('axios');
+const { autoUpdater } = require('electron-updater');
 
 const { sendAnalyticsEvent } = require('./analytics.js');
 
@@ -493,6 +494,13 @@ function createWindow() {
     app.quit();
   }
   // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
+
+  mainWindow.once('ready-to-show', () => {
+      // Retrasar la comprobación
+      setTimeout(() => {
+          autoUpdater.checkForUpdatesAndNotify();
+      }, 3000); 
+  });
 }
 
 
@@ -521,6 +529,43 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
+// --- Manejadores de Eventos de autoUpdater ---
+
+// Evento: Se encontró una actualización
+autoUpdater.on('update-available', (info) => {
+    dialog.showMessageBox({
+        type: 'info',
+        title: 'Actualización disponible',
+        message: `Se ha encontrado una nueva versión (${info.version}). La descarga comenzará ahora.`,
+    });
+});
+
+// Evento: La actualización ha sido descargada
+autoUpdater.on('update-downloaded', () => {
+    dialog.showMessageBox({
+        type: 'question',
+        buttons: ['Reiniciar', 'Más tarde'],
+        defaultId: 0,
+        title: 'Actualización lista',
+        message: 'La actualización se ha descargado y está lista para instalarse. ¿Quieres reiniciar la aplicación ahora?',
+    }).then(result => {
+        if (result.response === 0) { // Si el usuario eligió 'Reiniciar'
+            autoUpdater.quitAndInstall();
+        }
+    });
+});
+
+// Evento: No hay actualizaciones
+autoUpdater.on('update-not-available', (info) => {
+    // Puedes comentar esto, ya que puede ser molesto en cada inicio
+    // console.log(`No hay actualizaciones disponibles: ${info.version}`);
+});
+
+// Evento: Error al buscar/descargar
+autoUpdater.on('error', (err) => {
+    console.error('Error en la actualización:', err);
+    // Opcional: mostrar un diálogo de error
+});
 
 // --- IPC PARA NAVEGACIÓN ---
 ipcMain.on('open-course-detail', (event, courseId) => {
