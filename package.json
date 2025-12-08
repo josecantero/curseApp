@@ -56,7 +56,7 @@
     "publish": {
       "provider": "github",
       "owner": "josecantero",
-      "repo": "https://github.com/josecantero/curseApp"
+      "repo": "curseApp"
     }
   },
   "dependencies": {
