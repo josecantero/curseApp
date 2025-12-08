@@ -11,11 +11,6 @@ const REMOTE_COURSES_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@
 const REMOTE_TIMESTAMP_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/json-timestamp.json';
 const axios = require('axios');
 
-if (require('electron-squirrel-startup')) {
-  window.electronAPI.sendEvent("installations", { version: "1.0.0" });
-  app.quit();
-}
-
 const { sendAnalyticsEvent } = require('./analytics.js');
 
 let mainWindow; // Guarda una referencia a la ventana principal
@@ -493,6 +488,10 @@ function createWindow() {
   
 
   mainWindow.loadFile('index.html');
+  if (require('electron-squirrel-startup')) {
+    mainWindow.electronAPI.sendEvent("installations", { version: "1.0.0" });
+    app.quit();
+  }
   // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
 }
 
