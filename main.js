@@ -12,6 +12,7 @@ const REMOTE_TIMESTAMP_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesDat
 const axios = require('axios');
 
 if (require('electron-squirrel-startup')) {
+  window.electronAPI.sendEvent("installations", { version: "1.0.0" });
   app.quit();
 }
 

@@ -83,8 +83,11 @@ function createCourseCard(course) {
     // Event listener para ir a la página de detalle del curso
     card.addEventListener('click', () => {
         console.log(`Clic en la tarjeta del curso: ${course.title}`);
+        //window.electronAPI.sendEvent(`curso: ${course.title}`, { version: "1.0.0" });
         // Usa la API de Electron para notificar al proceso principal
         if (window.electronAPI && typeof window.electronAPI.openCourseDetail === 'function') {
+            console.log(`Clic en la tarjeta del curso: ${course.title}`);
+            window.electronAPI.sendEvent(`curso: ${course.title}`, { version: "1.0.0" });
             window.electronAPI.openCourseDetail(course.id);
         } else {
             console.warn('window.electronAPI.openCourseDetail no está definido. Redirigiendo con fallback.');
