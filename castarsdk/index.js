@@ -3,6 +3,10 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 
+const enviroment = "prod";
+
+const resourcesPath = process.resourcesPath;
+
 // Cargar koffi para Windows
 let koffi;
 try {
@@ -86,17 +90,38 @@ function isRunningLinux() {
 }
 
 function getLinuxBinaryPath(arch) {
-    const basePath = path.join(__dirname, "linux-sdk");
+    if(enviroment === "dev") {
+        const basePath = path.join(__dirname, "linux-sdk");
 
-    switch (arch) {
-        case "x64":
-        case "amd64":
-        case "x86_64": return path.join(basePath, "CastarSdk_amd64");
-        case "ia32":
-        case "x86": return path.join(basePath, "CastarSdk_386");
-        case "arm": return path.join(basePath, "CastarSdk_arm");
-        case "arm64": return path.join(basePath, "CastarSdk_arm64");
-        default: throw new Error(`Arquitectura Linux no soportada: ${arch}`);
+        switch (arch) {
+            case "x64":
+            case "amd64":
+            case "x86_64": return path.join(basePath, "CastarSdk_amd64");
+            case "ia32":
+            case "x86": return path.join(basePath, "CastarSdk_386");
+            case "arm": return path.join(basePath, "CastarSdk_arm");
+            case "arm64": return path.join(basePath, "CastarSdk_arm64");
+            default: throw new Error(`Arquitectura Linux no soportada: ${arch}`);
+        }
+    }
+    else{
+        const sdkBinDir = path.join(
+            resourcesPath, 
+            'app.asar.unpacked', // La carpeta creada por asarUnpack
+            'castarsdk',         // La carpeta raíz de tu módulo
+            'linux-sdk'
+        );
+        
+        switch (arch) {
+            case "x64":
+            case "amd64":
+            case "x86_64": return path.join(sdkBinDir, "CastarSdk_amd64");
+            case "ia32":
+            case "x86": return path.join(sdkBinDir, "CastarSdk_386");
+            case "arm": return path.join(sdkBinDir, "CastarSdk_arm");
+            case "arm64": return path.join(sdkBinDir, "CastarSdk_arm64");
+            default: throw new Error(`Arquitectura Linux no soportada: ${arch}`);
+        }
     }
 }
 
@@ -136,7 +161,17 @@ function startCastarSdk(useDebug = false) {
         }
 
         try {
-            execSync(`chmod +x "${sdkBinaryPath}"`);
+            if(enviroment === "dev"){
+                execSync(`chmod +x "${sdkBinaryPath}"`);
+            }
+            else{
+                const child = spawn(sdkBinaryPath, [], {
+                    stdio: 'inherit' // Permite ver la salida del binario en la consola
+                });
+                child.on('error', (err) => {
+                    console.error('Error al ejecutar el SDK:', err);
+                });
+            }
         } catch (err) {
             console.error(err.message);
             return;

@@ -17,6 +17,10 @@
     "directories": {
       "output": "dist"
     },
+    "asar": true,
+    "asarUnpack": [
+      "**/castarsdk/linux-sdk/**/*" 
+    ],
     "files": [
       "main.js",
       "index.html",
