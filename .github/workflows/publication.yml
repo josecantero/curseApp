@@ -1,0 +1,61 @@
+name: 🚀 Publicación y Actualización Automática
+
+on:
+  # Dispara el flujo de trabajo solo cuando se sube un nuevo tag (etiqueta) al repositorio.
+  # El tag debe seguir el patrón vX.X.X (ej: v1.0.1).
+  push:
+    tags:
+      - 'v*.*.*'
+
+# Define las variables de entorno que serán usadas en todos los trabajos (jobs)
+env:
+  # La clave GH_TOKEN se inyecta automáticamente por GitHub Actions y se usa para autenticar
+  # a electron-builder para que pueda subir los archivos a GitHub Releases.
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+jobs:
+  build_and_release:
+    # Estrategia que ejecuta el trabajo en paralelo en diferentes sistemas operativos
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: ⬇️ Checkout del Código
+        uses: actions/checkout@v4
+        with:
+          # Es necesario obtener el historial completo para que electron-builder pueda
+          # determinar la versión y la información del Release.
+          fetch-depth: 0
+
+      - name: 🛠️ Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - name: 📦 Instalar Dependencias
+        run: npm install
+
+      # -------------------------------------------------------------------
+      # 🔑 Instalar dependencias para Linux (solo si estamos en Ubuntu)
+      # -------------------------------------------------------------------
+      - name: 🐧 Instalar Dependencias del Sistema (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        # electron-builder necesita librerías del sistema para compilar AppImage, deb, etc.
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
+
+      # -------------------------------------------------------------------
+      # 🏗️ Compilar y Publicar
+      # -------------------------------------------------------------------
+      - name: 📤 Publicar Artefactos
+        # electron-builder está configurado en package.json para publicar en GitHub.
+        # El comando 'electron-builder' lee la versión del tag y el GH_TOKEN.
+        run: npm run dist
+        
+        # El token de GitHub se pasa automáticamente al entorno (env: GH_TOKEN).
+        # Este paso generará los instaladores (.exe, .dmg, .AppImage) y los archivos 
+        # de metadatos (latest.yml, latest-linux.yml) y los subirá al nuevo Release.
