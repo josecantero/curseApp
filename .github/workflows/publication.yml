@@ -12,16 +12,22 @@ env:
   # La clave GH_TOKEN se inyecta automáticamente por GitHub Actions y se usa para autenticar
   # a electron-builder para que pueda subir los archivos a GitHub Releases.
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
 jobs:
   build_and_release:
+    # 🔑 FIX: Añadir permisos de escritura (write) para 'contents' (que incluye Releases)
+    # Esto soluciona el error '403 Forbidden: Resource not accessible by integration'.
+    permissions:
+      contents: write
+
     # Estrategia que ejecuta el trabajo en paralelo en diferentes sistemas operativos
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        # ✅ CAMBIO: Se eliminó 'macos-latest' de la matriz, solo quedan Linux y Windows.
+        os: [ubuntu-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
-    
+
     steps:
       - name: ⬇️ Checkout del Código
         uses: actions/checkout@v4
@@ -34,7 +40,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: 📦 Instalar Dependencias
         run: npm install
 
@@ -55,7 +61,7 @@ jobs:
         # electron-builder está configurado en package.json para publicar en GitHub.
         # El comando 'electron-builder' lee la versión del tag y el GH_TOKEN.
         run: npm run dist
-        
+
         # El token de GitHub se pasa automáticamente al entorno (env: GH_TOKEN).
-        # Este paso generará los instaladores (.exe, .dmg, .AppImage) y los archivos 
+        # Este paso generará los instaladores (.exe, .dmg, .AppImage) y los archivos
         # de metadatos (latest.yml, latest-linux.yml) y los subirá al nuevo Release.
