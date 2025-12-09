@@ -76,7 +76,8 @@ function getMacAddress() {
 // ======== Linux helpers ========
 function isRunningLinux() {
     try {
-        const result = execSync("pgrep -f CastarSdk_").toString().trim();
+        const result = execSync("pidof CastarSdk_amd64").toString();
+        console.log("pgrep result:", result);
         if (!result) return false;
         return true;
     } catch {
