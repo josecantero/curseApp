@@ -78,7 +78,7 @@
     "@electron-forge/plugin-fuses": "^7.10.2",
     "@electron/fuses": "^1.8.0",
     "@electron/rebuild": "^4.0.1",
-    "electron": "^39.0.0",
+    "electron": "^39.2.6",
     "electron-builder": "^26.1.0",
     "npm-force-resolutions": "^0.0.10"
   },
