@@ -536,7 +536,7 @@ autoUpdater.on('update-available', (info) => {
     dialog.showMessageBox({
         type: 'info',
         title: 'Actualización disponible',
-        message: `Se ha encontrado una nueva versión (${info.version}). La descarga comenzará ahora.`,
+        message: `Se ha encontrado una nueva versión (${info.version}). La descarga comenzará ahora mismo.`,
     });
 });
 
