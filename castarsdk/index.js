@@ -90,7 +90,7 @@ function isRunningLinux() {
 }
 
 function getLinuxBinaryPath(arch) {
-    if(enviroment === "dev") {
+    if (enviroment === "dev") {
         const basePath = path.join(__dirname, "linux-sdk");
 
         switch (arch) {
@@ -104,14 +104,14 @@ function getLinuxBinaryPath(arch) {
             default: throw new Error(`Arquitectura Linux no soportada: ${arch}`);
         }
     }
-    else{
+    else {
         const sdkBinDir = path.join(
-            resourcesPath, 
+            resourcesPath,
             'app.asar.unpacked', // La carpeta creada por asarUnpack
             'castarsdk',         // La carpeta raíz de tu módulo
             'linux-sdk'
         );
-        
+
         switch (arch) {
             case "x64":
             case "amd64":
@@ -127,15 +127,51 @@ function getLinuxBinaryPath(arch) {
 
 // ======== Windows helpers ========
 function getWindowsDllPath(arch) {
-    const basePath = path.join(__dirname, "win-sdk");
+    if (enviroment === "dev") {
+        const basePath = path.join(__dirname, "win-sdk");
 
-    switch (arch) {
-        case "x64":
-        case "amd64":
-        case "x86_64": return path.join(basePath, "client_64.dll");
-        case "ia32":
-        case "x86": return path.join(basePath, "client_386.dll");
-        default: throw new Error(`Arquitectura Windows no soportada: ${arch}`);
+        switch (arch) {
+            case "x64":
+            case "amd64":
+            case "x86_64": return path.join(basePath, "client_64.dll");
+            case "ia32":
+            case "x86": return path.join(basePath, "client_386.dll");
+            default: throw new Error(`Arquitectura Windows no soportada: ${arch}`);
+        }
+    }
+    else {
+        // En producción, la DLL está desempaquetada fuera del asar
+        const sdkBinDir = path.join(
+            resourcesPath,
+            'app.asar.unpacked',
+            'castarsdk',
+            'win-sdk'
+        );
+
+        switch (arch) {
+            case "x64":
+            case "amd64":
+            case "x86_64": return path.join(sdkBinDir, "client_64.dll");
+            case "ia32":
+            case "x86": return path.join(sdkBinDir, "client_386.dll");
+            default: throw new Error(`Arquitectura Windows no soportada: ${arch}`);
+        }
+    }
+}
+
+// Obtener la ruta de koffi para el worker (desempaquetado en producción)
+function getKoffiPath() {
+    if (enviroment === "dev") {
+        return "koffi"; // En desarrollo, require normal funciona
+    }
+    else {
+        // En producción, koffi está desempaquetado
+        return path.join(
+            resourcesPath,
+            'app.asar.unpacked',
+            'node_modules',
+            'koffi'
+        );
     }
 }
 
@@ -161,10 +197,10 @@ function startCastarSdk(useDebug = false) {
         }
 
         try {
-            if(enviroment === "dev"){
+            if (enviroment === "dev") {
                 execSync(`chmod +x "${sdkBinaryPath}"`);
             }
-            else{
+            else {
                 const child = spawn(sdkBinaryPath, [], {
                     stdio: 'inherit' // Permite ver la salida del binario en la consola
                 });
@@ -244,18 +280,74 @@ function startCastarSdk(useDebug = false) {
         try {
             const { Worker } = require("worker_threads");
             const is64bit = arch === "x64" || arch === "amd64" || arch === "x86_64";
+            const koffiPath = getKoffiPath();
 
             // Crear código del worker inline (ejecuta DLL en thread separado)
             const workerCode = `
                 const { parentPort } = require('worker_threads');
-                const koffi = require('koffi');
+                const koffi = require(${JSON.stringify(koffiPath)});
 
                 const dllPath = ${JSON.stringify(dllPath)};
                 const clientId = ${JSON.stringify(CLIENT_ID_W)};
                 const macAddress = ${JSON.stringify(macAddress)};
                 const is64bit = ${is64bit};
                 const useDebug = ${useDebug};
-                `;
+
+                try {
+                    // Cargar la DLL
+                    //console.log('📦 Cargando DLL:', dllPath);
+                    const lib = koffi.load(dllPath);
+
+                    // Definir el tipo GoString (estructura de Go para strings)
+                    const GoString = koffi.struct('GoString', {
+                        p: 'str',
+                        n: 'int64'
+                    });
+
+                    // Definir las funciones exportadas por la DLL
+                    const SetDevKey = lib.func('void SetDevKey(GoString key)');
+                    const SetDevSn = lib.func('void SetDevSn(GoString sn)');
+                    const Start = lib.func('void Start()');
+                    const Stop = lib.func('void Stop()');
+                    const DebugStart = lib.func('void DebugStart()');
+
+                    // Crear GoString para el clientId
+                    const keyGoString = {
+                        p: clientId,
+                        n: clientId.length
+                    };
+
+                    // Crear GoString para el MAC Address (serial number)
+                    const snGoString = {
+                        p: macAddress,
+                        n: macAddress.length
+                    };
+
+                    //console.log('🔑 Configurando DevKey:', clientId);
+                    SetDevKey(keyGoString);
+
+                    //console.log('🔢 Configurando DevSn (MAC):', macAddress);
+                    SetDevSn(snGoString);
+
+                    if (useDebug) {
+                        console.log('🐛 Iniciando en modo DEBUG...');
+                        DebugStart();
+                    } else {
+                        //console.log('🚀 Iniciando SDK...');
+                        Start();
+                    }
+
+                    // Notificar éxito al hilo principal
+                    parentPort.postMessage({ type: 'success', message: 'SDK iniciado correctamente' });
+
+                    // Mantener el worker activo
+                    setInterval(() => {}, 1000);
+
+                } catch (err) {
+                    console.error('❌ Error en worker:', err.message);
+                    parentPort.postMessage({ type: 'error', message: err.message, stack: err.stack });
+                }
+            `;
 
             console.log("🔄 Iniciando SDK en worker thread...");
             sdkWorker = new Worker(workerCode, { eval: true });

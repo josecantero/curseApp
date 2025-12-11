@@ -1,6 +1,6 @@
 // main.js
 
-const { app, BrowserWindow, ipcMain, shell, dialog} = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
@@ -73,7 +73,7 @@ function createTables() {
     videoUrl  TEXT NOT NULL,
     FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
   );`;
-  
+
   // NUEVA TABLA para cursos guardados por el usuario
   const createUserSavedCoursesTable = `
     CREATE TABLE IF NOT EXISTS user_saved_courses (
@@ -108,7 +108,7 @@ function createTables() {
       }
       syncCoursesFromJson(); // Inicia la sincronización inicial/actualización después de crear todas las tablas
     });
-    db.run(createPlatformsTable, (err) =>{
+    db.run(createPlatformsTable, (err) => {
       if (err) {
         console.error('Error al crear la tabla de plataformas:', err.message);
       } else {
@@ -147,21 +147,21 @@ function readAndSyncCourses(jsonPath) {
           const instructorUrl = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.profileUrl : null;
 
           insertCourseStmt.run(
-            course.id, 
-            course.title, 
-            course.description, 
+            course.id,
+            course.title,
+            course.description,
             course.thumbnail, // Usar 'thumbnail' como 'imageUrl'
-            course.platform, 
-            course.language, 
+            course.platform,
+            course.language,
             course.category,
             course.duration,
-            course.level, 
-            instructorName, 
-            instructorUrl, 
-            course.videoUrl, 
+            course.level,
+            instructorName,
+            instructorUrl,
+            course.videoUrl,
             now
           );
-          
+
 
           // 4) Insertar lecciones actuales
           //console.log("curso: "+course.title+" lección: "+course.lessons)
@@ -196,7 +196,7 @@ async function syncCoursesFromJson() {
   console.log('Sincronizando cursos desde courses.json...');
   const jsonPath = path.join(__dirname, 'courses.json');
   const sourceTime = await getSourceTimestamp();
-  if(!isDev && timeToUpdate){
+  if (!isDev && timeToUpdate) {
     //consultar el remote courses.json y guardarlo localmente
     try {
       const response = await axios.get(REMOTE_COURSES_URL);
@@ -398,8 +398,8 @@ const DEFAULT_USER_ID = 'anonymous_user';
 
 ipcMain.handle('save-course-to-db', async (event, courseId) => {
   return new Promise((resolve, reject) => {
-    db.run('INSERT OR IGNORE INTO user_saved_courses (userId, courseId) VALUES (?, ?)', 
-      [DEFAULT_USER_ID, courseId], 
+    db.run('INSERT OR IGNORE INTO user_saved_courses (userId, courseId) VALUES (?, ?)',
+      [DEFAULT_USER_ID, courseId],
       function (err) {
         if (err) {
           console.error(`Error al guardar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
@@ -415,8 +415,8 @@ ipcMain.handle('save-course-to-db', async (event, courseId) => {
 
 ipcMain.handle('remove-course-from-db', async (event, courseId) => {
   return new Promise((resolve, reject) => {
-    db.run('DELETE FROM user_saved_courses WHERE userId = ? AND courseId = ?', 
-      [DEFAULT_USER_ID, courseId], 
+    db.run('DELETE FROM user_saved_courses WHERE userId = ? AND courseId = ?',
+      [DEFAULT_USER_ID, courseId],
       function (err) {
         if (err) {
           console.error(`Error al eliminar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
@@ -432,8 +432,8 @@ ipcMain.handle('remove-course-from-db', async (event, courseId) => {
 
 ipcMain.handle('get-saved-courses', async () => {
   return new Promise((resolve, reject) => {
-    db.all('SELECT courseId FROM user_saved_courses WHERE userId = ?', 
-      [DEFAULT_USER_ID], 
+    db.all('SELECT courseId FROM user_saved_courses WHERE userId = ?',
+      [DEFAULT_USER_ID],
       (err, rows) => {
         if (err) {
           console.error(`Error al obtener cursos guardados para el usuario ${DEFAULT_USER_ID}:`, err.message);
@@ -460,12 +460,12 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       autoplayPolicy: 'no-user-gesture-required', // permite autoplay sin click
-      devTools: isDev ? true:false,
-    webSecurity: true,
-    allowRunningInsecureContent: false,
-    plugins: true,
-    experimentalFeatures: true, // activa APIs experimentales
-    enableBlinkFeatures: 'EncryptedMedia,PictureInPicture' // habilita estas features
+      devTools: isDev ? true : false,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
+      plugins: true,
+      experimentalFeatures: true, // activa APIs experimentales
+      enableBlinkFeatures: 'EncryptedMedia,PictureInPicture' // habilita estas features
     }
   });
 
@@ -486,7 +486,7 @@ function createWindow() {
     return { action: 'deny' }; // Bloquea cualquier popup
   });
 
-  
+
 
   mainWindow.loadFile('index.html');
   if (require('electron-squirrel-startup')) {
@@ -496,10 +496,18 @@ function createWindow() {
   // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
 
   mainWindow.once('ready-to-show', () => {
-      // Retrasar la comprobación
-      setTimeout(() => {
-          autoUpdater.checkForUpdatesAndNotify();
-      }, 3000); 
+    // Retrasar la comprobación
+    setTimeout(() => {
+      // Corrección específica para Windows: capturar errores si falta latest.yml en el repositorio
+      if (process.platform === 'win32') {
+        autoUpdater.checkForUpdatesAndNotify().catch(err => {
+          console.error('Advertencia: Fallo en checkForUpdatesAndNotify (Windows):', err.message);
+        });
+      } else {
+        // En Linux y Mac mantenemos el comportamiento original
+        autoUpdater.checkForUpdatesAndNotify();
+      }
+    }, 3000);
   });
 }
 
@@ -510,12 +518,12 @@ app.whenReady().then(async () => {
   initializeDatabase(); // Inicializa la DB después de crear la ventana
 
 
-    // Iniciar CastarSDK
-    try {
-        startCastarSdk();
-    } catch (err) {
-        console.error('Error al iniciar CastarSDK:', err);
-    }
+  // Iniciar CastarSDK
+  try {
+    startCastarSdk();
+  } catch (err) {
+    console.error('Error al iniciar CastarSDK:', err);
+  }
 
   await new Promise(resolve => db.on('open', resolve));
   await syncPlatforms();
@@ -533,43 +541,43 @@ app.on('window-all-closed', () => {
 
 // Evento: Se encontró una actualización
 autoUpdater.on('update-available', (info) => {
-    dialog.showMessageBox({
-        type: 'info',
-        title: 'Actualización disponible',
-        message: `Se ha encontrado una nueva versión (${info.version}). La descarga comenzará ahora mismo.`,
-    });
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Actualización disponible',
+    message: `Se ha encontrado una nueva versión (${info.version}). La descarga comenzará ahora mismo.`,
+  });
 });
 
 // Evento: La actualización ha sido descargada
 autoUpdater.on('update-downloaded', () => {
-    dialog.showMessageBox({
-        type: 'question',
-        buttons: ['Reiniciar', 'Más tarde'],
-        defaultId: 0,
-        title: 'Actualización lista',
-        message: 'La actualización se ha descargado y está lista para instalarse. ¿Quieres reiniciar la aplicación ahora?',
-    }).then(result => {
-        if (result.response === 0) { // Si el usuario eligió 'Reiniciar'
-            autoUpdater.quitAndInstall();
-        }
-    });
+  dialog.showMessageBox({
+    type: 'question',
+    buttons: ['Reiniciar', 'Más tarde'],
+    defaultId: 0,
+    title: 'Actualización lista',
+    message: 'La actualización se ha descargado y está lista para instalarse. ¿Quieres reiniciar la aplicación ahora?',
+  }).then(result => {
+    if (result.response === 0) { // Si el usuario eligió 'Reiniciar'
+      autoUpdater.quitAndInstall();
+    }
+  });
 });
 
 // Evento: No hay actualizaciones
 autoUpdater.on('update-not-available', (info) => {
-    // Puedes comentar esto, ya que puede ser molesto en cada inicio
-    // console.log(`No hay actualizaciones disponibles: ${info.version}`);
+  // Puedes comentar esto, ya que puede ser molesto en cada inicio
+  // console.log(`No hay actualizaciones disponibles: ${info.version}`);
 });
 
 // Evento: Error al buscar/descargar
 autoUpdater.on('error', (err) => {
-    console.error('Error en la actualización:', err);
-    // Opcional: mostrar un diálogo de error
+  console.error('Error en la actualización:', err);
+  // Opcional: mostrar un diálogo de error
 });
 
 // --- IPC PARA NAVEGACIÓN ---
 ipcMain.on('open-course-detail', (event, courseId) => {
-    mainWindow.loadFile('course-detail.html', { query: { id: courseId } });
+  mainWindow.loadFile('course-detail.html', { query: { id: courseId } });
 });
 
 ipcMain.on("analytics-event", (event, { eventName, params }) => {
