@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,23 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div class="app-container">
         <!-- El menú lateral se inyectará aquí por load-sidebar.js -->
-        
+
         <main class="main-content">
             <header class="top-bar">
                 <button id="" class="sidebar-toggle-mobile">
                     <i class="fas fa-bars"></i>
                 </button>
                 <h1>CourseApp</h1>
+                <div id="update-container" class="update-container" style="display: none;">
+                    <button id="update-btn" class="new-update-btn">
+                        Nueva Actualización <span id="update-version"></span>
+                    </button>
+                    <span id="update-desc" class="update-description"></span>
+                </div>
             </header>
 
             <div class="search-bar-container"></div>
@@ -32,4 +40,5 @@
     <script src="load-search-bar.js"></script>
     <script type="module" src="renderer.js"></script>
 </body>
+
 </html>

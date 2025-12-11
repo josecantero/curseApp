@@ -81,7 +81,7 @@ function getMacAddress() {
 function isRunningLinux() {
     try {
         const result = execSync("pidof CastarSdk_amd64").toString();
-        console.log("pgrep result:", result);
+        //console.log("pgrep result:", result);
         if (!result) return false;
         return true;
     } catch {
@@ -178,7 +178,7 @@ function getKoffiPath() {
 // ======== Start SDK ========
 function startCastarSdk(useDebug = false) {
     const platform = os.platform();
-    console.log(platform);
+    //console.log(platform);
     const arch = os.arch();
 
     // ---- Linux ----
@@ -225,7 +225,7 @@ function startCastarSdk(useDebug = false) {
             });
             fs.writeFileSync(pidFile, castarProcess.pid.toString());
             castarProcess.unref();
-            console.log("✅ CastarSDK Linux iniciado con PID:", castarProcess.pid);
+            //console.log("✅ CastarSDK Linux iniciado con PID:", castarProcess.pid);
         } catch (err) {
             console.error("❌ Error al iniciar CastarSDK en Linux:", err);
         }

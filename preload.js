@@ -23,8 +23,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   on: (channel, func) => {
     ipcRenderer.on(channel, (event, ...args) => func(...args));
   },
-   sendEvent: (eventName, params) =>
+  sendEvent: (eventName, params) =>
     ipcRenderer.send("analytics-event", { eventName, params }),
+
+  checkLocalUpdate: () => ipcRenderer.invoke('check-local-update'),
+  downloadUpdate: (url) => ipcRenderer.invoke('download-update', url),
 
 });
 

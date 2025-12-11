@@ -1,0 +1,8 @@
+{
+    "version": "1.0.0",
+    "description": "Mejoras de rendimiento y corrección de errores.",
+    "downloads": {
+        "linux": "https://github.com/josecantero/courseapp/releases/download/v1.1.0/CourseApp-1.1.0.AppImage",
+        "win32": "https://github.com/josecantero/courseapp/releases/download/v1.1.0/CourseApp-Setup-1.1.0.exe"
+    }
+}

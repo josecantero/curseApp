@@ -6,11 +6,11 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const isDev = false;//process.env.NODE_ENV === 'development';
 const REMOTE_PLATFORMS_URL =
-  'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/platforms.json';
-const REMOTE_COURSES_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/courses.json';
-const REMOTE_TIMESTAMP_URL = 'https://cdn.jsdelivr.net/gh/josecantero/coursesData@master/json-timestamp.json';
+  'https://raw.githubusercontent.com/josecantero/coursesData/refs/heads/main/platforms.json';
+const REMOTE_COURSES_URL = 'https://raw.githubusercontent.com/josecantero/coursesData/refs/heads/main/courses.json';
+const REMOTE_TIMESTAMP_URL = 'https://raw.githubusercontent.com/josecantero/coursesData/refs/heads/main/json-timestamp.json';
+const REMOTE_UPDATE_URL = `https://raw.githubusercontent.com/josecantero/coursesData/refs/heads/main/update.json?t=${Date.now()}`;
 const axios = require('axios');
-const { autoUpdater } = require('electron-updater');
 
 const { sendAnalyticsEvent } = require('./analytics.js');
 
@@ -33,13 +33,13 @@ function initializeDatabase() {
     if (err) {
       console.error('Error al abrir la base de datos:', err.message);
     } else {
-      console.log('Conectado a la base de datos SQLite en:', dbPath);
+      //console.log('Conectado a la base de datos SQLite en:', dbPath);
       if (!dbExists) {
-        console.log('Base de datos no encontrada. Creando tablas e inicializando...');
+        //console.log('Base de datos no encontrada. Creando tablas e inicializando...');
         createTables();
       } else {
         // Si la DB ya existe, aún queremos intentar sincronizar por si courses.json ha cambiado
-        console.log('Base de datos existente. Sincronizando cursos desde courses.json...');
+        //console.log('Base de datos existente. Sincronizando cursos desde courses.json...');
         createTables(); // Asegurarse de que todas las tablas existan, incluida la nueva
       }
     }
@@ -97,14 +97,14 @@ function createTables() {
       if (err) {
         console.error('Error al crear la tabla de cursos:', err.message);
       } else {
-        console.log('Tabla de cursos creada o ya existe.');
+        //console.log('Tabla de cursos creada o ya existe.');
       }
     });
     db.run(createUserSavedCoursesTable, (err) => {
       if (err) {
         console.error('Error al crear la tabla de cursos guardados por usuario:', err.message);
       } else {
-        console.log('Tabla de user_saved_courses creada o ya existe.');
+        //console.log('Tabla de user_saved_courses creada o ya existe.');
       }
       syncCoursesFromJson(); // Inicia la sincronización inicial/actualización después de crear todas las tablas
     });
@@ -112,7 +112,7 @@ function createTables() {
       if (err) {
         console.error('Error al crear la tabla de plataformas:', err.message);
       } else {
-        console.log('Tabla de plataformas creada o ya existe.');
+        //console.log('Tabla de plataformas creada o ya existe.');
       }
       syncPlatforms(); // Sincroniza plataformas después de crear la tabla
     });
@@ -120,7 +120,7 @@ function createTables() {
       if (err) {
         console.error('Error al crear la tabla de lecciones:', err.message);
       } else {
-        console.log('Tabla de lecciones creada o ya existe.');
+        //console.log('Tabla de lecciones creada o ya existe.');
       }
     }
   });
@@ -181,7 +181,7 @@ function readAndSyncCourses(jsonPath) {
           if (err) {
             console.error('Error al confirmar la transacción de cursos:', err.message);
           } else {
-            console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
+            //console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
           }
           insertCourseStmt.finalize();
         });
@@ -193,7 +193,7 @@ function readAndSyncCourses(jsonPath) {
 }
 
 async function syncCoursesFromJson() {
-  console.log('Sincronizando cursos desde courses.json...');
+  //console.log('Sincronizando cursos desde courses.json...');
   const jsonPath = path.join(__dirname, 'courses.json');
   const sourceTime = await getSourceTimestamp();
   if (!isDev && timeToUpdate) {
@@ -201,7 +201,7 @@ async function syncCoursesFromJson() {
     try {
       const response = await axios.get(REMOTE_COURSES_URL);
       fs.writeFileSync(jsonPath, JSON.stringify(response.data, null, 2), 'utf8');
-      console.log('courses.json descargado y guardado localmente para desarrollo.');
+      //console.log('courses.json descargado y guardado localmente para desarrollo.');
       // Ahora proceder a leer el archivo local
     } catch (error) {
       console.error('Error al descargar courses.json:', error.message);
@@ -247,7 +247,7 @@ async function syncPlatforms() {
     const dbTime = await getLastSyncTimestamp();
 
     if (sourceTime <= dbTime) {
-      console.log('Plataformas ya están actualizadas.');
+      //console.log('Plataformas ya están actualizadas.');
       return;
     } else {
       console.log('Actualizando plataformas desde platforms.json...');
@@ -324,9 +324,9 @@ async function syncPlatforms() {
             );
             reject(err);
           } else {
-            console.log(
+            /*console.log(
               `✔ Tabla platforms actualizada (${plataformas.length} filas)`
-            );
+            );*/
             resolve();
           }
         });
@@ -405,7 +405,7 @@ ipcMain.handle('save-course-to-db', async (event, courseId) => {
           console.error(`Error al guardar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
           reject(err);
         } else {
-          console.log(`Curso ${courseId} guardado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
+          //console.log(`Curso ${courseId} guardado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
           resolve(this.changes > 0); // Devuelve true si se insertó, false si ya existía
         }
       }
@@ -422,7 +422,7 @@ ipcMain.handle('remove-course-from-db', async (event, courseId) => {
           console.error(`Error al eliminar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
           reject(err);
         } else {
-          console.log(`Curso ${courseId} eliminado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
+          //console.log(`Curso ${courseId} eliminado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
           resolve(this.changes > 0); // Devuelve true si se eliminó, false si no existía
         }
       }
@@ -482,7 +482,7 @@ function createWindow() {
       return { action: 'deny' };
     }
 
-    console.log("Intento de abrir ventana bloqueado:", url);
+    //console.log("Intento de abrir ventana bloqueado:", url);
     return { action: 'deny' }; // Bloquea cualquier popup
   });
 
@@ -496,20 +496,7 @@ function createWindow() {
   // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
 
   mainWindow.once('ready-to-show', () => {
-    // Retrasar la comprobación
-    setTimeout(() => {
-      // Corrección específica para Windows: capturar errores si falta latest.yml en el repositorio
-      if (process.platform === 'win32') {
-        autoUpdater.checkForUpdatesAndNotify().catch(err => {
-          console.error('Advertencia: Fallo en checkForUpdatesAndNotify (Windows):', err.message);
-        });
-      } else {
-        // En Linux y Mac mantenemos el comportamiento original pero capturando errores
-        autoUpdater.checkForUpdatesAndNotify().catch(err => {
-          console.error('Error en checkForUpdatesAndNotify (Linux/Mac):', err);
-        });
-      }
-    }, 3000);
+
   });
 }
 
@@ -539,42 +526,103 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// --- Manejadores de Eventos de autoUpdater ---
+// --- ACTUALIZACIÓN MANUAL ---
 
-// Evento: Se encontró una actualización
-autoUpdater.on('update-available', (info) => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Actualización disponible',
-    message: `Se ha encontrado una nueva versión (${info.version}). La descarga comenzará ahora mismo.`,
-  });
-});
+ipcMain.handle('check-local-update', async () => {
+  try {
+    // Consultar el endpoint remoto
+    const response = await axios.get(REMOTE_UPDATE_URL, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+        'pragama': 'no-cache',
+        'Expires': '0'
+      }
+    });
+    const updateData = response.data;
 
-// Evento: La actualización ha sido descargada
-autoUpdater.on('update-downloaded', () => {
-  dialog.showMessageBox({
-    type: 'question',
-    buttons: ['Reiniciar', 'Más tarde'],
-    defaultId: 0,
-    title: 'Actualización lista',
-    message: 'La actualización se ha descargado y está lista para instalarse. ¿Quieres reiniciar la aplicación ahora?',
-  }).then(result => {
-    if (result.response === 0) { // Si el usuario eligió 'Reiniciar'
-      autoUpdater.quitAndInstall();
+    const currentVersion = app.getVersion();
+
+    // Comparación simple de versiones (semver-like)
+    const v1 = currentVersion.split('.').map(Number);
+    const v2 = updateData.version.split('.').map(Number);
+
+    //console.log('Version actual:', currentVersion);
+    //console.log('Version remota:', updateData.version);
+
+    let hasUpdate = false;
+    // Asumimos formato x.y.z
+    for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
+      const num1 = v1[i] || 0;
+      const num2 = v2[i] || 0;
+      if (num2 > num1) {
+        hasUpdate = true;
+        break;
+      } else if (num2 < num1) {
+        break;
+      }
     }
+
+    if (hasUpdate) {
+      const platform = process.platform;
+      // Mapear 'win32' y 'linux' a las claves del json si es necesario, 
+      // pero el usuario usó 'win32' y 'linux' en update.json así que coincide con process.platform
+      const downloadUrl = updateData.downloads ? updateData.downloads[platform] : null;
+
+      if (downloadUrl) {
+        return {
+          version: updateData.version,
+          description: updateData.description,
+          url: downloadUrl
+        };
+      }
+    }
+    return null;
+
+  } catch (error) {
+    console.error("Error checking remote update:", error);
+    return null;
+  }
+});
+
+ipcMain.handle('download-update', async (event, url) => {
+  const win = BrowserWindow.getFocusedWindow();
+  const { filePath } = await dialog.showSaveDialog(win, {
+    title: 'Guardar Actualización',
+    defaultPath: path.basename(url),
   });
-});
 
-// Evento: No hay actualizaciones
-autoUpdater.on('update-not-available', (info) => {
-  // Puedes comentar esto, ya que puede ser molesto en cada inicio
-  // console.log(`No hay actualizaciones disponibles: ${info.version}`);
-});
+  if (!filePath) return false;
 
-// Evento: Error al buscar/descargar
-autoUpdater.on('error', (err) => {
-  console.error('Error en la actualización:', err);
-  // Opcional: mostrar un diálogo de error
+  try {
+    const response = await axios({
+      method: 'get',
+      url: url,
+      responseType: 'stream'
+    });
+
+    const writer = fs.createWriteStream(filePath);
+    response.data.pipe(writer);
+
+    return new Promise((resolve, reject) => {
+      writer.on('finish', () => {
+        dialog.showMessageBox(win, {
+          type: 'info',
+          title: 'Descarga Completa',
+          message: `La actualización se ha guardado en:\n${filePath}`
+        });
+        resolve(true);
+      });
+      writer.on('error', (err) => {
+        console.error("Stream error:", err);
+        reject(err);
+      });
+    });
+
+  } catch (error) {
+    console.error("Download error:", error);
+    dialog.showErrorBox('Error de Descarga', `No se pudo descargar la actualización: ${error.message}`);
+    return false;
+  }
 });
 
 // --- IPC PARA NAVEGACIÓN ---

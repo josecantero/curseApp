@@ -101,7 +101,7 @@ function loadAndRenderCategories(courses) {
 
     // Limpiar y renderizar las opciones del dropdown
     categoryDropdownContent.innerHTML = '';
-    
+
     // Opción para borrar el filtro
     const clearOption = document.createElement('div');
     clearOption.classList.add('dropdown-option');
@@ -131,7 +131,7 @@ function loadAndRenderLanguages(courses) {
         console.warn('Elemento de dropdown de idiomas no encontrado.');
         return;
     }
-    
+
     // Extraer idiomas únicos de los cursos
     const languagesSet = new Set(courses.map(c => c.language).filter(Boolean));
     allLanguages = Array.from(languagesSet).sort();
@@ -179,7 +179,7 @@ function setupCategoryDropdownListeners() {
 function setupLanguageDropdownListeners() {
     const languageFilterButton = document.getElementById('language-filter-button');
     const languageDropdownContent = document.getElementById('language-dropdown-content');
-    
+
     // Configura el dropdown de idiomas
     setupDropdown(languageFilterButton, languageDropdownContent, (option) => {
         currentLanguageFilter = option.dataset.lang;
@@ -204,7 +204,7 @@ function setupDropdown(button, content, handler) {
     const oldButton = button.cloneNode(true);
     button.parentNode.replaceChild(oldButton, button);
     const newButton = oldButton;
-    
+
     // Adjunta el listener para el botón
     newButton.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -223,7 +223,7 @@ function setupDropdown(button, content, handler) {
         const oldOption = option.cloneNode(true);
         option.parentNode.replaceChild(oldOption, option);
         const newOption = oldOption;
-        
+
         newOption.addEventListener('click', (event) => {
             event.stopPropagation();
             handler(newOption);
@@ -242,7 +242,7 @@ async function initializeState() {
         setTimeout(() => {
             loadAndRenderPlatforms();
         }, 10); // Esperar 10 milisegundos para asegurar que las plataformas se hayan cargado.
-        
+
     } catch (error) {
         console.error('Error al cargar plataformas o cursos guardados:', error);
         const platformLogosContainer = document.getElementById('platform-logos-container');
@@ -265,7 +265,46 @@ async function initializeState() {
             courseGrid.innerHTML = '<p>No se pudieron cargar los cursos. Por favor, revisa la base de datos.</p>';
         }
     }
+
+    // Check manual updates
+    checkManualUpdate();
 }
+
+/**
+ * Verifica si hay actualizaciones manuales disponibles.
+ */
+async function checkManualUpdate() {
+    try {
+        const updateInfo = await window.electronAPI.checkLocalUpdate();
+        if (updateInfo) {
+            const container = document.getElementById('update-container');
+            const btn = document.getElementById('update-btn');
+            const versionSpan = document.getElementById('update-version');
+            const descSpan = document.getElementById('update-description'); // Corregido ID
+            // En index.html puse id="update-desc", debo corregir aquí o allá.
+            // HTML: <span id="update-desc" class="update-description"></span>
+
+            const descSpanHtml = document.getElementById('update-desc');
+
+            if (container && btn && versionSpan && descSpanHtml) {
+                container.style.display = 'flex';
+                versionSpan.textContent = `[${updateInfo.version}]`;
+                descSpanHtml.textContent = updateInfo.description;
+
+                // Remove old listeners just in case
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                newBtn.addEventListener('click', async () => {
+                    await window.electronAPI.downloadUpdate(updateInfo.url);
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Error checking for updates:', error);
+    }
+}
+
 
 /**
  * Configura todos los listeners de eventos para la página principal (index.html).
@@ -300,9 +339,9 @@ function setupMainListeners() {
                 platformLogosContainer.scrollLeft -= scrollAmount;
             });
         }
-    
+
     }, 10);
-    
+
     // Cerrar dropdowns al hacer clic fuera
     document.addEventListener('click', (event) => {
         const dropdowns = document.querySelectorAll('.dropdown-content.show');
@@ -363,7 +402,7 @@ function renderCourseDetail(course) {
             const icon = detailSaveIconWrapper.querySelector('.save-course-icon');
             const newTooltipText = savedCourses.has(course.id) ? 'Guardar en Favoritos' : 'Quitar de Guardados';
             const newAriaLabelText = savedCourses.has(course.id) ? `Guardar curso "${course.title}" en favoritos` : `Quitar curso "${course.title}" de favoritos`;
-            
+
             if (savedCourses.has(course.id)) {
                 savedCourses.delete(course.id);
                 icon.classList.remove('saved');
@@ -397,7 +436,7 @@ function renderCourseDetail(course) {
             detailInstructorLink.style.pointerEvents = 'none';
         }
     }
-    
+
     // Renderizar la lista de prerrequisitos, audiencia, etiquetas y lecciones
     ['prerequisites', 'targetAudience'].forEach(listName => {
         const listElement = document.getElementById(`course-detail-${listName}`);
