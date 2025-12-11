@@ -504,8 +504,10 @@ function createWindow() {
           console.error('Advertencia: Fallo en checkForUpdatesAndNotify (Windows):', err.message);
         });
       } else {
-        // En Linux y Mac mantenemos el comportamiento original
-        autoUpdater.checkForUpdatesAndNotify();
+        // En Linux y Mac mantenemos el comportamiento original pero capturando errores
+        autoUpdater.checkForUpdatesAndNotify().catch(err => {
+          console.error('Error en checkForUpdatesAndNotify (Linux/Mac):', err);
+        });
       }
     }, 3000);
   });
