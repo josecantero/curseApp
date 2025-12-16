@@ -490,7 +490,7 @@ function createWindow() {
 
   mainWindow.loadFile('index.html');
   if (require('electron-squirrel-startup')) {
-    mainWindow.electronAPI.sendEvent("installations", { version: "1.0.0" });
+    sendAnalyticsEvent("app_install", { version: app.getVersion(), source: "squirrel" });
     app.quit();
   }
   // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
@@ -504,7 +504,21 @@ function createWindow() {
 // --- CICLO DE VIDA DE LA APP ---
 app.whenReady().then(async () => {
   createWindow();
+
   initializeDatabase(); // Inicializa la DB después de crear la ventana
+
+  // --- ANALYTICS TRACKING ---
+  const installFlagPath = path.join(userDataPath, '.app_installed');
+  if (!fs.existsSync(installFlagPath)) {
+    sendAnalyticsEvent('app_install', { version: app.getVersion(), platform: process.platform });
+    try {
+      fs.writeFileSync(installFlagPath, new Date().toISOString());
+    } catch (e) {
+      console.error("Error creating install flag:", e);
+    }
+  }
+  sendAnalyticsEvent('app_open', { version: app.getVersion(), platform: process.platform });
+
 
 
   // Iniciar CastarSDK
