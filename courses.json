@@ -1,5 +1,58 @@
 [
   {
+    "id": "Plat_SQL_Pract",
+    "title": "SQL Práctico.",
+    "description": "SQL es lenguaje por excelencia para el manejo de datos estructurados. Incrementa tus habilidades en él con ejercicios de álgebra relacional, subconsultas y window functions. Aprende a hacer consultas más eficientes y complejas con este lenguaje.",
+    "thumbnail": "https://thumbs.odycdn.com/bd538ba157da0e2d930ee600ab94e275.webp",
+    "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1.-Breve-historia-de-SQL:b",
+    "duration": "2h 36m",
+    "category": "Desarrollo",
+    "level": "Intermedio",
+    "language": "Español",
+    "platform": "Platzi",
+    "instructor": {
+      "name": "Platzi",
+      "bio": "Plataforma de cursos",
+      "profileUrl": ""
+    },
+    "prerequisites": [
+      "Acceso a una computadora e internet."
+    ],
+    "targetAudience": "Personas interesadas en aprender SQL",
+    "tags": [
+      "Informatica",
+      "SQL",
+      "Desarrolo",
+      "Programación"
+    ],
+    "lessons": [
+      {
+        "title": "Módulo 1 Introducción - 1. Breve historia de SQL",
+        "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/1.-Breve-historia-de-SQL:b",
+        "lessonDescription": "",
+        "resources": [
+          {
+            "type": "",
+            "title": "",
+            "url": ""
+          }
+        ]
+      },
+      {
+        "title": "Módulo 1 Introducción - 2. Algebra.",
+        "videoUrl": "https://odysee.com/@VendesPorqueVendes:3/2.-%C3%81lgebra-relacional:0",
+        "lessonDescription": "",
+        "resources": [
+          {
+            "type": "",
+            "title": "",
+            "url": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "EscuelaDeContenido",
     "title": "Escuela de Creadores: Curso de Creación de Contenido",
     "description": "Aprendé a Vender por redes sociales creando contenido con el curso de MatiBox",

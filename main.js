@@ -196,6 +196,17 @@ async function syncCoursesFromJson() {
   //console.log('Sincronizando cursos desde courses.json...');
   const jsonPath = path.join(__dirname, 'courses.json');
   const sourceTime = await getSourceTimestamp();
+  const dbTime = await getLastSyncTimestamp();
+  console.log("sourceTime:", sourceTime, " dbTime:", dbTime);
+
+  if (sourceTime <= dbTime) {
+    //console.log('Cursos ya están actualizados.');
+    return;
+  } else {
+    console.log('Actualizando cursos desde courses.json...');
+    timeToUpdate = true;
+  }
+
   if (!isDev && timeToUpdate) {
     //consultar el remote courses.json y guardarlo localmente
     try {
@@ -211,15 +222,18 @@ async function syncCoursesFromJson() {
 }
 
 async function getSourceTimestamp() {
-  const src = !isDev
+  const src = isDev
     ? path.join(__dirname, 'json-timestamp.json')
     : REMOTE_TIMESTAMP_URL;
 
+  console.log("Obteniendo timestamp de:", src);
+
   try {
-    const raw = !isDev
+    console.log(axios.get(src));
+    const raw = isDev
       ? await fs.promises.readFile(src, 'utf8')
       : (await axios.get(src)).data;
-    const json = JSON.parse(raw);
+    const json = typeof raw === 'string' ? JSON.parse(raw) : raw;
     return json.platformsSourceUpdatedAt || 0;
   } catch (err) {
     console.error('No se pudo obtener timestamp', err);
