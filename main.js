@@ -195,15 +195,16 @@ function readAndSyncCourses(jsonPath) {
 async function syncCoursesFromJson() {
   //console.log('Sincronizando cursos desde courses.json...');
   const jsonPath = path.join(__dirname, 'courses.json');
+  //console.log("Usando courses.json en:", jsonPath);
   const sourceTime = await getSourceTimestamp();
   const dbTime = await getLastSyncTimestamp();
-  console.log("sourceTime:", sourceTime, " dbTime:", dbTime);
+  //console.log("sourceTime:", sourceTime, " dbTime:", dbTime);
 
   if (sourceTime <= dbTime) {
     //console.log('Cursos ya están actualizados.');
     return;
   } else {
-    console.log('Actualizando cursos desde courses.json...');
+    //console.log('Actualizando cursos desde courses.json...');
     timeToUpdate = true;
   }
 
@@ -226,10 +227,10 @@ async function getSourceTimestamp() {
     ? path.join(__dirname, 'json-timestamp.json')
     : REMOTE_TIMESTAMP_URL;
 
-  console.log("Obteniendo timestamp de:", src);
+  //console.log("Obteniendo timestamp de:", src);
 
   try {
-    console.log(axios.get(src));
+    //console.log(axios.get(src));
     const raw = isDev
       ? await fs.promises.readFile(src, 'utf8')
       : (await axios.get(src)).data;
@@ -264,18 +265,18 @@ async function syncPlatforms() {
       //console.log('Plataformas ya están actualizadas.');
       return;
     } else {
-      console.log('Actualizando plataformas desde platforms.json...');
+      //console.log('Actualizando plataformas desde platforms.json...');
       timeToUpdate = true;
     }
 
     // Obtener lista de plataformas (local en producción, remoto en dev)
-    const src = !isDev
+    const src = isDev
       ? path.join(__dirname, 'platforms.json')
       : REMOTE_PLATFORMS_URL;
 
     let raw;
     try {
-      raw = !isDev
+      raw = isDev
         ? await fs.promises.readFile(src, 'utf8')
         : (await axios.get(src)).data;
     } catch (err) {

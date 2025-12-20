@@ -1,6 +1,6 @@
 {
   "name": "courseapp",
-  "version": "1.0.77",
+  "version": "1.0.78",
   "description": "Courses Catalog",
   "main": "main.js",
   "resolutions": {
