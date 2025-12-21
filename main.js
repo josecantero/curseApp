@@ -106,7 +106,7 @@ function createTables() {
       } else {
         //console.log('Tabla de user_saved_courses creada o ya existe.');
       }
-      syncCoursesFromJson(); // Inicia la sincronización inicial/actualización después de crear todas las tablas
+      syncCourses(); // Inicia la sincronización inicial/actualización después de crear todas las tablas
     });
     db.run(createPlatformsTable, (err) => {
       if (err) {
@@ -126,100 +126,105 @@ function createTables() {
   });
 }
 
-function readAndSyncCourses(jsonPath) {
-  fs.readFile(jsonPath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error al leer courses.json:', err.message);
-      return;
-    }
-    try {
-      const courses = JSON.parse(data);
-      const insertCourseStmt = db.prepare(`
+function syncCoursesToDb(courses) {
+  if (!Array.isArray(courses)) {
+    console.error('Error: se esperaba un array de cursos');
+    return;
+  }
+  try {
+    const insertCourseStmt = db.prepare(`
         INSERT OR REPLACE INTO courses (id, title, description, imageUrl, platform, language, category, duration, level, instructor, instructorUrl, videoUrl, lastUpdated)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
-      db.serialize(() => {
-        db.run('BEGIN TRANSACTION;');
-        courses.forEach(course => {
-          const now = Date.now();
-          // Asegúrate de que instructor sea un string o null/undefined antes de guardarlo
-          const instructorName = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.name : course.instructor;
-          const instructorUrl = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.profileUrl : null;
+    db.serialize(() => {
+      db.run('BEGIN TRANSACTION;');
+      courses.forEach(course => {
+        const now = Date.now();
+        // Asegúrate de que instructor sea un string o null/undefined antes de guardarlo
+        const instructorName = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.name : course.instructor;
+        const instructorUrl = typeof course.instructor === 'object' && course.instructor !== null ? course.instructor.profileUrl : null;
 
-          insertCourseStmt.run(
-            course.id,
-            course.title,
-            course.description,
-            course.thumbnail, // Usar 'thumbnail' como 'imageUrl'
-            course.platform,
-            course.language,
-            course.category,
-            course.duration,
-            course.level,
-            instructorName,
-            instructorUrl,
-            course.videoUrl,
-            now
-          );
+        insertCourseStmt.run(
+          course.id,
+          course.title,
+          course.description,
+          course.thumbnail, // Usar 'thumbnail' como 'imageUrl'
+          course.platform,
+          course.language,
+          course.category,
+          course.duration,
+          course.level,
+          instructorName,
+          instructorUrl,
+          course.videoUrl,
+          now
+        );
 
 
-          // 4) Insertar lecciones actuales
-          //console.log("curso: "+course.title+" lección: "+course.lessons)
+        // 4) Insertar lecciones actuales
+        //console.log("curso: "+course.title+" lección: "+course.lessons)
 
-          db.run('DELETE FROM lessons WHERE courseId = ?', [course.id]);
+        db.run('DELETE FROM lessons WHERE courseId = ?', [course.id]);
 
-          if (Array.isArray(course.lessons)) {
-            course.lessons.forEach(lesson => {
-              db.run(
-                'INSERT INTO lessons (courseId, title, videoUrl) VALUES (?, ?, ?)',
-                [course.id, lesson.title, lesson.videoUrl]
-              );
-            });
-          }
-        });
-        db.run('COMMIT;', (err) => {
-          if (err) {
-            console.error('Error al confirmar la transacción de cursos:', err.message);
-          } else {
-            //console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
-          }
-          insertCourseStmt.finalize();
-        });
+        if (Array.isArray(course.lessons)) {
+          course.lessons.forEach(lesson => {
+            db.run(
+              'INSERT INTO lessons (courseId, title, videoUrl) VALUES (?, ?, ?)',
+              [course.id, lesson.title, lesson.videoUrl]
+            );
+          });
+        }
       });
-    } catch (e) {
-      console.error('Error al parsear courses.json o insertar datos:', e);
-    }
-  });
+      db.run('COMMIT;', (err) => {
+        if (err) {
+          console.error('Error al confirmar la transacción de cursos:', err.message);
+        } else {
+          //console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
+        }
+        insertCourseStmt.finalize();
+      });
+    });
+  } catch (e) {
+    console.error('Error al insertar datos de cursos:', e);
+  }
 }
 
-async function syncCoursesFromJson() {
-  //console.log('Sincronizando cursos desde courses.json...');
-  const jsonPath = path.join(__dirname, 'courses.json');
-  //console.log("Usando courses.json en:", jsonPath);
+async function syncCourses() {
+  //console.log('Sincronizando cursos desde URL remota...');
   const sourceTime = await getSourceTimestamp();
   const dbTime = await getLastSyncTimestamp();
-  //console.log("sourceTime:", sourceTime, " dbTime:", dbTime);
+  console.log("sourceTime:", sourceTime, " dbTime:", dbTime);
 
   if (sourceTime <= dbTime) {
     //console.log('Cursos ya están actualizados.');
     return;
   } else {
-    //console.log('Actualizando cursos desde courses.json...');
+    //console.log('Actualizando cursos desde URL remota...');
     timeToUpdate = true;
   }
 
-  if (!isDev && timeToUpdate) {
-    //consultar el remote courses.json y guardarlo localmente
-    try {
-      const response = await axios.get(REMOTE_COURSES_URL);
-      fs.writeFileSync(jsonPath, JSON.stringify(response.data, null, 2), 'utf8');
-      //console.log('courses.json descargado y guardado localmente para desarrollo.');
-      // Ahora proceder a leer el archivo local
-    } catch (error) {
-      console.error('Error al descargar courses.json:', error.message);
+  // Obtener cursos desde la URL remota (o local en dev)
+  const src = isDev
+    ? path.join(__dirname, 'courses.json')
+    : REMOTE_COURSES_URL;
+
+  try {
+    let coursesData;
+    if (isDev) {
+      // En modo desarrollo, leer del archivo local si existe
+      const data = await fs.promises.readFile(src, 'utf8');
+      coursesData = JSON.parse(data);
+    } else {
+      // En producción, obtener directamente desde la URL remota
+      const response = await axios.get(src);
+      coursesData = response.data;
     }
+
+    // Guardar directamente en la base de datos
+    syncCoursesToDb(coursesData);
+  } catch (error) {
+    console.error('Error al obtener cursos:', error.message);
   }
-  readAndSyncCourses(jsonPath);
 }
 
 async function getSourceTimestamp() {
