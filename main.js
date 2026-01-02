@@ -66,31 +66,43 @@ function createTables() {
   `;
 
   const createLessonsTable = `
-  CREATE TABLE IF NOT EXISTS lessons (
+  CREATE TABLE IF NOT EXISTS lessons(
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     courseId  TEXT NOT NULL,
     title     TEXT NOT NULL,
     videoUrl  TEXT NOT NULL,
-    FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
+    FOREIGN KEY(courseId) REFERENCES courses(id) ON DELETE CASCADE
   );`;
+
+  const createResourcesTable = `
+  CREATE TABLE IF NOT EXISTS resources(
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    courseId  TEXT NOT NULL,
+    lessonId  INTEGER,
+    title     TEXT NOT NULL,
+    url       TEXT NOT NULL,
+    type      TEXT,
+    FOREIGN KEY(courseId) REFERENCES courses(id) ON DELETE CASCADE,
+    FOREIGN KEY(lessonId) REFERENCES lessons(id) ON DELETE CASCADE
+  ); `;
 
   // NUEVA TABLA para cursos guardados por el usuario
   const createUserSavedCoursesTable = `
-    CREATE TABLE IF NOT EXISTS user_saved_courses (
-      userId TEXT NOT NULL,
-      courseId TEXT NOT NULL,
-      PRIMARY KEY (userId, courseId),
-      FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
-    );
+    CREATE TABLE IF NOT EXISTS user_saved_courses(
+    userId TEXT NOT NULL,
+    courseId TEXT NOT NULL,
+    PRIMARY KEY(userId, courseId),
+    FOREIGN KEY(courseId) REFERENCES courses(id) ON DELETE CASCADE
+  );
   `;
 
   const createPlatformsTable = `
-  CREATE TABLE IF NOT EXISTS platforms (
+  CREATE TABLE IF NOT EXISTS platforms(
     id        TEXT PRIMARY KEY,
     name      TEXT NOT NULL,
     imageUrl  TEXT NOT NULL,
     updatedAt INTEGER NOT NULL
-  );`;
+  ); `;
 
   db.serialize(() => {
     db.run(createCoursesTable, (err) => {
@@ -116,13 +128,23 @@ function createTables() {
       }
       syncPlatforms(); // Sincroniza plataformas después de crear la tabla
     });
-    db.run(createLessonsTable), (err) => {
+    db.run(createLessonsTable, (err) => {
       if (err) {
         console.error('Error al crear la tabla de lecciones:', err.message);
       } else {
         //console.log('Tabla de lecciones creada o ya existe.');
       }
-    }
+    });
+    db.run('DROP TABLE IF EXISTS resources', (err) => {
+      if (err) console.error('Error dropping resources table:', err);
+    });
+    db.run(createResourcesTable, (err) => {
+      if (err) {
+        console.error('Error al crear la tabla de recursos:', err.message);
+      } else {
+        //console.log('Tabla de recursos creada o ya existe.');
+      }
+    });
   });
 }
 
@@ -133,8 +155,8 @@ function syncCoursesToDb(courses) {
   }
   try {
     const insertCourseStmt = db.prepare(`
-        INSERT OR REPLACE INTO courses (id, title, description, imageUrl, platform, language, category, duration, level, instructor, instructorUrl, videoUrl, lastUpdated)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT OR REPLACE INTO courses(id, title, description, imageUrl, platform, language, category, duration, level, instructor, instructorUrl, videoUrl, lastUpdated)
+  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
     db.serialize(() => {
       db.run('BEGIN TRANSACTION;');
@@ -164,22 +186,41 @@ function syncCoursesToDb(courses) {
         // 4) Insertar lecciones actuales
         //console.log("curso: "+course.title+" lección: "+course.lessons)
 
+        // 4) Insertar lecciones y sus recursos
+        // Primero borramos recursos viejos de este curso (limpieza)
+        db.run('DELETE FROM resources WHERE courseId = ?', [course.id]);
         db.run('DELETE FROM lessons WHERE courseId = ?', [course.id]);
 
         if (Array.isArray(course.lessons)) {
           course.lessons.forEach(lesson => {
             db.run(
               'INSERT INTO lessons (courseId, title, videoUrl) VALUES (?, ?, ?)',
-              [course.id, lesson.title, lesson.videoUrl]
+              [course.id, lesson.title, lesson.videoUrl],
+              function (err) {
+                if (err) {
+                  console.error("Error inserting lesson:", err);
+                  return;
+                }
+                const lessonId = this.lastID;
+                if (lesson.resources && Array.isArray(lesson.resources)) {
+                  lesson.resources.forEach(resource => {
+                    db.run(
+                      'INSERT INTO resources (courseId, lessonId, title, url, type) VALUES (?, ?, ?, ?, ?)',
+                      [course.id, lessonId, resource.title, resource.url, resource.type]
+                    );
+                  });
+                }
+              }
             );
           });
         }
+
       });
       db.run('COMMIT;', (err) => {
         if (err) {
           console.error('Error al confirmar la transacción de cursos:', err.message);
         } else {
-          //console.log(`Sincronización de cursos completada. Se insertaron/actualizaron ${courses.length} cursos.`);
+          //console.log(`Sincronización de cursos completada.Se insertaron / actualizaron ${ courses.length } cursos.`);
         }
         insertCourseStmt.finalize();
       });
@@ -313,8 +354,8 @@ async function syncPlatforms() {
     );
 
     const stmt = db.prepare(`
-      INSERT OR REPLACE INTO platforms (id, name, imageUrl, updatedAt)
-      VALUES (?, ?, ?, ?)
+      INSERT OR REPLACE INTO platforms(id, name, imageUrl, updatedAt)
+  VALUES(?, ?, ?, ?)
     `);
 
     await new Promise((resolve, reject) => {
@@ -345,7 +386,7 @@ async function syncPlatforms() {
             reject(err);
           } else {
             /*console.log(
-              `✔ Tabla platforms actualizada (${plataformas.length} filas)`
+              `✔ Tabla platforms actualizada(${ plataformas.length } filas)`
             );*/
             resolve();
           }
@@ -384,7 +425,7 @@ ipcMain.handle('get-course-by-id', async (event, courseId) => {
   return new Promise((resolve, reject) => {
     db.get('SELECT * FROM courses WHERE id = ?', [courseId], (err, row) => {
       if (err) {
-        console.error(`Error al obtener curso por ID ${courseId} de la DB:`, err.message);
+        console.error(`Error al obtener curso por ID ${courseId} de la DB: `, err.message);
         reject(err);
       } else {
         resolve(row);
@@ -393,10 +434,22 @@ ipcMain.handle('get-course-by-id', async (event, courseId) => {
   });
 });
 
+
+
 ipcMain.handle('get-lessons-by-course', (event, courseId) =>
   new Promise((res, rej) =>
     db.all(
       'SELECT * FROM lessons WHERE courseId = ? ORDER BY id',
+      [courseId],
+      (err, rows) => (err ? rej(err) : res(rows))
+    )
+  )
+);
+
+ipcMain.handle('get-resources-by-course', (event, courseId) =>
+  new Promise((res, rej) =>
+    db.all(
+      'SELECT * FROM resources WHERE courseId = ? ORDER BY id',
       [courseId],
       (err, rows) => (err ? rej(err) : res(rows))
     )
@@ -422,10 +475,10 @@ ipcMain.handle('save-course-to-db', async (event, courseId) => {
       [DEFAULT_USER_ID, courseId],
       function (err) {
         if (err) {
-          console.error(`Error al guardar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
+          console.error(`Error al guardar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}: `, err.message);
           reject(err);
         } else {
-          //console.log(`Curso ${courseId} guardado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
+          //console.log(`Curso ${ courseId } guardado para el usuario ${ DEFAULT_USER_ID }. Filas afectadas: ${ this.changes } `);
           resolve(this.changes > 0); // Devuelve true si se insertó, false si ya existía
         }
       }
@@ -439,10 +492,10 @@ ipcMain.handle('remove-course-from-db', async (event, courseId) => {
       [DEFAULT_USER_ID, courseId],
       function (err) {
         if (err) {
-          console.error(`Error al eliminar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}:`, err.message);
+          console.error(`Error al eliminar el curso ${courseId} para el usuario ${DEFAULT_USER_ID}: `, err.message);
           reject(err);
         } else {
-          //console.log(`Curso ${courseId} eliminado para el usuario ${DEFAULT_USER_ID}. Filas afectadas: ${this.changes}`);
+          //console.log(`Curso ${ courseId } eliminado para el usuario ${ DEFAULT_USER_ID }. Filas afectadas: ${ this.changes } `);
           resolve(this.changes > 0); // Devuelve true si se eliminó, false si no existía
         }
       }
@@ -456,7 +509,7 @@ ipcMain.handle('get-saved-courses', async () => {
       [DEFAULT_USER_ID],
       (err, rows) => {
         if (err) {
-          console.error(`Error al obtener cursos guardados para el usuario ${DEFAULT_USER_ID}:`, err.message);
+          console.error(`Error al obtener cursos guardados para el usuario ${DEFAULT_USER_ID}: `, err.message);
           reject(err);
         } else {
           // Devuelve solo los IDs de los cursos guardados
@@ -489,7 +542,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+  mainWindow.webContents.setWindowOpenHandler(({ url, frameName }) => {
     const allowedUrls = [
       'https://www.patreon.com/cw/CourseApp/shop',
       'https://www.patreon.com/cw/CourseApp'
@@ -503,7 +556,38 @@ function createWindow() {
     }
 
     //console.log("Intento de abrir ventana bloqueado:", url);
-    return { action: 'deny' }; // Bloquea cualquier popup
+    //console.log("Intento de abrir ventana bloqueado:", url);
+    //return { action: 'deny' }; // Bloquea cualquier popup
+
+    // Permitir popups de recursos con el nombre de frame 'resource-popup'
+    // El usuario pidió que se abran en una ventana emergente.
+    // Electron requiere configurar 'action: allow' y posiblemente overrideBrowserWindowOptions.
+    // Vamos a permitirlo si parece un recurso externo seguro o si el frameName coincide.
+    // Nota: El renderer debe llamar window.open(url, 'resource-popup', '...')
+
+    // O simplemente verificar la URL si es un recurso conocido (PDF, scribd, etc.)
+    // Pero como las URLs pueden variar, mejor confiar en un mecanismo controlado.
+
+    // Implementación simple: Permitir popup si se solicita explícitamente para recursos.
+    // Sin embargo, 'frameName' no viene en details de setWindowOpenHandler directamente de manera fiable en todas las versiones,
+    // pero si usas 'window.open(url, "resource-popup")', puedes capturarlo.
+    // Revisa la documentación: setWindowOpenHandler(({ url, frameName, features, disposition, ... }))
+
+    // Verificamos si frameName es 'resource-popup'
+    // NOTA: setWindowOpenHandler tiene acceso a `frameName`.
+
+    return {
+      action: 'allow',
+      overrideBrowserWindowOptions: {
+        width: 1000,
+        height: 800,
+        autoHideMenuBar: true,
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: true
+        }
+      }
+    };
   });
 
 
@@ -513,7 +597,7 @@ function createWindow() {
     sendAnalyticsEvent("app_install", { version: app.getVersion(), source: "squirrel" });
     app.quit();
   }
-  // mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
+  mainWindow.webContents.openDevTools(); // Descomentar para abrir las herramientas de desarrollo
 
   mainWindow.once('ready-to-show', () => {
 
@@ -642,7 +726,7 @@ ipcMain.handle('download-update', async (event, url) => {
         dialog.showMessageBox(win, {
           type: 'info',
           title: 'Descarga Completa',
-          message: `La actualización se ha guardado en:\n${filePath}`
+          message: `La actualización se ha guardado en: \n${filePath} `
         });
         resolve(true);
       });
@@ -654,7 +738,7 @@ ipcMain.handle('download-update', async (event, url) => {
 
   } catch (error) {
     console.error("Download error:", error);
-    dialog.showErrorBox('Error de Descarga', `No se pudo descargar la actualización: ${error.message}`);
+    dialog.showErrorBox('Error de Descarga', `No se pudo descargar la actualización: ${error.message} `);
     return false;
   }
 });

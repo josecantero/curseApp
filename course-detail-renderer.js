@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const detailSaveIcon = saveIconWrapper ? saveIconWrapper.querySelector('.save-course-icon') : null;
 
     // Referencia al iframe de Odysee
-    const odyseeVideoIframe = document.getElementById('course-video-iframe'); 
+    const odyseeVideoIframe = document.getElementById('course-video-iframe');
     const currentLessonTitleElem = document.getElementById('current-lesson-title');
 
     // Elementos para la información del curso
@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const coursePrerequisitesList = document.getElementById('course-detail-prerequisites');
     const courseTargetAudienceElem = document.getElementById('course-detail-target-audience');
     const courseTagsContainer = document.getElementById('course-detail-tags');
+    const courseResourcesSection = document.getElementById('course-resources-section');
+    const courseResourcesList = document.getElementById('course-detail-resources');
 
     const lessonsList = document.getElementById('lessons-list');
 
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (videoUrl.includes('odysee.com/') && !videoUrl.includes('/$/embed/')) {
                 embedUrl = videoUrl.replace('odysee.com/', 'odysee.com/$/embed/');
             }
-            
+
             odyseeVideoIframe.src = embedUrl;
         }
         if (currentLessonTitleElem) {
@@ -62,11 +64,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Obtener el ID del curso de la URL (priorizando query param, luego hash)
     let courseId = null;
     const urlParams = new URLSearchParams(window.location.search);
-    courseId = urlParams.get('id'); 
+    courseId = urlParams.get('id');
 
     if (!courseId && window.location.hash) {
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        courseId = hashParams.get('id'); 
+        courseId = hashParams.get('id');
     }
 
     if (!courseId) {
@@ -82,6 +84,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (course) {
             const lessons = await window.electronAPI.getLessonsByCourse(courseId);
+            const resources = await window.electronAPI.getResourcesByCourse(courseId);
+            console.log("DEBUG: Resources fetched for course", courseId, resources);
+
             document.title = `Curso: ${course.title}`;
             if (courseTitleTextElem) courseTitleTextElem.textContent = course.title;
 
@@ -96,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     event.stopPropagation();
                     const icon = saveIconWrapper.querySelector('.save-course-icon');
                     let success = false;
-                    
+
                     if (savedCourses.has(course.id)) {
                         // Eliminar de la base de datos
                         success = await window.electronAPI.removeCourseFromDb(course.id);
@@ -164,7 +169,65 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
+            // Función para actualizar recursos según la lección
+            const updateResourcesForLesson = (lessonId) => {
+                console.log("DEBUG: Updating resources for lessonId:", lessonId);
+                if (courseResourcesList && courseResourcesSection) {
+                    courseResourcesList.innerHTML = '';
+                    if (resources && Array.isArray(resources) && resources.length > 0) {
+                        // Filtrar recursos por lessonId (si existe)
+                        let validResources = [];
+                        if (lessonId === null) {
+                            // Si estamos en la vista general (Intro), mostramos TODOS los recursos del curso
+                            console.log("DEBUG: LessonId is null (Intro). Showing all resources.");
+                            validResources = resources.filter(r => r.title && r.title.trim() !== '');
+                        } else {
+                            // Si se seleccionó una lección, mostramos solo sus recursos
+                            validResources = resources.filter(r => {
+                                console.log(`Checking resource '${r.title}': r.lessonId=${r.lessonId} (${typeof r.lessonId}), target=${lessonId} (${typeof lessonId})`);
+                                return r.title && r.title.trim() !== '' && r.lessonId == lessonId;
+                            });
+                        }
+
+                        if (validResources.length > 0) {
+                            validResources.forEach(resource => {
+                                const li = document.createElement('li');
+                                const a = document.createElement('a');
+                                a.href = '#';
+                                a.textContent = resource.title;
+                                a.title = resource.type || 'Recurso';
+                                a.className = 'resource-link'; // Add class for styling
+                                // Add icon based on type if possible, e.g., using FontAwesome
+                                const icon = document.createElement('i');
+                                icon.className = 'fas fa-file-download'; // Default icon
+                                if (resource.type === 'PDF') icon.className = 'fas fa-file-pdf';
+                                a.prepend(icon);
+
+                                a.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    window.open(resource.url, 'resource-popup');
+                                });
+                                li.appendChild(a);
+                                courseResourcesList.appendChild(li);
+                            });
+                            courseResourcesSection.style.display = 'block';
+                        } else {
+                            courseResourcesSection.style.display = 'none';
+                        }
+                    } else {
+                        courseResourcesSection.style.display = 'none';
+                    }
+                }
+            };
+
             if (courseTargetAudienceElem) courseTargetAudienceElem.textContent = course.targetAudience || 'No especificado.';
+
+            /*
+            console.log("DEBUG: Checking resources section", { courseResourcesList, courseResourcesSection, resources });
+            if (courseResourcesList && courseResourcesSection) {
+                // Initial load logic moved to updateResourcesForLesson
+            }
+            */
 
             if (courseTagsContainer) {
                 courseTagsContainer.innerHTML = '';
@@ -183,8 +246,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Cargar el video principal del curso o la primera lección
             if (course.videoUrl) {
                 updateVideoPlayer(course.videoUrl, course.title);
+                // No specific resources for "course intro" video unless we map it to something, or show none
+                updateResourcesForLesson(null);
             } else if (course.lessons && course.lessons.length > 0 && course.lessons[0].videoUrl) {
                 updateVideoPlayer(course.lessons[0].videoUrl, course.lessons[0].title);
+                // Also update resources for the first lesson
+                // We need to find the ID of the first lesson. 
+                // Since 'lessons' array from DB has 'id', we can use it.
+                if (lessons && lessons.length > 0) {
+                    updateResourcesForLesson(lessons[0].id);
+                }
             } else {
                 if (odyseeVideoIframe) odyseeVideoIframe.style.display = 'none';
                 if (currentLessonTitleElem) currentLessonTitleElem.textContent = 'No hay contenido de video disponible.';
@@ -194,12 +265,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             lessons.forEach((lesson, idx) => {
                 const parts = lesson.title.split(' - ', 2);
-                let moduleTitle = parts[0]?.trim() || 'Módulo sin nombre';               
+                let moduleTitle = parts[0]?.trim() || 'Módulo sin nombre';
                 if (!modulesMap[moduleTitle]) modulesMap[moduleTitle] = [];
                 modulesMap[moduleTitle].push({
                     title: parts[1]?.trim() || lesson.title,
                     videoUrl: lesson.videoUrl,
-                    index: idx
+                    index: idx,
+                    id: lesson.id // Preserve lesson ID
                 });
             });
 
@@ -208,49 +280,50 @@ document.addEventListener('DOMContentLoaded', async () => {
                 lessonsList.innerHTML = '';
                 Object.entries(modulesMap)
                     .forEach(([modTitle, modLessons]) => {
-                    const modLi = document.createElement('li');
-                    modLi.classList.add('module-item');
+                        const modLi = document.createElement('li');
+                        modLi.classList.add('module-item');
 
-                    const modHeader = document.createElement('div');
-                    modHeader.classList.add('module-header');
-                    modHeader.textContent = modTitle;
-                    modHeader.addEventListener('click', () => {
-                        lessonContainer.classList.toggle('open');
-                        modHeader.classList.toggle('open');
-                    });
-
-                    const lessonContainer = document.createElement('ul');
-                    lessonContainer.classList.add('lesson-container');
-                    lessonContainer.style.display = 'none';
-
-                    modLessons.forEach(l => {
-                        const lecLi = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.href = '#';
-                        a.textContent = l.title;
-                        a.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            updateVideoPlayer(l.videoUrl, l.title);
+                        const modHeader = document.createElement('div');
+                        modHeader.classList.add('module-header');
+                        modHeader.textContent = modTitle;
+                        modHeader.addEventListener('click', () => {
+                            lessonContainer.classList.toggle('open');
+                            modHeader.classList.toggle('open');
                         });
-                        lecLi.appendChild(a);
-                        lessonContainer.appendChild(lecLi);
-                    });
 
-                    modHeader.addEventListener('click', () => {
-                        const isOpen = lessonContainer.style.display === 'block';
-                        if(isOpen){
-                            modLi.classList.remove('show');
-                        }else{
-                            modLi.classList.add('show');
-                        }
-                        lessonContainer.style.display = isOpen ? 'none' : 'block';
-                        modHeader.classList.toggle('open', !isOpen);
-                    });
+                        const lessonContainer = document.createElement('ul');
+                        lessonContainer.classList.add('lesson-container');
+                        lessonContainer.style.display = 'none';
 
-                    //modLi.appendChild(modHeader);
-                    modLi.appendChild(lessonContainer);
-                    lessonsList.appendChild(modHeader);
-                    lessonsList.appendChild(modLi);
+                        modLessons.forEach(l => {
+                            const lecLi = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = '#';
+                            a.textContent = l.title;
+                            a.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                updateVideoPlayer(l.videoUrl, l.title);
+                                updateResourcesForLesson(l.id); // Update resources when lesson clicked
+                            });
+                            lecLi.appendChild(a);
+                            lessonContainer.appendChild(lecLi);
+                        });
+
+                        modHeader.addEventListener('click', () => {
+                            const isOpen = lessonContainer.style.display === 'block';
+                            if (isOpen) {
+                                modLi.classList.remove('show');
+                            } else {
+                                modLi.classList.add('show');
+                            }
+                            lessonContainer.style.display = isOpen ? 'none' : 'block';
+                            modHeader.classList.toggle('open', !isOpen);
+                        });
+
+                        //modLi.appendChild(modHeader);
+                        modLi.appendChild(lessonContainer);
+                        lessonsList.appendChild(modHeader);
+                        lessonsList.appendChild(modLi);
                     });
 
                 if (Object.keys(modulesMap).length === 0) {
