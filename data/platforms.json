@@ -1,0 +1,42 @@
+[
+  {
+    "id": "Udemy",
+    "name": "Udemy",
+    "imageUrl": "https://cdn.brandfetch.io/idTqV2BNgX/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1741065928722"
+  },
+  {
+    "id": "Platzi",
+    "name": "Platzi",
+    "imageUrl": "https://cdn.brandfetch.io/idycikASqJ/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1667960063225"
+  },
+  {
+    "id": "Coursera",
+    "name": "Coursera",
+    "imageUrl": "https://cdn.iconscout.com/icon/free/png-256/free-coursera-3628707-3029932.png"
+  },
+  {
+    "id": "edX",
+    "name": "edX",
+    "imageUrl": "https://cdn.brandfetch.io/idSP67A-c2/w/340/h/340/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1748809825593"
+  },
+  {
+    "id": "LinkedIn Learning",
+    "name": "LinkedIn Learning",
+    "imageUrl": "https://www.yvl.org/wp-content/uploads/2021/09/LinkedInLearning.png"
+  },
+  {
+    "id": "Skillshare",
+    "name": "Skillshare",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZX0raiLHMepUYptzvmMX6YOhxeCc5-pWUfg&s"
+  },
+  {
+    "id": "Domestika",
+    "name": "Domestika",
+    "imageUrl": "https://seeklogo.com/images/D/domestika-logo-010C51BB5B-seeklogo.com.png"
+  },
+  {
+    "id": "Codecademy",
+    "name": "Codecademy",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZvAhRKxWhR5kLST_MmI_xQifiXS-QqEZ9ZA&s"
+  }
+]

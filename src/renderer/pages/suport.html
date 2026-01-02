@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CourseApp - Mi Panel</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- El menú lateral se inyectará aquí por load-sidebar.js -->
+
+        <main class="main-content">
+            <header class="top-bar">
+                <button id="" class="sidebar-toggle-mobile">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>CourseApp - ¿Cómo apoyar el proyecto?</h1>
+            </header>
+            <section class="course-grid" id="course-grid-container">
+                <div class="course-card">
+                    <div class="course-card-text">
+                        <img src="assets/img/siempre-gratis.png" alt="">
+                        <h3>Nunca tendrás que pagar para usar CourseApp</h3>
+                        <p>Entonces ¿por qué existe esta sección?</p>
+                        <p>Porque mantener y mejorar la plataforma requiere recursos. Si disfrutas usando CourseApp y
+                            quieres apoyar su desarrollo continuo, considera hacer una donación.</p>
+                        <h3>Tu contribución</h3>
+                        <p>Tu contribución nos ayudará a cubrir costos de servidores, desarrollo de nuevas funciones y
+                            mantenimiento general de la aplicación. Cada donación, sin importar el monto, es muy
+                            apreciada y nos motiva a seguir mejorando CourseApp para ti y toda la comunidad.</p>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-card-text">
+                        <img src="assets/img/patreon.jpg" alt="">
+                        <h3>Tu donación</h3>
+                        <p>Si deseas hacer una donación, por favor visita nuestra página de donaciones en Patreon
+                            haciendo clic en el siguiente enlace:</p>
+                        <a href="https://www.patreon.com/cw/CourseApp/shop" target="_blank" class="donate-button">Hacer
+                            una Donación</a>
+                        <p>Gracias por ser parte de la comunidad de CourseApp y por considerar apoyar nuestro trabajo.
+                        </p>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-card-text">
+                        <img src="assets/img/patreon.jpg" alt="">
+                        <h3>Hazte un suscriptor</h3>
+                        <p>Si deseas sostener el proyecto revisa las ventajas que te ofrecemos si te haces suscriptor,
+                            por favor visita nuestra página de suscripciones en Patreon haciendo clic en el siguiente
+                            enlace:</p>
+                        <a href="https://www.patreon.com/cw/CourseApp" target="_blank"
+                            class="donate-button">Suscribete</a>
+                        <p>Gracias por ser parte de la comunidad de CourseApp y por considerar apoyar nuestro trabajo.
+                        </p>
+                    </div>
+                </div>
+                <div class="course-card">
+                    <div class="course-card-text">
+                        <img src="assets/img/btcqr.png" alt="">
+                        <h3>Tu donación con Bitcoin</h3>
+                        <p>Si deseas hacer una donación con Bitcoin, por favor escanea el código QR en pantalla</p>
+                        <p>O copia la llave pública y realiza tu donación desde tu billetera</p>
+                        <p class="texto-multilinea"><strong>Llave pública BTC:</strong> <span
+                                id="btc-wallet">bc1qgznzmm90rxmcylyznut28uuvwzz0d8syaxnh4a</span> <svg
+                                onclick="copyText()" width='24' height='24' viewBox='0 0 24 24'
+                                xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+                                <rect width='24' height='24' stroke='none' fill='#000000' opacity='0' />
+                                <g transform="matrix(1 0 0 1 12 12)">
+                                    <path
+                                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                        transform=" translate(-12, -12)"
+                                        d="M 4 2 C 2.895 2 2 2.895 2 4 L 2 18 L 4 18 L 4 4 L 18 4 L 18 2 L 4 2 z M 8 6 C 6.895 6 6 6.895 6 8 L 6 20 C 6 21.105 6.895 22 8 22 L 20 22 C 21.105 22 22 21.105 22 20 L 22 8 C 22 6.895 21.105 6 20 6 L 8 6 z M 8 8 L 20 8 L 20 20 L 8 20 L 8 8 z"
+                                        stroke-linecap="round" />
+                                </g>
+                            </svg></p>
+                        <p>Gracias por ser parte de la comunidad de CourseApp y por considerar apoyar nuestro trabajo.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <div id="notification-message" class="notification"></div>
+
+    <!-- Cargar el script que inyecta el sidebar PRIMERO -->
+    <script type="module" src="../components/sidebar/load-sidebar.js"></script>
+    <script src="../scripts/utils.js"></script>
+</body>
+
+</html>

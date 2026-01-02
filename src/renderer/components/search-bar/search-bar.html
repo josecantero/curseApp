@@ -1,0 +1,30 @@
+<!-- search-bar.html -->
+<div class="search-bar" id="search-bar-container">
+  <form class="search-form">
+    <div class="search-input-wrapper">
+      <input type="text" id="search-input" placeholder="Buscar cursos...">
+      <div class="category-filter-inline">
+        <button id="category-filter-button" class="filter-button" type="button">
+          Categoría <span class="dropdown-arrow">▼</span>
+        </button>
+        <div id="category-dropdown-content" class="dropdown-content"></div>
+      </div>
+    </div>
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div class="filter-section">
+    <div class="platform-filter-wrapper">
+      <button class="scroll-button left" id="platform-scroll-left">‹</button>
+      <div class="platform-logos-container" id="platform-logos-container"></div>
+      <button class="scroll-button right" id="platform-scroll-right">›</button>
+    </div>
+
+    <div class="language-filter">
+      <button id="language-filter-button" class="filter-button">
+        Idioma <span class="dropdown-arrow">▼</span>
+      </button>
+      <div id="language-dropdown-content" class="dropdown-content"></div>
+    </div>
+  </div>
+</div>

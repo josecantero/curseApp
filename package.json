@@ -2,7 +2,7 @@
   "name": "courseapp",
   "version": "1.0.79",
   "description": "Courses Catalog",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "resolutions": {
     "uglify-js": "^3.17.4"
   },
@@ -24,43 +24,22 @@
       "**/node_modules/koffi/**/*"
     ],
     "files": [
-      "main.js",
-      "index.html",
-      "package.json",
-      "node_modules/**/*",
+      "src/**/*",
       "assets/**/*",
-      "analytics.js",
-      "renderer.js",
-      "assets/**",
-      "castarsdk/**",
-      "courses-area/**",
-      "analytics.js",
-      "analytics-conf.json",
-      "preload.js",
-      "course-detail.html",
-      "course-detail-renderer.js",
-      "courses.json",
-      "icon.png",
-      "index.html",
-      "json-timestamp.json",
-      "load-search-bar.js",
-      "load-sidebar.js",
-      "my-courses-renderer.js",
-      "my-courses.html",
-      "notification.js",
-      "package-lock.json",
-      "plataforms.json",
-      "renderer.js",
-      "search-bar.html",
-      "sidebar.html",
-      "suport.html"
+      "data/**/*",
+      "config/**/*",
+      "castarsdk/**/*",
+      "package.json",
+      "node_modules/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/images/icon.png"
     },
     "linux": {
       "target": "AppImage",
-      "category": "Utility"
+      "category": "Utility",
+      "icon": "assets/images/icon.png"
     },
     "publish": {
       "provider": "github",

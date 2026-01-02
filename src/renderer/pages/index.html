@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CourseApp - Mi Panel</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- El menú lateral se inyectará aquí por load-sidebar.js -->
+
+        <main class="main-content">
+            <header class="top-bar">
+                <button id="" class="sidebar-toggle-mobile">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>CourseApp</h1>
+                <div id="update-container" class="update-container" style="display: none;">
+                    <button id="update-btn" class="new-update-btn">
+                        Nueva Actualización <span id="update-version"></span>
+                    </button>
+                    <span id="update-desc" class="update-description"></span>
+                </div>
+            </header>
+
+            <div class="search-bar-container"></div>
+            <section class="course-grid" id="course-grid-container">
+            </section>
+        </main>
+    </div>
+
+    <div id="notification-message" class="notification"></div>
+
+    <!-- Cargar el script que inyecta el sidebar PRIMERO -->
+    <script type="module" src="../components/sidebar/load-sidebar.js"></script>
+    <script type="module" src="../components/search-bar/load-search-bar.js"></script>
+    <script type="module" src="../scripts/index.js"></script>
+</body>
+
+</html>
