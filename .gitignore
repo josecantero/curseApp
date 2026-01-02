@@ -1,2 +1,10 @@
 node_modules/
 out/
+dist/
+dist2/
+distv1.0.74/
+distv1.0.76/
+distv1.0.77/
+distv1.0.78/
+distv1.0.79/
+.devdbrc
