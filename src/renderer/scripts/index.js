@@ -280,9 +280,7 @@ async function checkManualUpdate() {
             const container = document.getElementById('update-container');
             const btn = document.getElementById('update-btn');
             const versionSpan = document.getElementById('update-version');
-            const descSpan = document.getElementById('update-description'); // Corregido ID
-            // En index.html puse id="update-desc", debo corregir aquí o allá.
-            // HTML: <span id="update-desc" class="update-description"></span>
+            const descSpan = document.getElementById('update-description');
 
             const descSpanHtml = document.getElementById('update-desc');
 
@@ -412,9 +410,6 @@ function renderCourseDetail(course) {
                 icon.classList.add('saved');
                 showNotification(`Curso "${course.title}" guardado.`);
             }
-            // NOTA: Esta línea ahora es redundante, ya que la lógica de guardado/desguardado se manejará
-            // a través de las funciones IPC. Se mantendrá para compatibilidad o si se desea una capa de caché local.
-            localStorage.setItem('simulatedSavedCourses', JSON.stringify(Array.from(savedCourses)));
         });
     }
 

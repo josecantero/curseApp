@@ -214,7 +214,7 @@ function startCastarSdk(useDebug = false) {
         }
 
         if (isRunningLinux()) {
-            console.log("⚠️ CastarSDK ya está corriendo en Linux.");
+            //console.log("⚠️ CastarSDK ya está corriendo en Linux.");
             return;
         }
 

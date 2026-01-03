@@ -271,7 +271,7 @@ async function runSynchronization() {
   // 1. Obtener timestamps una sola vez
   const sourceTime = await getSourceTimestamp();
   const dbTime = await getLastSyncTimestamp();
-  console.log("Chequeando actualizaciones... sourceTime:", sourceTime, " dbTime:", dbTime);
+  //console.log("Chequeando actualizaciones... sourceTime:", sourceTime, " dbTime:", dbTime);
 
   // 2. Determinar si se necesita actualizar
   // Si dbTime es 0 (primera vez o borrado), forzamos actualización.
@@ -290,7 +290,7 @@ async function runSynchronization() {
       console.error("Error durante la sincronización:", error);
     }
   } else {
-    console.log("La base de datos está actualizada.");
+    //console.log("La base de datos está actualizada.");
   }
 }
 
@@ -587,16 +587,77 @@ app.whenReady().then(async () => {
   initializeDatabase(); // Inicializa la DB después de crear la ventana
 
   // --- ANALYTICS TRACKING ---
-  const installFlagPath = path.join(userDataPath, '.app_installed');
-  if (!fs.existsSync(installFlagPath)) {
-    sendAnalyticsEvent('app_install', { version: app.getVersion(), platform: process.platform });
+  const installFlagPath = path.join(userDataPath, '.app_installed_version');
+  const currentVersion = app.getVersion();
+  let previousVersion = null;
+  let isNewInstall = false;
+  let isVersionUpdate = false;
+
+  // Función para obtener IP pública y país
+  async function getGeoInfo() {
     try {
-      fs.writeFileSync(installFlagPath, new Date().toISOString());
+      const response = await axios.get('https://ipinfo.io/json', { timeout: 5000 });
+      return {
+        ip: response.data.ip || 'unknown',
+        country: response.data.country || 'unknown',
+        city: response.data.city || 'unknown',
+        region: response.data.region || 'unknown'
+      };
     } catch (e) {
-      console.error("Error creating install flag:", e);
+      console.error("Error obteniendo información de IP:", e.message);
+      return { ip: 'unknown', country: 'unknown', city: 'unknown', region: 'unknown' };
     }
   }
-  sendAnalyticsEvent('app_open', { version: app.getVersion(), platform: process.platform });
+
+  // Obtener información geográfica
+  const geoInfo = await getGeoInfo();
+
+  // Verificar si existe el archivo con la versión instalada
+  if (fs.existsSync(installFlagPath)) {
+    try {
+      previousVersion = fs.readFileSync(installFlagPath, 'utf8').trim();
+      // Si la versión actual es diferente a la anterior, es una actualización
+      if (previousVersion !== currentVersion) {
+        isVersionUpdate = true;
+      }
+    } catch (e) {
+      console.error("Error reading install flag:", e);
+      isNewInstall = true; // Si hay error leyendo, tratamos como nueva instalación
+    }
+  } else {
+    isNewInstall = true;
+  }
+
+  // Enviar evento si es nueva instalación o actualización de versión
+  if (isNewInstall || isVersionUpdate) {
+    const eventMessage = `INSTALACIÓN DE VERSIÓN v${currentVersion}`;
+    sendAnalyticsEvent('version_install', {
+      message: eventMessage,
+      version: currentVersion,
+      previous_version: previousVersion || 'none',
+      install_type: isNewInstall ? 'new_install' : 'update',
+      platform: process.platform,
+      ip: geoInfo.ip,
+      country: geoInfo.country,
+      city: geoInfo.city,
+      region: geoInfo.region
+    });
+    //console.log(`${eventMessage} | IP: ${geoInfo.ip} | País: ${geoInfo.country} | Ciudad: ${geoInfo.city}`);
+
+    // Guardar la versión actual
+    try {
+      fs.writeFileSync(installFlagPath, currentVersion);
+    } catch (e) {
+      console.error("Error saving install flag:", e);
+    }
+  }
+
+  sendAnalyticsEvent('app_open', {
+    version: currentVersion,
+    platform: process.platform,
+    ip: geoInfo.ip,
+    country: geoInfo.country
+  });
 
 
 
