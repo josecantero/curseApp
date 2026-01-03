@@ -23,6 +23,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Insertar el sidebar al inicio del app-container
         appContainer.prepend(sidebarElement);
 
+        // Cargar y mostrar la versión de la aplicación
+        if (window.electronAPI && window.electronAPI.getAppVersion) {
+            const version = await window.electronAPI.getAppVersion();
+            const versionElement = document.getElementById('app-version');
+            if (versionElement) {
+                versionElement.textContent = `v${version}`;
+            }
+        }
+
         /* =====  COLLAPSE / EXPAND SIDEBAR  ===== */
         const sidebarToggleBtn = document.getElementById('sidebar-toggle');
         const sidebarToggleMobileBtn = document.querySelector('.sidebar-toggle-mobile');

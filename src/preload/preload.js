@@ -29,6 +29,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   checkLocalUpdate: () => ipcRenderer.invoke('check-local-update'),
   downloadUpdate: (url) => ipcRenderer.invoke('download-update', url),
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
 
 });
 

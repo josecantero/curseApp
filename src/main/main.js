@@ -738,6 +738,10 @@ ipcMain.handle('check-local-update', async () => {
   }
 });
 
+ipcMain.handle('get-app-version', () => {
+  return app.getVersion();
+});
+
 ipcMain.handle('download-update', async (event, url) => {
   const win = BrowserWindow.getFocusedWindow();
   const { filePath } = await dialog.showSaveDialog(win, {
