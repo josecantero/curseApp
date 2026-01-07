@@ -302,6 +302,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                             a.textContent = l.title;
                             a.addEventListener('click', (e) => {
                                 e.preventDefault();
+
+                                // Remove active class from all lessons
+                                document.querySelectorAll('.lesson-container li').forEach(item => item.classList.remove('active'));
+                                // Add active class to clicked lesson
+                                lecLi.classList.add('active');
+
                                 updateVideoPlayer(l.videoUrl, l.title);
                                 updateResourcesForLesson(l.id); // Update resources when lesson clicked
                             });

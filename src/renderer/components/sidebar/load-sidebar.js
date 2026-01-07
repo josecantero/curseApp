@@ -109,6 +109,37 @@ document.addEventListener('DOMContentLoaded', async () => {
             overlay.classList.remove('active');
         });
 
+        /* =====  THEME TOGGLE LOGIC  ===== */
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        const body = document.body;
+
+        // Función para actualizar el icono
+        const updateThemeIcon = (isDark) => {
+            if (isDark) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        };
+
+        // Cargar tema guardado
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-theme');
+            updateThemeIcon(true);
+        }
+
+        // Event listener para el botón
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        });
+
     } catch (error) {
         console.error('Error al cargar o inicializar el menú lateral:', error);
     }

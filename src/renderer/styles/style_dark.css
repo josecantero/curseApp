@@ -1,0 +1,370 @@
+/*
+    ESTILOS PARA COURSEAPP - MODO OSCURO (DARK THEME)
+    Paleta: Dark Gray/Blue (Fondo) y Teal/Blue (Acento)
+*/
+
+/* Modo oscuro - sobrescribe las variables de :root cuando está activo */
+body.dark-theme {
+    --primary-color: #00bcd4;
+    /* Azul Turquesa brillante (CTA/Acento) */
+    --secondary-color: #00796b;
+    /* Verde Azulado Oscuro */
+    --accent-color: #30e0f8;
+    /* Turquesa más claro para hover */
+    --text-color: #f4f4f4;
+    /* Texto principal claro */
+    --light-text-color: #99a2b6;
+    /* Texto secundario/suave */
+    --background-light: #12121e;
+    /* Fondo Oscuro/Noche */
+    --background-dark: #1a1a2e;
+    /* Fondo ligeramente más claro */
+    --border-color: #2d2d44;
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.4);
+}
+
+/* Background del body */
+body.dark-theme {
+    background-color: var(--background-light);
+    color: var(--text-color);
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar oscuro */
+body.dark-theme .sidebar {
+    background-color: #0d0d15;
+    color: #f4f4f4;
+}
+
+body.dark-theme .sidebar nav ul li a:hover,
+body.dark-theme .sidebar nav ul li.active a {
+    background-color: #00bcd4;
+    /* Cyan */
+    color: #12121e;
+    /* Dark text for contrast */
+}
+
+/* Top bar oscuro */
+body.dark-theme .top-bar {
+    background-color: #1a1a2e;
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-theme .top-bar h1 {
+    color: var(--text-color);
+}
+
+/* Search bar oscuro */
+body.dark-theme .search-bar {
+    background-color: #1a1a2e;
+    border-color: var(--border-color);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+body.dark-theme .search-bar:hover {
+    box-shadow: 0 0 20px 5px rgba(0, 188, 212, 0.4);
+    /* Cyan glow effect */
+}
+
+body.dark-theme .search-input-wrapper {
+    background-color: #12121e;
+    border-color: var(--border-color);
+}
+
+body.dark-theme .search-input-wrapper #search-input {
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+body.dark-theme .search-input-wrapper #search-input::placeholder {
+    color: var(--light-text-color);
+}
+
+body.dark-theme .category-filter-inline #category-filter-button {
+    color: var(--light-text-color);
+    border-left-color: var(--border-color);
+}
+
+body.dark-theme .category-filter-inline #category-filter-button:hover {
+    background-color: #2d2d44;
+    color: var(--text-color);
+}
+
+/* Dropdown content oscuro */
+body.dark-theme .dropdown-content {
+    background-color: #1a1a2e;
+    border-color: var(--border-color);
+}
+
+body.dark-theme .category-option,
+body.dark-theme .language-option {
+    color: var(--text-color);
+}
+
+body.dark-theme .category-option:hover,
+body.dark-theme .language-option:hover {
+    background-color: #2d2d44;
+    color: var(--accent-color);
+}
+
+/* Course cards oscuro */
+body.dark-theme .course-card {
+    background-color: #1a1a2e;
+    box-shadow: 0 2px 8px var(--shadow-medium);
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+    /* Smooth transition for glow */
+}
+
+body.dark-theme .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px 5px rgba(0, 188, 212, 0.4);
+    /* Cyan glow effect */
+}
+
+body.dark-theme .course-card h3 {
+    color: var(--text-color);
+}
+
+body.dark-theme .course-card p {
+    color: var(--light-text-color);
+}
+
+/* Course detail sections oscuro */
+body.dark-theme .course-detail-overview,
+body.dark-theme .course-lessons-list {
+    background-color: #1a1a2e;
+}
+
+body.dark-theme .info-box {
+    background-color: #0d3d38;
+    border-color: #00796b;
+}
+
+body.dark-theme .info-box h4 {
+    color: var(--accent-color);
+}
+
+body.dark-theme .info-box p {
+    color: var(--text-color);
+}
+
+/* Lesson list items oscuro */
+body.dark-theme .course-lessons-list #lessons-list li {
+    background-color: #12121e;
+    border-color: var(--border-color);
+}
+
+body.dark-theme .course-lessons-list li:hover {
+    background-color: transparent;
+    /* Remove background on parent module item hover */
+    color: inherit;
+}
+
+body.dark-theme .course-lessons-list #lessons-list li a {
+    color: var(--text-color);
+}
+
+/* Module headers oscuro */
+body.dark-theme .module-header {
+    background-color: #2d2d44;
+    color: var(--text-color);
+}
+
+body.dark-theme .module-header:hover {
+    background-color: #3d3d54;
+}
+
+body.dark-theme .module-header.open {
+    background-color: #00bcd4;
+    color: #12121e;
+}
+
+/* Lesson container oscuro */
+body.dark-theme .lesson-container li {
+    background-color: #1a1a2e;
+    transition: background-color 0.2s ease;
+}
+
+body.dark-theme .lesson-container li:hover,
+body.dark-theme .lesson-container li.active {
+    background-color: #00bcd4;
+    /* Cyan */
+}
+
+body.dark-theme .lesson-container li:hover a,
+body.dark-theme .lesson-container li.active a {
+    color: #12121e !important;
+    /* Dark text on cyan */
+    font-weight: bold;
+}
+
+body.dark-theme .lesson-container li a {
+    color: var(--text-color);
+}
+
+/* Tags oscuro */
+body.dark-theme .tag {
+    background-color: #0d3d38;
+    color: var(--accent-color);
+    border-color: #00796b;
+}
+
+/* Notification oscuro */
+body.dark-theme .notification {
+    background-color: rgba(26, 26, 46, 0.95);
+}
+
+/* Platform filter wrapper oscuro */
+body.dark-theme .platform-filter-wrapper {
+    background-color: #1a1a2e;
+    border-color: var(--border-color);
+}
+
+body.dark-theme .scroll-button {
+    background-color: #2d2d44;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+body.dark-theme .scroll-button:hover {
+    background-color: #3d3d54;
+}
+
+/* Language filter button mantiene colores primarios */
+body.dark-theme .language-filter-button {
+    background-color: var(--primary-color);
+    color: #12121e;
+}
+
+body.dark-theme .language-filter-button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Update container oscuro */
+body.dark-theme .update-container {
+    background-color: #1a1a2e;
+    border-color: var(--border-color);
+}
+
+/* Resources section oscuro */
+body.dark-theme .course-resources-section {
+    background-color: #1a1a2e;
+}
+
+body.dark-theme .resource-link {
+    background-color: #2d2d44;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+body.dark-theme .resource-link:hover {
+    background-color: #3d3d54;
+    color: var(--accent-color);
+}
+
+/* Save icon wrapper oscuro */
+body.dark-theme .save-icon-wrapper .save-course-icon {
+    fill: #1a1a2e;
+    stroke: var(--text-color);
+}
+
+body.dark-theme .save-icon-wrapper .save-course-icon.saved {
+    fill: #00bcd4;
+    stroke: #00bcd4;
+}
+
+/* Course description sections oscuro */
+body.dark-theme .course-description-section,
+body.dark-theme .course-instructor-section,
+body.dark-theme .course-prerequisites-section,
+body.dark-theme .course-target-audience-section,
+body.dark-theme .course-tags-section {
+    border-top-color: var(--border-color);
+}
+
+body.dark-theme .course-description-section h2,
+body.dark-theme .course-instructor-section h2,
+body.dark-theme .course-prerequisites-section h2,
+body.dark-theme .course-target-audience-section h2,
+body.dark-theme .course-tags-section h2,
+body.dark-theme .course-lessons-list h2 {
+    color: var(--accent-color);
+}
+
+body.dark-theme .course-description-section p,
+body.dark-theme .course-instructor-section p {
+    color: var(--light-text-color);
+}
+
+body.dark-theme .course-instructor-section a {
+    color: var(--primary-color);
+}
+
+body.dark-theme #course-detail-prerequisites li {
+    color: var(--light-text-color);
+}
+
+body.dark-theme #course-detail-prerequisites li::before {
+    color: var(--accent-color);
+}
+
+/* Video lesson title oscuro */
+body.dark-theme .video-lesson-title {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   ESTILOS DEL BOTÓN DE TOGGLE DE TEMA
+   ======================================== */
+
+.theme-toggle-container {
+    margin-top: auto;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.theme-toggle-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #ffffff;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+.theme-toggle-btn i {
+    transition: transform 0.3s ease;
+}
+
+body.dark-theme .theme-toggle-btn {
+    background-color: rgba(0, 188, 212, 0.2);
+    color: var(--accent-color);
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+    background-color: rgba(0, 188, 212, 0.35);
+}
+
+/* Minimized sidebar - theme toggle */
+.sidebar-minimized .theme-toggle-container {
+    padding: 10px 0;
+}
+
+.sidebar-minimized .theme-toggle-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+}
