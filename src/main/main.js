@@ -530,6 +530,10 @@ function createWindow() {
       return { action: 'deny' };
     }
 
+    if (url.includes('odysee.com')) {
+      return { action: 'deny' };
+    }
+
     //console.log("Intento de abrir ventana bloqueado:", url);
     //console.log("Intento de abrir ventana bloqueado:", url);
     //return { action: 'deny' }; // Bloquea cualquier popup
