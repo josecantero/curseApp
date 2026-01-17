@@ -200,7 +200,46 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 // Add icon based on type if possible, e.g., using FontAwesome
                                 const icon = document.createElement('i');
                                 icon.className = 'fas fa-file-download'; // Default icon
-                                if (resource.type === 'PDF') icon.className = 'fas fa-file-pdf';
+                                
+                                // Determine file type from resource.type or URL extension
+                                let fileType = (resource.type || '').toUpperCase();
+                                if (!fileType && resource.url) {
+                                    const urlLower = resource.url.toLowerCase();
+                                    const ext = urlLower.split('.').pop().split('?')[0];
+                                    const extMap = {
+                                        'pdf': 'PDF',
+                                        'xls': 'EXCEL', 'xlsx': 'EXCEL',
+                                        'doc': 'WORD', 'docx': 'WORD',
+                                        'ppt': 'POWERPOINT', 'pptx': 'POWERPOINT',
+                                        'zip': 'ZIP',
+                                        'rar': 'RAR',
+                                        'apk': 'APK',
+                                        'exe': 'EXE'
+                                    };
+                                    fileType = extMap[ext] || '';
+                                }
+                                
+                                // Map file types to Font Awesome icons
+                                const iconMap = {
+                                    'PDF': 'fas fa-file-pdf',
+                                    'EXCEL': 'fas fa-file-excel',
+                                    'XLS': 'fas fa-file-excel',
+                                    'XLSX': 'fas fa-file-excel',
+                                    'WORD': 'fas fa-file-word',
+                                    'DOC': 'fas fa-file-word',
+                                    'DOCX': 'fas fa-file-word',
+                                    'POWERPOINT': 'fas fa-file-powerpoint',
+                                    'PPT': 'fas fa-file-powerpoint',
+                                    'PPTX': 'fas fa-file-powerpoint',
+                                    'ZIP': 'fas fa-file-zipper',
+                                    'RAR': 'fas fa-file-zipper',
+                                    'APK': 'fab fa-android',
+                                    'EXE': 'fab fa-windows'
+                                };
+                                
+                                if (iconMap[fileType]) {
+                                    icon.className = iconMap[fileType];
+                                }
                                 a.prepend(icon);
 
                                 a.addEventListener('click', (e) => {
